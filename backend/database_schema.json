@@ -1,0 +1,68 @@
+{
+  "users": {
+    "Foo Bar": {
+      "email": "foo.bar@gmail.com",
+      "password": "password123",
+      "profile_image": "image.jpg",
+      "projects": {
+        "group work": true,
+        "foo bar personal project": true
+      },
+      "tasks": {
+        "front-end": true
+      },
+      "favorites": ["foo bar personal project"]
+    }
+  },
+  
+  "projects": {
+    "group work": {
+      "members": {
+        "Foo Bar": true,
+        "Lorem ipsum": true
+      },
+      "name": "group work",
+      "private": false,
+      "creation_date": "11.11.2013",
+      "last_modification_date": "21.11.2015",
+      "description": "Machine learning project",
+      "admin": "Foo Bar",
+      "deadline": "12.11.2020",
+      "badge": "image.jpg",
+      "keywords": ["group", "work"],
+      "attachments": ["schedule.pdf", "tune.mp4"],
+      "tasks": {
+        "front-end": {
+          "description": "Lorem ipsum",
+          "status": "on-going",
+          "deadline": "10.10.2020",
+          "users": ["Foo Bar"]
+        }
+      }
+    },
+    
+    "foo bar personal project": {
+      "members": {
+          "Foo Bar": true
+      },
+      "name": "foo bar personal project",
+      "private": true,
+      "creation_date": "11.11.2015",
+      "last_modification_date": "21.1.2016",
+      "description": "My personal calendar app",
+      "admin": "Foo Bar",
+      "deadline": "1.2.2019",
+      "badge": null,
+      "keywords": ["personal"],
+      "attachments": ["schedule.pdf", "tune.mp4"],
+      "tasks": {
+        "set-up": {
+          "description": "Lorem ipsum",
+          "status": "pending",
+          "deadline": "10.8.2016",
+          "users": []
+        }
+      }
+    }
+  }
+}
