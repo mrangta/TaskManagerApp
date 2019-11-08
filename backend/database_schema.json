@@ -50,10 +50,7 @@
       "deadline": "2019-11-07T18:11:59Z",
       "badge": "image.jpg",
       "keywords": ["group", "work"],
-      "attachments": {
-          "one": "schedule1.pdf",
-          "two": "tune1.mp4"
-      },
+      "attachments": ["schedule1.pdf", "tune1.mp4"],
       "tasks": {
           "one": true
       }
@@ -72,10 +69,7 @@
       "deadline": "2019-11-07T18:11:59Z",
       "badge": null,
       "keywords": ["personal"],
-      "attachments": {
-          "three": "schedule2.pdf",
-          "four": "tune2.mp4"
-      },
+      "attachments": ["schedule2.pdf", "tune2.pdf"],
       "tasks": {
           "two": true
       }
