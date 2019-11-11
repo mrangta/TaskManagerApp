@@ -8,8 +8,8 @@ import android.util.Log
 import com.google.firebase.database.*
 
 class NotificationsService : Service() {
-    private lateinit var assignChangedListener: ValueEventListener
-    private lateinit var projectsChangedListener: ValueEventListener
+    private lateinit var assignChangedListener: ChildEventListener
+    private lateinit var projectsChangedListener: ChildEventListener
     private lateinit var binder: IBinder
     private lateinit var database: DatabaseReference
 
@@ -19,36 +19,64 @@ class NotificationsService : Service() {
         database = FirebaseDatabase.getInstance().reference
 
         // Listen for adding to a new project
-        projectsChangedListener = object : ValueEventListener {
+        projectsChangedListener = object : ChildEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(TAG, "projectsChanged:onCancelled", databaseError.toException())
             }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val projectName = "no project name"
-                showAddedToProjectNotification(usernameToWatch, projectName)
+            override fun onChildMoved(dataSnapshot: DataSnapshot, p1: String?) {
+                // Left empty intentionally
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, p1: String?) {
+                // Left empty intentionally
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot, p1: String?) {
+
+                // Value must be true
+                if (!(dataSnapshot.value as Boolean)) return
+                showAddedToProjectNotification(usernameToWatch, dataSnapshot.key as String)
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                // Left empty intentionally
             }
         }
         database.child("users")
                 .child(usernameToWatch)
                 .child("projects")
-                .addValueEventListener(projectsChangedListener)
+                .addChildEventListener(projectsChangedListener)
 
         // Listen to be assign to a new task
-        assignChangedListener = object : ValueEventListener {
+        assignChangedListener = object : ChildEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(TAG, "assignChanged:onCancelled", databaseError.toException())
             }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val taskTitle = "no task title"
-                showAssignedToTaskNotification(usernameToWatch, taskTitle)
+            override fun onChildMoved(dataSnapshot: DataSnapshot, p1: String?) {
+                // Left empty intentionally
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, p1: String?) {
+                // Left empty intentionally
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot, p1: String?) {
+
+                // Value must be true
+                if (!(dataSnapshot.value as Boolean)) return
+                showAssignedToTaskNotification(usernameToWatch, dataSnapshot.key as String)
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                // Left empty intentionally
             }
         }
         database.child("users")
             .child(usernameToWatch)
             .child("tasks")
-            .addValueEventListener(assignChangedListener)
+            .addChildEventListener(assignChangedListener)
 
         return START_STICKY
     }
@@ -63,11 +91,11 @@ class NotificationsService : Service() {
         return binder
     }
 
-    private fun showAddedToProjectNotification(username: String, projectName: String) {
+    private fun showAddedToProjectNotification(username: String, projectId: String) {
 
     }
 
-    private fun showAssignedToTaskNotification(username: String, taskTitle: String) {
+    private fun showAssignedToTaskNotification(username: String, taskId: String) {
 
     }
 
