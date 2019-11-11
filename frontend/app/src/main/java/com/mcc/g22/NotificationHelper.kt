@@ -39,6 +39,7 @@ class NotificationHelper(
      * @param icon R.drawable with notification icon
      * @param onTapAction PendingIntent to start when the notification is tapped
      * @param priority NotificationCompat priority
+     * @return notification ID
      */
     fun showNotification(title: String, text: String,
                          icon: Int = R.drawable.ic_launcher_background,

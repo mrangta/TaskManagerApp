@@ -12,10 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".DeadlineAlarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <service
             android:name=".NotificationsService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <receiver
             android:name=".BootCompletedReceiver"
