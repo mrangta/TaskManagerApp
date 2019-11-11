@@ -20,6 +20,7 @@ class NotificationsService : Service() {
     private lateinit var projectsChangedListener: ChildEventListener
     private lateinit var binder: IBinder
     private lateinit var database: DatabaseReference
+    private lateinit var notificationHelper: NotificationHelper
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -29,20 +30,15 @@ class NotificationsService : Service() {
         // Get reference to the database
         database = FirebaseDatabase.getInstance().reference
 
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
+        // Prepare to show notifications
+        var importance = 3 // Importance default
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.channel_name)
-            val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            importance = NotificationManager.IMPORTANCE_DEFAULT
         }
+        notificationHelper = NotificationHelper(applicationContext,
+            getString(R.string.channel_name),
+            getString(R.string.channel_description),
+            importance)
 
         // Listen for adding to a new project
         projectsChangedListener = object : ChildEventListener {
@@ -136,8 +132,9 @@ class NotificationsService : Service() {
                     val notificationText = username + ", " +
                                 getString(R.string.added_to_project_notif_text) + " " + projectName
 
+                    // TODO add proper icon
                     // TODO add proper onTapAction
-                    showNotification(notificationTitle, notificationText)
+                    notificationHelper.showNotification(notificationTitle, notificationText)
                 }
             })
     }
@@ -161,52 +158,18 @@ class NotificationsService : Service() {
                         val notificationText = username + ", " +
                                 getString(R.string.assigned_to_task_notif_text) + " " + taskName
 
+                        // TODO add proper icon
                         // TODO add proper onTapAction
-                        showNotification(notificationTitle, notificationText)
+                        notificationHelper.showNotification(notificationTitle, notificationText)
                     }
                 }
             }
         )
     }
 
-    private fun showApproachingDeadlineNotification(username: String) {
-
-    }
-
-    // TODO check if icon is ok
-    /**
-     * Create and show notification.
-     * @param title
-     * @param text
-     * @param icon R.drawable with notification icon
-     * @param onTapAction PendingIntent to start when the notification is tapped
-     */
-    private fun showNotification(title: String, text: String,
-                                 icon: Int = R.drawable.ic_launcher_background,
-                                 onTapAction: PendingIntent? = null) {
-
-        // Build notification to show
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(icon)
-            .setContentTitle(title)
-            .setContentText(text)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        if (onTapAction != null) builder.setContentIntent(onTapAction)
-
-        // Show notification
-        with(NotificationManagerCompat.from(this)) {
-            // first argument is notificationId is a unique int for each notification
-            // because notification won't be changed, this is not stored and it is just random
-            // number
-            notify(Random.nextInt(), builder.build())
-        }
-
-    }
-
     companion object {
         private const val EXTRA_USERNAME_TO_WATCH: String = "USERNAME_TO_WATCH"
         private const val TAG: String = "MCC"
-        private const val CHANNEL_ID: String = "TasksManagerNotifications"
 
         /**
          * Start service so it could show notifications to the user
