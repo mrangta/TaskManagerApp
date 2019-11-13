@@ -2,13 +2,20 @@ package com.mcc.g22
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import com.mcc.g22.AttachmentsManager.ImageSize.*
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.nio.channels.spi.AbstractSelectionKey
+
 
 /**
  * Manage attachments of the project - upload and download them
@@ -33,6 +40,14 @@ class AttachmentsManager(private var projectId: String) {
         FULL(""),
     }
 
+    private fun filenameToDatabaseKey(fileName: String): String {
+        return fileName.replace('.', '?')
+    }
+
+    private fun databaseKeyToFilename(key: String): String {
+        return key.replace('?', '.')
+    }
+
     /**
      * Upload new attachment to the project. Register attachment in configuration of the project.
      *
@@ -47,7 +62,7 @@ class AttachmentsManager(private var projectId: String) {
      */
     fun uploadFile(
         uri: Uri, onFileUploaded: () -> Unit, onFailure: () -> Unit,
-        fileName: String = "", imageSize: ImageSize = ImageSize.FULL
+        fileName: String = "", imageSize: ImageSize = FULL
     ) {
 
         var filenameInStorage: String = uri.lastPathSegment.toString()
@@ -64,7 +79,7 @@ class AttachmentsManager(private var projectId: String) {
             database.reference.child("projects")
                 .child(projectId)
                 .child("attachments")
-                .child(filenameInStorage).setValue(true)
+                .child(filenameToDatabaseKey(filenameInStorage)).setValue(true)
 
             onFileUploaded()
         }
@@ -83,7 +98,7 @@ class AttachmentsManager(private var projectId: String) {
      */
     fun uploadFile(
         bitmap: Bitmap, onFileUploaded: () -> Unit, onFailure: () -> Unit,
-        fileName: String, imageSize: ImageSize = ImageSize.FULL
+        fileName: String, imageSize: ImageSize = FULL
     ) {
 
         val newFile = storage.reference.child("$projectId/$fileName")
@@ -100,7 +115,7 @@ class AttachmentsManager(private var projectId: String) {
             database.reference.child("projects")
                 .child(projectId)
                 .child("attachments")
-                .child(fileName).setValue(true)
+                .child(filenameToDatabaseKey(fileName)).setValue(true)
 
             onFileUploaded()
         }
@@ -120,7 +135,7 @@ class AttachmentsManager(private var projectId: String) {
      */
     fun uploadFile(
         file: File, onFileUploaded: () -> Unit, onFailure: () -> Unit,
-        fileName: String = "", imageSize: ImageSize = ImageSize.FULL
+        fileName: String = "", imageSize: ImageSize = FULL
     ) {
         uploadFile(Uri.fromFile(file), onFileUploaded, onFailure, fileName, imageSize)
     }
@@ -139,7 +154,7 @@ class AttachmentsManager(private var projectId: String) {
      */
     fun downloadFile(
         fileName: String, onFileDownloaded: (downloadedFile: File) -> Unit,
-        onFailure: () -> Unit, localFile: File? = null, imageSize: ImageSize = ImageSize.FULL
+        onFailure: () -> Unit, localFile: File? = null, imageSize: ImageSize = FULL
     ) {
 
         var dstFile = localFile
@@ -159,6 +174,37 @@ class AttachmentsManager(private var projectId: String) {
     }
 
     /**
+     * Get list of all attachments uploaded for the project
+     * @param onListReady function to call when list of attachments has been gotten successfully
+     * @param onFailure function to call in case of error
+     */
+    fun listAllAttachments(onListReady: (attachments: Set<String>) -> Unit,
+                           onFailure: (databaseError: DatabaseError) -> Unit) {
+
+        database.reference.child("projects")
+            .child(projectId)
+            .child("attachments")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    onFailure(databaseError)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val attachments = mutableSetOf<String>()
+                    for (a in dataSnapshot.children) {
+                        val fileName = databaseKeyToFilename(a.key as String)
+                        if (fileName.endsWith("$LOW.jpg") ||
+                                fileName.endsWith("$HIGH.jpg")) {
+                            continue
+                        }
+                        attachments.add(fileName)
+                    }
+                    onListReady(attachments)
+                }
+            })
+    }
+
+    /**
      * Load image with the given filename to the given image view
      *
      * @param fileName name of the image to load
@@ -169,7 +215,8 @@ class AttachmentsManager(private var projectId: String) {
      *                  to the requested is downloaded
      */
     fun loadImage(fileName: String, context: Context, imageView: ImageView,
-                  imageSize: ImageSize = ImageSize.FULL) {
+                  imageSize: ImageSize = FULL
+    ) {
 
         val imageRef = storage.reference.child("$projectId/$fileName")
         Glide.with(context).load(imageRef).into(imageView)

@@ -38,11 +38,32 @@ class ExampleInstrumentedTest {
             "test_bitmap.jpg")
         signal.await()
         assertTrue(result)
+
+        Thread.sleep(1000) // Give some time to update realtime database
+
+        testRealtimeDatabase(attachmentsManager)
+    }
+
+    private fun testRealtimeDatabase(attachmentsManager: AttachmentsManager) {
+        val signal = CountDownLatch(1)
+        var result = false
+        attachmentsManager.listAllAttachments({
+            result = it.contains("test_bitmap.jpg")
+
+            it.forEach { element -> println(element) }
+
+            signal.countDown()
+        }, {
+            result = false
+            signal.countDown()
+        })
+        signal.await()
+        assertTrue(result)
     }
 
     @Test
     fun downloadImage() {
-        val signal = CountDownLatch(1)
+        /*val signal = CountDownLatch(1)
         var result = false
 
         val attachmentsManager = AttachmentsManager("test")
@@ -51,6 +72,6 @@ class ExampleInstrumentedTest {
             {result = false; signal.countDown()})
 
         signal.await()
-        assertTrue(result)
+        assertTrue(result)*/
     }
 }
