@@ -48,6 +48,11 @@ class AttachmentsManager(private var projectId: String) {
         return key.replace('?', '.')
     }
 
+    private fun getFilenameOfImageInSize(basicFilename: String, size: ImageSize): String {
+        return basicFilename.substringBeforeLast('.') + size.toString() +
+                basicFilename.substringAfterLast('.')
+    }
+
     /**
      * Upload new attachment to the project. Register attachment in configuration of the project.
      *
@@ -156,7 +161,7 @@ class AttachmentsManager(private var projectId: String) {
         fileName: String, onFileDownloaded: (downloadedFile: File) -> Unit,
         onFailure: () -> Unit, localFile: File? = null, imageSize: ImageSize = FULL
     ) {
-
+        var nameOfFileToDownload = fileName
         var dstFile = localFile
         if (dstFile == null) {
             dstFile = File.createTempFile(
@@ -164,8 +169,10 @@ class AttachmentsManager(private var projectId: String) {
                 fileName.substringAfterLast('.')
             )
         }
+        if (setOf("jpg", "png").contains(dstFile?.extension))
+            nameOfFileToDownload = getFilenameOfImageInSize(fileName, imageSize)
 
-        val f = storage.reference.child("$projectId/$fileName")
+        val f = storage.reference.child("$projectId/$nameOfFileToDownload")
         f.getFile(dstFile!!).addOnSuccessListener {
             onFileDownloaded(dstFile)
         }.addOnFailureListener {
@@ -194,7 +201,9 @@ class AttachmentsManager(private var projectId: String) {
                     for (a in dataSnapshot.children) {
                         val fileName = databaseKeyToFilename(a.key as String)
                         if (fileName.endsWith("$LOW.jpg") ||
-                                fileName.endsWith("$HIGH.jpg")) {
+                                fileName.endsWith("$HIGH.jpg") ||
+                                fileName.endsWith("$LOW.png") ||
+                                fileName.endsWith("$HIGH.png")) {
                             continue
                         }
                         attachments.add(fileName)
@@ -217,8 +226,8 @@ class AttachmentsManager(private var projectId: String) {
     fun loadImage(fileName: String, context: Context, imageView: ImageView,
                   imageSize: ImageSize = FULL
     ) {
-
-        val imageRef = storage.reference.child("$projectId/$fileName")
+        val imageFilename = getFilenameOfImageInSize(fileName, imageSize)
+        val imageRef = storage.reference.child("$projectId/$imageFilename")
         Glide.with(context).load(imageRef).into(imageView)
     }
 }

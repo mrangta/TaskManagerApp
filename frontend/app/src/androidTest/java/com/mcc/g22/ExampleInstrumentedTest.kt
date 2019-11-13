@@ -29,26 +29,28 @@ class ExampleInstrumentedTest {
     @Test
     fun uploadBitmap() {
         val bmpToUpload = Bitmap.createBitmap(400, 400, Bitmap.Config.ARGB_8888)
+        val testBitmapName = "test_bitmap.jpg"
         val attachmentsManager = AttachmentsManager("test")
         val signal = CountDownLatch(1)
         var result = false
         attachmentsManager.uploadFile(bmpToUpload,
             {result = true; signal.countDown()},
             {result = false; signal.countDown()},
-            "test_bitmap.jpg")
+            testBitmapName)
         signal.await()
         assertTrue(result)
 
         Thread.sleep(1000) // Give some time to update realtime database
 
-        testRealtimeDatabase(attachmentsManager)
+        testRealtimeDatabase(attachmentsManager, testBitmapName)
+        testDownloadingInSize(attachmentsManager, testBitmapName)
     }
 
-    private fun testRealtimeDatabase(attachmentsManager: AttachmentsManager) {
+    private fun testRealtimeDatabase(attachmentsManager: AttachmentsManager, bmpName: String) {
         val signal = CountDownLatch(1)
         var result = false
         attachmentsManager.listAllAttachments({
-            result = it.contains("test_bitmap.jpg")
+            result = it.contains(bmpName)
 
             it.forEach { element -> println(element) }
 
@@ -61,9 +63,22 @@ class ExampleInstrumentedTest {
         assertTrue(result)
     }
 
+    private fun testDownloadingInSize(attachmentsManager: AttachmentsManager, bmpName: String) {
+        val signal = CountDownLatch(1)
+        var result = false
+
+        attachmentsManager.downloadFile(bmpName,
+            {result = it.exists(); signal.countDown()},
+            {result = false; signal.countDown()},
+            imageSize = AttachmentsManager.ImageSize.LOW)
+
+        signal.await()
+        assertTrue(result)
+    }
+
     @Test
     fun downloadImage() {
-        /*val signal = CountDownLatch(1)
+        val signal = CountDownLatch(1)
         var result = false
 
         val attachmentsManager = AttachmentsManager("test")
@@ -72,6 +87,6 @@ class ExampleInstrumentedTest {
             {result = false; signal.countDown()})
 
         signal.await()
-        assertTrue(result)*/
+        assertTrue(result)
     }
 }
