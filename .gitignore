@@ -1,12 +1,12 @@
 *.iml
 .gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+frontend/local.properties
+frontend/.idea/caches
+frontend/.idea/libraries
+frontend/.idea/modules.xml
+frontend/.idea/workspace.xml
+frontend/.idea/navEditor.xml
+frontend/.idea/assetWizardSettings.xml
 .DS_Store
 /build
 /captures
@@ -227,3 +227,6 @@ fabric.properties
 # Pyre type checker
 
 # End of https://www.gitignore.io/api/flask,python,pycharm,appengine
+
+# JSON with Google credentials
+frontend/app/google-service*.json
