@@ -19,50 +19,6 @@ schemes:
 #security:
 #    - firebase: []
 paths:
-  /tasks:
-    post:
-      summary: Creates a task
-      description: Creates a task
-      operationId: createTask
-      consumes: [ application/json ]
-      produces: [ application/json ]
-      responses:
-        '201':
-          $ref: '#/responses/IdResponse'
-        '422':
-          $ref: '#/responses/MalformedInputError'
-        default:
-          $ref: '#/responses/DefaultError'
-      parameters:
-        - $ref: '#/parameters/taskParam'
-  /tasks/{task_id}:
-    put:
-      summary: Update task status
-      description: Updates the status of the task with the given ID
-      operationId: updateStatusOfTaskWithId
-      consumes: [ application/json ]
-      parameters:
-        - $ref: '#/parameters/taskIdPathParam'
-        - $ref: '#/parameters/taskParam'
-      responses:
-        '204':
-          description: successfully updated task status
-        default:
-          $ref: '#/responses/DefaultError'
-  /tasks/{task_id}/users:
-    put:
-      summary: Assign users to task
-      description: Assigns users with the Ids in the body to the task with the given id
-      operationId: assignUsersToTask
-      consumes: [ application/json ]
-      parameters:
-        - $ref: '#/parameters/taskIdPathParam'
-        - $ref: '#/parameters/idListParam'
-      responses:
-        '204':
-          description: succesfully assigned users
-        default:
-          $ref: '#/responses/DefaultError'
   /projects:
     post:
       summary: Creates a project
@@ -103,6 +59,53 @@ paths:
       responses:
         '204':
           description: succesfully assigned users to project
+        default:
+          $ref: '#/responses/DefaultError'
+  /projects/{project_id}/tasks:
+    post:
+      summary: Creates a task
+      description: Creates a task
+      operationId: createTask
+      consumes: [ application/json ]
+      produces: [ application/json ]
+      responses:
+        '201':
+          $ref: '#/responses/IdResponse'
+        '422':
+          $ref: '#/responses/MalformedInputError'
+        default:
+          $ref: '#/responses/DefaultError'
+      parameters:
+      - $ref: '#/parameters/projectIdPathParam'
+      - $ref: '#/parameters/taskParam'
+  /projects/{project_id}/tasks/{task_id}:
+    put:
+      summary: Update task status
+      description: Updates the status of the task with the given ID
+      operationId: updateStatusOfTaskWithId
+      consumes: [ application/json ]
+      parameters:
+      - $ref: '#/parameters/projectIdPathParam'
+      - $ref: '#/parameters/taskIdPathParam'
+      - $ref: '#/parameters/taskParam'
+      responses:
+        '204':
+          description: successfully updated task status
+        default:
+          $ref: '#/responses/DefaultError'
+  /projects/{project_id}/tasks/{task_id}/users:
+    put:
+      summary: Assign users to task
+      description: Assigns users with the Ids in the body to the task with the given id
+      operationId: assignUsersToTask
+      consumes: [ application/json ]
+      parameters:
+      - $ref: '#/parameters/projectIdPathParam'
+      - $ref: '#/parameters/taskIdPathParam'
+      - $ref: '#/parameters/idListParam'
+      responses:
+        '204':
+          description: succesfully assigned users
         default:
           $ref: '#/responses/DefaultError'
 responses:
@@ -194,6 +197,13 @@ definitions:
         type: string
       description:
         type: string
+      badgeUrl:
+        type: string
+      keywords:
+        type: array
+        maxItems: 3
+        items:
+          type: string
   Error:
     required:
       - code
