@@ -1,4 +1,4 @@
-Firebase-admin-sdk-key.json
+firebase-a.json
 
 *.iml
 .gradle
@@ -9,6 +9,8 @@ Firebase-admin-sdk-key.json
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
+/backend/.idea
 .DS_Store
 /build
 /captures
