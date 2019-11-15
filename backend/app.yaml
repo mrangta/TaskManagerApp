@@ -29,4 +29,4 @@ endpoints_api_service:
  # app_start_timeout_sec: 300
 
 env_variables:
-  MY_VAR: "my value"
+  DB_URL: https://mcc-fall-2019-g22.firebaseio.com/

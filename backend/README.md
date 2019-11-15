@@ -10,6 +10,10 @@ The project runs on Google Cloud Flexible App Engine. The runtime is a custom do
 4. Login to Google Cloud when prompted
 5. Select  project
 
+
+###Firebase Admin connection
+Get the private key file for firebase admin sdk and copy it to backend/
+DO NOT ADD THE FILE TO VERSION CONTROL
 #####Following steps need to be done only for a new Google Cloud Project
 6. Enable docker registry: https://console.cloud.google.com/flows/enableapi?apiid=containerregistry.googleapis.com
 7. gcloud app create --project=<project_name>
