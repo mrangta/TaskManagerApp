@@ -1,52 +1,49 @@
 {
   "tasks": {
-        "one": {
-          "front-end": {
-            "description": "Lorem ipsum",
-            "status": "on-going",
-            "deadline": "2019-11-07T18:11:59Z",
-            "users": ["Foo Bar"]
+    "one": {
+        "description": "Lorem ipsum",
+        "status": "on-going",
+        "deadline": "2019-11-07T18:11:59Z",
+        "users": {
+          "FooBar": true
         },
-        "two": {
-            "set-up": {
-                "description": "Lorem ipsum",
-                "status": "pending",
-                "deadline": "2019-11-07T18:11:59Z",
-                "users": []
-            }
-        }
-      }
+        "project_id": "groupWork"
+    },
+    "two": {
+        "description": "Lorem ipsum",
+        "status": "pending",
+        "deadline": "2019-11-07T18:11:59Z",
+        "users": []
+    }
   },
-  
   "users": {
-    "Foo Bar": {
+    "FooBar": {
       "email": "foo.bar@gmail.com",
       "password": "password123",
       "profile_image": "image.jpg",
       "projects": {
-        "group work": true,
-        "foo bar personal project": true
+        "groupWork": true,
+        "fooBarPersonalProject": true
       },
       "tasks": {
           "one": true,
           "two": true
       },
-      "favorites": ["foo bar personal project"]
+      "favorites": ["fooBarPersonalProject"]
     }
   },
-  
   "projects": {
-    "group work": {
+    "groupWork": {
       "members": {
-        "Foo Bar": true,
+        "FooBar": true,
         "Lorem ipsum": true
       },
-      "name": "group work",
+      "name": "groupWork",
       "private": false,
       "creation_date": "2019-11-07T18:11:59Z",
       "last_modification_date": "2019-11-07T18:11:59Z",
       "description": "Machine learning project",
-      "admin": "Foo Bar",
+      "admin": "FooBar",
       "deadline": "2019-11-07T18:11:59Z",
       "badge": "image.jpg",
       "keywords": ["group", "work"],
@@ -55,17 +52,17 @@
           "one": true
       }
     },
-    
-    "foo bar personal project": {
+
+    "FooBar personal project": {
       "members": {
-          "Foo Bar": true
+          "FooBar": true
       },
-      "name": "foo bar personal project",
+      "name": "fooBarPersonalProject",
       "private": true,
       "creation_date": "2019-11-07T18:11:59Z",
       "last_modification_date": "2019-11-07T18:11:59Z",
       "description": "My personal calendar app",
-      "admin": "Foo Bar",
+      "admin": "FooBar",
       "deadline": "2019-11-07T18:11:59Z",
       "badge": null,
       "keywords": ["personal"],

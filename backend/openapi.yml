@@ -192,6 +192,7 @@ definitions:
     required:
       - name
       - description
+      - private
     properties:
       name:
         type: string
@@ -199,6 +200,8 @@ definitions:
         type: string
       badgeUrl:
         type: string
+      private:
+        type: boolean
       keywords:
         type: array
         maxItems: 3
