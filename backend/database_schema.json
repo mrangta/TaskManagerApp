@@ -16,6 +16,7 @@
         "users": []
     }
   },
+  
   "users": {
     "FooBar": {
       "email": "foo.bar@gmail.com",
@@ -29,14 +30,17 @@
           "one": true,
           "two": true
       },
-      "favorites": ["fooBarPersonalProject"]
+      "favorites": {
+          "fooBarPersonalProject": true
+      }
     }
   },
+  
   "projects": {
     "groupWork": {
       "members": {
         "FooBar": true,
-        "Lorem ipsum": true
+        "LoremIpsum": true
       },
       "name": "groupWork",
       "private": false,
@@ -46,14 +50,20 @@
       "admin": "FooBar",
       "deadline": "2019-11-07T18:11:59Z",
       "badge": "image.jpg",
-      "keywords": ["group", "work"],
-      "attachments": ["schedule1.pdf", "tune1.mp4"],
+      "keywords": {
+          "group": true,
+          "work": true
+      },
+      "attachments": {
+          "schedule1.pdf": true,
+          "tune1.mp4": true
+      },
       "tasks": {
           "one": true
       }
     },
 
-    "FooBar personal project": {
+    "FooBarPersonalProject": {
       "members": {
           "FooBar": true
       },
@@ -65,8 +75,13 @@
       "admin": "FooBar",
       "deadline": "2019-11-07T18:11:59Z",
       "badge": null,
-      "keywords": ["personal"],
-      "attachments": ["schedule2.pdf", "tune2.pdf"],
+      "keywords": {
+          "personal": true
+      },
+      "attachments": {
+          "schedule2.pdf": true,
+          "tune2.pdf": true
+      },
       "tasks": {
           "two": true
       }
