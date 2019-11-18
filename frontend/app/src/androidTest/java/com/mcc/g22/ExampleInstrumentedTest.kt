@@ -77,6 +77,38 @@ class ExampleInstrumentedTest {
     }
 
     @Test
+    fun uploadHighResBitmap() {
+        val bmpToUpload = Bitmap.createBitmap(1600, 1600, Bitmap.Config.ARGB_8888)
+        val testBitmapName = "test_bitmap_high.jpg"
+        val attachmentsManager = AttachmentsManager("test")
+        val signal = CountDownLatch(1)
+        var result = false
+        attachmentsManager.uploadFile(bmpToUpload,
+            {result = true; signal.countDown()},
+            {result = false; signal.countDown()},
+            testBitmapName,
+            imageSize = AttachmentsManager.ImageSize.HIGH)
+        signal.await()
+        assertTrue(result)
+    }
+
+    @Test
+    fun uploadLowResBitmap() {
+        val bmpToUpload = Bitmap.createBitmap(1600, 1600, Bitmap.Config.ARGB_8888)
+        val testBitmapName = "test_bitmap_low.jpg"
+        val attachmentsManager = AttachmentsManager("test")
+        val signal = CountDownLatch(1)
+        var result = false
+        attachmentsManager.uploadFile(bmpToUpload,
+            {result = true; signal.countDown()},
+            {result = false; signal.countDown()},
+            testBitmapName,
+            imageSize = AttachmentsManager.ImageSize.LOW)
+        signal.await()
+        assertTrue(result)
+    }
+
+    @Test
     fun downloadImage() {
         val signal = CountDownLatch(1)
         var result = false

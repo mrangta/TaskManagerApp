@@ -1,9 +1,11 @@
 package com.mcc.g22
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.provider.MediaStore
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -14,7 +16,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.mcc.g22.AttachmentsManager.ImageSize.*
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.nio.channels.spi.AbstractSelectionKey
 
 
 /**
@@ -26,36 +27,128 @@ class AttachmentsManager(private var projectId: String) {
     private val storage: FirebaseStorage = FirebaseStorage.getInstance()
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
 
-    init {
-        // Enable persistence to be sure that realtime database will be updated
-        database.setPersistenceEnabled(true)
+    companion object {
+        private const val LOW_WIDTH_RESOLUTION: Int = 640
+        private const val LOW_HEIGHT_RESOLUTION: Int = 480
+        private const val HIGH_WIDTH_RESOLUTION: Int = 1280
+        private const val HIGH_HEIGHT_RESOLUTION: Int = 960
     }
 
     /**
      * This class lists all possible settings of image size
      */
     enum class ImageSize(val size: String) {
-        LOW("_640x480"),
-        HIGH("_1280x960"),
+        LOW("_" + LOW_WIDTH_RESOLUTION + "x$LOW_HEIGHT_RESOLUTION"),
+        HIGH("_" + HIGH_WIDTH_RESOLUTION + "x$HIGH_HEIGHT_RESOLUTION"),
         FULL(""),
     }
 
+    /**
+     * Change name of file to key which can be accepted in database
+     * @param fileName
+     * @return key which can be used in Realtime Storage to assigned the file with the project
+     */
     private fun filenameToDatabaseKey(fileName: String): String {
         return fileName.replace('.', '?')
     }
-
+    /**
+     * Change database key to name of file saved in Firebase Storage
+     * @param key
+     * @return name of file saved in Firebase Storage and associated with the key
+     */
     private fun databaseKeyToFilename(key: String): String {
         return key.replace('?', '.')
     }
-
+    /**
+     * @param basicFilename basic filename of the image - as it was saved in the database
+     * @param size requested size
+     * @return filename of the image in the given size
+     */
     private fun getFilenameOfImageInSize(basicFilename: String, size: ImageSize): String {
         return basicFilename.substringBeforeLast('.') + size.toString() +
                 basicFilename.substringAfterLast('.')
     }
 
     /**
+     * Resize bitmap to the requested size.
+     * @param bitmap bitmap in full size
+     * @param imageSize requested image size
+     * @return resized bitmap
+     */
+    private fun resizeBitmap(bitmap: Bitmap, imageSize: ImageSize): Bitmap {
+        when (imageSize) {
+            LOW -> {
+                val targetSize = calculateSize(bitmap.width, bitmap.height,
+                    LOW_WIDTH_RESOLUTION, LOW_HEIGHT_RESOLUTION)
+                return Bitmap.createScaledBitmap(bitmap,
+                    targetSize.first ,
+                    targetSize.second,
+                    true)
+            }
+            HIGH -> {
+                val targetSize = calculateSize(bitmap.width, bitmap.height,
+                    HIGH_WIDTH_RESOLUTION, HIGH_HEIGHT_RESOLUTION)
+                return Bitmap.createScaledBitmap(bitmap,
+                    targetSize.first ,
+                    targetSize.second,
+                    true)
+            }
+            FULL -> return bitmap
+        }
+    }
+    /**
+     * Return smaller number
+     */
+    private fun min(i1: Int, i2: Int): Int {
+        return if (i1 > i2) i2
+        else i1
+    }
+    /**
+     * Calculate new size of image.
+     * @param currentWidth
+     * @param currentHeight
+     * @param targetMaxWidth
+     * @param targetMaxHeight
+     * @param keepRatio
+     * @return new width and height
+     */
+    private fun calculateSize(currentWidth: Int, currentHeight: Int,
+                              targetMaxWidth: Int, targetMaxHeight: Int,
+                              keepRatio: Boolean = true): Pair<Int, Int> {
+
+        return if (keepRatio) {
+
+            val ratio = currentWidth / currentHeight
+            val wRatio = currentWidth / targetMaxWidth
+            val hRatio = currentHeight / targetMaxHeight
+            if (wRatio < hRatio) {
+                val h = min(targetMaxHeight, currentHeight)
+                Pair(h * ratio, h)
+            } else {
+                val w = min(targetMaxWidth, currentWidth)
+                Pair(w, w / ratio)
+            }
+        } else {
+            Pair(targetMaxWidth, targetMaxHeight)
+        }
+    }
+
+    /**
+     * Check if given file is an image or not
+     * @param name name of file
+     * @return true if file is an image
+     */
+    @SuppressLint("DefaultLocale")
+    private fun isFileImage(name: String): Boolean {
+
+        val extension = name.substringAfterLast('.').toLowerCase()
+        return setOf("jpg", "png").contains(extension)
+    }
+
+    /**
      * Upload new attachment to the project. Register attachment in configuration of the project.
      *
+     * @param context application context
      * @param uri URI to file to upload
      * @param onFileUploaded function to be called when the file is uploaded successfully
      * @param onFailure function to be called when the file could not be uploaded
@@ -65,28 +158,40 @@ class AttachmentsManager(private var projectId: String) {
      *                  uploading it to the storage.
      *                  If file is not an image, this parameter ignored
      */
-    fun uploadFile(
+    fun uploadFile(context: Context,
         uri: Uri, onFileUploaded: () -> Unit, onFailure: () -> Unit,
         fileName: String = "", imageSize: ImageSize = FULL
     ) {
-
+        var requestedSize = imageSize
         var filenameInStorage: String = uri.lastPathSegment.toString()
         if (fileName != "") filenameInStorage = fileName
 
+        // Every file which is not an image has FULL requested size
+        // (because they are treated in the same way as full-size images)
+        if (!isFileImage(filenameInStorage)) requestedSize = FULL
+
         val newFile = storage.reference.child("$projectId/$filenameInStorage")
-        val uploadTask = newFile.putFile(uri)
+        if (requestedSize == FULL) {
+            val uploadTask = newFile.putFile(uri)
 
-        uploadTask.addOnFailureListener {
-            onFailure()
-        }.addOnSuccessListener {
+            uploadTask.addOnFailureListener {
+                onFailure()
+            }.addOnSuccessListener {
 
-            // Register uploaded file in the Realtime Database
-            database.reference.child("projects")
-                .child(projectId)
-                .child("attachments")
-                .child(filenameToDatabaseKey(filenameInStorage)).setValue(true)
+                // Register uploaded file in the Realtime Database
+                database.reference.child("projects")
+                    .child(projectId)
+                    .child("attachments")
+                    .child(filenameToDatabaseKey(filenameInStorage)).setValue(true)
 
-            onFileUploaded()
+                onFileUploaded()
+            }
+        } else {
+            uploadFile(BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri)),
+                onFileUploaded,
+                onFailure,
+                fileName,
+                requestedSize)
         }
     }
 
@@ -109,7 +214,8 @@ class AttachmentsManager(private var projectId: String) {
         val newFile = storage.reference.child("$projectId/$fileName")
 
         val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val resizedBitmap = resizeBitmap(bitmap, imageSize)
+        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
         val uploadTask = newFile.putBytes(stream.toByteArray())
 
         uploadTask.addOnFailureListener {
@@ -129,6 +235,7 @@ class AttachmentsManager(private var projectId: String) {
     /**
      * Upload new attachment to the project. Register attachment in configuration of the project.
      *
+     * @param context application context
      * @param file file to upload
      * @param onFileUploaded function to be called when the file is uploaded successfully
      * @param onFailure function to be called when the file could not be uploaded
@@ -138,11 +245,11 @@ class AttachmentsManager(private var projectId: String) {
      *                  uploading it to the storage.
      *                  If file is not an image, this parameter ignored
      */
-    fun uploadFile(
+    fun uploadFile(context: Context,
         file: File, onFileUploaded: () -> Unit, onFailure: () -> Unit,
         fileName: String = "", imageSize: ImageSize = FULL
     ) {
-        uploadFile(Uri.fromFile(file), onFileUploaded, onFailure, fileName, imageSize)
+        uploadFile(context, Uri.fromFile(file), onFileUploaded, onFailure, fileName, imageSize)
     }
 
     /**
@@ -169,11 +276,11 @@ class AttachmentsManager(private var projectId: String) {
                 fileName.substringAfterLast('.')
             )
         }
-        if (setOf("jpg", "png").contains(dstFile?.extension))
+        if (isFileImage(dstFile!!.name))
             nameOfFileToDownload = getFilenameOfImageInSize(fileName, imageSize)
 
         val f = storage.reference.child("$projectId/$nameOfFileToDownload")
-        f.getFile(dstFile!!).addOnSuccessListener {
+        f.getFile(dstFile).addOnSuccessListener {
             onFileDownloaded(dstFile)
         }.addOnFailureListener {
             onFailure()
