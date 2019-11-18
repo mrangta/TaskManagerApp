@@ -43,7 +43,7 @@ class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.co
     * @throws ServerException If the API returns a server error response
     */
     @Throws(UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun addMemberToProject(projectId: kotlin.String, users: InlineObject1) : Unit {
+    fun addMemberToProject(projectId: kotlin.String, users: InlineObject) : Unit {
         val localVariableBody: kotlin.Any? = users
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
@@ -70,6 +70,7 @@ class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.co
     /**
     * Assign users to task
     * Assigns users with the Ids in the body to the task with the given id
+    * @param projectId  
     * @param taskId  
     * @param users  
     * @return void
@@ -78,13 +79,13 @@ class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.co
     * @throws ServerException If the API returns a server error response
     */
     @Throws(UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun assignUsersToTask(taskId: kotlin.String, users: InlineObject) : Unit {
+    fun assignUsersToTask(projectId: kotlin.String, taskId: kotlin.String, users: InlineObject1) : Unit {
         val localVariableBody: kotlin.Any? = users
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
         val localVariableConfig = RequestConfig(
             RequestMethod.PUT,
-            "/tasks/{task_id}/users".replace("{"+"task_id"+"}", "$taskId"),
+            "/projects/{project_id}/tasks/{task_id}/users".replace("{"+"project_id"+"}", "$projectId").replace("{"+"task_id"+"}", "$taskId"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )
@@ -140,6 +141,7 @@ class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.co
     /**
     * Creates a task
     * Creates a task
+    * @param projectId  
     * @param task task to create 
     * @return IdObject
     * @throws UnsupportedOperationException If the API returns an informational or redirection response
@@ -148,13 +150,13 @@ class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.co
     */
     @Suppress("UNCHECKED_CAST")
     @Throws(UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun createTask(task: Task) : IdObject {
+    fun createTask(projectId: kotlin.String, task: Task) : IdObject {
         val localVariableBody: kotlin.Any? = task
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
         val localVariableConfig = RequestConfig(
             RequestMethod.POST,
-            "/tasks",
+            "/projects/{project_id}/tasks".replace("{"+"project_id"+"}", "$projectId"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )
@@ -209,6 +211,7 @@ class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.co
     /**
     * Update task status
     * Updates the status of the task with the given ID
+    * @param projectId  
     * @param taskId  
     * @param task task to create 
     * @return void
@@ -217,13 +220,13 @@ class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.co
     * @throws ServerException If the API returns a server error response
     */
     @Throws(UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun updateStatusOfTaskWithId(taskId: kotlin.String, task: Task) : Unit {
+    fun updateStatusOfTaskWithId(projectId: kotlin.String, taskId: kotlin.String, task: Task) : Unit {
         val localVariableBody: kotlin.Any? = task
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
         val localVariableConfig = RequestConfig(
             RequestMethod.PUT,
-            "/tasks/{task_id}".replace("{"+"task_id"+"}", "$taskId"),
+            "/projects/{project_id}/tasks/{task_id}".replace("{"+"project_id"+"}", "$projectId").replace("{"+"task_id"+"}", "$taskId"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )

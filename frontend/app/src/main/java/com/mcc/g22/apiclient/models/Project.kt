@@ -17,13 +17,19 @@ import com.squareup.moshi.Json
  * 
  * @param name 
  * @param description 
+ * @param badgeUrl 
+ * @param keywords 
  */
 
 data class Project (
     @Json(name = "name")
     val name: kotlin.String,
     @Json(name = "description")
-    val description: kotlin.String
+    val description: kotlin.String,
+    @Json(name = "badgeUrl")
+    val badgeUrl: kotlin.String? = null,
+    @Json(name = "keywords")
+    val keywords: kotlin.Array<kotlin.String>? = null
 ) 
 
 
