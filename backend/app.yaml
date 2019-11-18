@@ -1,0 +1,32 @@
+runtime: custom
+env: flex
+
+manual_scaling:
+  instances: 1
+
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+endpoints_api_service:
+  name: mcc-fall-2019-g22.appspot.com
+  rollout_strategy: managed
+
+#liveness_check:
+ # path: "/liveness_check"
+ # check_interval_sec: 30
+ # timeout_sec: 4
+ # failure_threshold: 2
+ # success_threshold: 2
+
+#readiness_check:
+ # path: "/readiness_check"
+ # check_interval_sec: 5
+ # timeout_sec: 4
+ # failure_threshold: 2
+ # success_threshold: 2
+ # app_start_timeout_sec: 300
+
+env_variables:
+  MY_VAR: "my value"

@@ -1,0 +1,207 @@
+swagger: '2.0'
+info:
+  version: '1'
+  title: 'mcc-g22-api'
+  description: 'Api for the mcc course group 22'
+host: mcc-fall-2019-g22.appspot.com
+basePath: /v1
+schemes:
+ - https
+#securityDefinitions:
+#    firebase:
+#      authorizationUrl: ""
+#      flow: "implicit"
+#      type: "oauth2"
+#      # Replace YOUR-PROJECT-ID with your project ID
+#      x-google-issuer: "https://securetoken.google.com/mcc-fall-2019-g22"
+#      x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+#      x-google-audiences: "mcc-fall-2019-g22"
+#security:
+#    - firebase: []
+paths:
+  /tasks:
+    post:
+      summary: Creates a task
+      description: Creates a task
+      operationId: createTask
+      consumes: [ application/json ]
+      produces: [ application/json ]
+      responses:
+        '201':
+          $ref: '#/responses/IdResponse'
+        '422':
+          $ref: '#/responses/MalformedInputError'
+        default:
+          $ref: '#/responses/DefaultError'
+      parameters:
+        - $ref: '#/parameters/taskParam'
+  /tasks/{task_id}:
+    put:
+      summary: Update task status
+      description: Updates the status of the task with the given ID
+      operationId: updateStatusOfTaskWithId
+      consumes: [ application/json ]
+      parameters:
+        - $ref: '#/parameters/taskIdPathParam'
+        - $ref: '#/parameters/taskParam'
+      responses:
+        '204':
+          description: successfully updated task status
+        default:
+          $ref: '#/responses/DefaultError'
+  /tasks/{task_id}/users:
+    put:
+      summary: Assign users to task
+      description: Assigns users with the Ids in the body to the task with the given id
+      operationId: assignUsersToTask
+      consumes: [ application/json ]
+      parameters:
+        - $ref: '#/parameters/taskIdPathParam'
+        - $ref: '#/parameters/idListParam'
+      responses:
+        '204':
+          description: succesfully assigned users
+        default:
+          $ref: '#/responses/DefaultError'
+  /projects:
+    post:
+      summary: Creates a project
+      operationId: createProject
+      description: Creates a project
+      consumes: [ application/json ]
+      produces: [ application/json ]
+      responses:
+        '201':
+          $ref: '#/responses/IdResponse'
+        '422':
+          $ref: '#/responses/MalformedInputError'
+        default:
+          $ref: '#/responses/DefaultError'
+      parameters:
+        - $ref: '#/parameters/projectParam'
+  /projects/{project_id}:
+    delete:
+      summary: Delete a project
+      description: Deletes the project with the given id
+      operationId: deleteProjectWithId
+      parameters:
+        - $ref: '#/parameters/projectIdPathParam'
+      responses:
+        '204':
+          description: succesfully delete project
+        default:
+          $ref: '#/responses/DefaultError'
+  /projects/{project_id}/members:
+    put:
+      summary: Assign users to task
+      description: Assigns users with the Ids in the body to the task with the given id
+      operationId: addMemberToProject
+      consumes: [ application/json ]
+      parameters:
+        - $ref: '#/parameters/projectIdPathParam'
+        - $ref: '#/parameters/idListParam'
+      responses:
+        '204':
+          description: succesfully assigned users to project
+        default:
+          $ref: '#/responses/DefaultError'
+responses:
+  DefaultError:
+    description: default error
+    schema:
+      $ref: '#/definitions/Error'
+  IdResponse:
+    description: id as response
+    schema:
+      $ref: '#/definitions/IdObject'
+  MalformedInputError:
+    description: 'invalid input, object invalid'
+    schema:
+      $ref: '#/definitions/Error'
+parameters:
+  taskParam:
+    in: body
+    name: task
+    required: true
+    schema:
+      $ref: '#/definitions/Task'
+    description: task to create
+  projectParam:
+    in: body
+    name: project
+    required: true
+    schema:
+      $ref: '#/definitions/Project'
+    description: project to create
+  idListParam:
+    in: body
+    name: users
+    required: true
+    schema:
+      type: object
+      description: A list of user ids
+      required:
+      - userIds
+      properties:
+        userIds:
+          type: array
+          items:
+            type: string
+  taskIdPathParam:
+    in: path
+    name: task_id
+    required: true
+    type: string
+  projectIdPathParam:
+    in: path
+    name: project_id
+    required: true
+    type: string
+definitions:
+  IdObject:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: string
+  Task:
+    type: object
+    required:
+      - description
+      - status
+      - deadline
+    properties:
+      description:
+        type: string
+      status:
+        type: string
+        minLength: 1
+        enum:
+          - pending
+          - ongoing
+          - completed
+      deadline:
+        type: string
+        format: date-time
+  Project:
+    type: object
+    required:
+      - name
+      - description
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+    type: object
