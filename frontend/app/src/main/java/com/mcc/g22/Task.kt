@@ -1,11 +1,14 @@
 package com.mcc.g22
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import java.io.File
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -26,6 +29,9 @@ class Task {
     private var assignedUsers: MutableSet<User> = mutableSetOf()
 
     companion object StaticFactories {
+        @SuppressLint("SimpleDateFormat")
+        private val deadlineDataFormat: DateFormat =
+                                            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
 
         /**
          * Create pending task.
@@ -48,6 +54,21 @@ class Task {
             if (t.assignedUsers.isNotEmpty()) {
                 t.status = TaskStatus.ON_GOING
             }
+            return t
+        }
+
+        /**
+         * Create task from the API model of task object
+         */
+        fun createTask(task: com.mcc.g22.apiclient.models.Task): Task {
+            val t = Task()
+            t.description = task.description
+            t.status = when(task.status) {
+                com.mcc.g22.apiclient.models.Task.Status.pending -> TaskStatus.PENDING
+                com.mcc.g22.apiclient.models.Task.Status.ongoing -> TaskStatus.ON_GOING
+                com.mcc.g22.apiclient.models.Task.Status.completed -> TaskStatus.COMPLETED
+            }
+            t.deadline = deadlineDataFormat.parse(task.deadline)!!
             return t
         }
 
@@ -130,5 +151,15 @@ class Task {
 
     fun getAssignedUsers(): MutableSet<User> {
         return assignedUsers
+    }
+
+    fun toApiModelTask(): com.mcc.g22.apiclient.models.Task {
+        return com.mcc.g22.apiclient.models.Task(description = description,
+            deadline = deadlineDataFormat.format(deadline),
+            status = when(status) {
+                TaskStatus.PENDING -> com.mcc.g22.apiclient.models.Task.Status.pending
+                TaskStatus.ON_GOING -> com.mcc.g22.apiclient.models.Task.Status.ongoing
+                TaskStatus.COMPLETED -> com.mcc.g22.apiclient.models.Task.Status.completed
+            })
     }
 }
