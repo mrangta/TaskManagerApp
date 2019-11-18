@@ -29,7 +29,8 @@ class ExampleInstrumentedTest {
 
     @Test
     fun createTaskSimple() {
-        val t = Task.createTask("Desc", Date.from(Instant.ofEpochMilli(100)))
+        val t = Task.createTask("projectId", "Desc", Date.from(Instant.ofEpochMilli(100)))
+        assertEquals(t.projectId, "projectId")
         assertEquals(t.description, "Desc")
         assertEquals(t.deadline, Date.from(Instant.ofEpochMilli(100)))
         assertEquals(t.status, Task.TaskStatus.PENDING)
@@ -49,7 +50,7 @@ class ExampleInstrumentedTest {
         val countDownLatch = CountDownLatch(1)
         var result = false
         Log.e("MCC", "error")
-        val t = Task.createTask(appContext,
+        val t = Task.createTask(appContext, "projectId",
                                 File("/storage/emulated/0/Download/wvx1u36r3xn21.jpg"),
             {
                 Log.e("MCC", "Recognized text: " + it.description)

@@ -20,6 +20,9 @@ class Task {
         PENDING, ON_GOING, COMPLETED
     }
 
+    var projectId: String = ""
+        private set
+
     var description: String = ""
 
     var deadline: Date = Date()
@@ -36,8 +39,9 @@ class Task {
         /**
          * Create pending task.
          */
-        fun createTask(description: String, deadline: Date): Task {
+        fun createTask(projectId: String, description: String, deadline: Date): Task {
             val t = Task()
+            t.projectId = projectId
             t.description = description
             t.deadline = deadline
             return t
@@ -46,8 +50,9 @@ class Task {
         /**
          * Create task with assigned users. If number of the users is > 0, task in on-going
          */
-        fun createTask(description: String, deadline: Date, assignedUsers: MutableSet<User>): Task {
+        fun createTask(projectId: String, description: String, deadline: Date, assignedUsers: MutableSet<User>): Task {
             val t = Task()
+            t.projectId = projectId
             t.description = description
             t.deadline = deadline
             t.assignedUsers = assignedUsers
@@ -60,8 +65,9 @@ class Task {
         /**
          * Create task from the API model of task object
          */
-        fun createTask(task: com.mcc.g22.apiclient.models.Task): Task {
+        fun createTask(projectId: String, task: com.mcc.g22.apiclient.models.Task): Task {
             val t = Task()
+            t.projectId = projectId
             t.description = task.description
             t.status = when(task.status) {
                 com.mcc.g22.apiclient.models.Task.Status.pending -> TaskStatus.PENDING
@@ -76,16 +82,17 @@ class Task {
          * Convert image to pending tasks.
          * Description of the task is the text from the image.
          *
+         * @param projectId ID of project in which the task is created
          * @param bitmap image to convert to task
          * @param onTaskReady function to be called when task in read to use
          * @param onFailure function to be called when text cannot be recognized
          */
-        fun createTask(bitmap: Bitmap,
+        fun createTask(projectId: String, bitmap: Bitmap,
                        onTaskReady: (task: Task) -> Unit, onFailure: () -> Unit) {
 
             val image = FirebaseVisionImage.fromBitmap(bitmap)
             runTextDetector(image, {
-                onTaskReady( createTask(it, Date()) )
+                onTaskReady( createTask(projectId, it, Date()) )
             }, onFailure)
         }
 
@@ -94,16 +101,17 @@ class Task {
          * Description of the task is the text from the image.
          *
          * @param context application context
+         * @param projectId ID of project in which the task is created
          * @param imageUri image to convert to task
          * @param onTaskReady function to be called when task in read to use
          * @param onFailure function to be called when text cannot be recognized
          */
-        fun createTask(context: Context, imageUri: Uri,
+        fun createTask(context: Context, projectId: String, imageUri: Uri,
                        onTaskReady: (task: Task) -> Unit, onFailure: () -> Unit) {
 
             val image = FirebaseVisionImage.fromFilePath(context, imageUri)
             runTextDetector(image, {
-                onTaskReady(createTask(it, Date()))
+                onTaskReady(createTask(projectId, it, Date()))
             }, onFailure)
         }
 
@@ -112,13 +120,14 @@ class Task {
          * Description of the task is the text from the image.
          *
          * @param context application context
+         * @param projectId ID of project in which the task is created
          * @param imageFile image to convert to task
          * @param onTaskReady function to be called when task in read to use
          * @param onFailure function to be called when text cannot be recognized
          */
-        fun createTask(context: Context, imageFile: File,
+        fun createTask(context: Context, projectId: String, imageFile: File,
                        onTaskReady: (task: Task) -> Unit, onFailure: () -> Unit) {
-            createTask(context, Uri.fromFile(imageFile), onTaskReady, onFailure)
+            createTask(context, projectId, Uri.fromFile(imageFile), onTaskReady, onFailure)
         }
 
         private fun runTextDetector(image: FirebaseVisionImage,
