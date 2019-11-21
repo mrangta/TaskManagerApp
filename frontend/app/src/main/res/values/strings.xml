@@ -10,4 +10,8 @@
     <string name="task_deadline_notif_description">deadline is coming for </string>
     <string name="deadline_channel_description">Notifications for deadlines</string>
     <string name="deadline_channel_name">Tasks deadlines</string>
+    <string name="generate_report_now">Generate report</string>
+    <string name="cannot_create_folder">Cannot create directory for the report!</string>
+    <string name="cannot_save_report">Cannot save report!</string>
+    <string name="report_is_loading">Report is loading...</string>
 </resources>
