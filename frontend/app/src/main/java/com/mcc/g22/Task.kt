@@ -16,8 +16,6 @@ import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.reflect.jvm.internal.impl.resolve.constants.StringValue
 
 /**
  * Task to be added to a project
@@ -293,9 +291,9 @@ class Task {
                 .child(taskId).child("description").setValue(description)
         }
         if (usersHaveBeenAssigned) {
-            val usersIds: Array<String> = Array(assignedUsers.size)
-            assignedUsers.forEachIndexed { index, user ->  usersIds[index] = user.username }
-            ApiClient.api.assignUsersToTask(projectId, taskId, InlineObject1(usersIds))
+            val usersIds = mutableListOf<String>()
+            assignedUsers.forEach { usersIds.add(it.username) }
+            ApiClient.api.assignUsersToTask(projectId, taskId, InlineObject1(usersIds.toTypedArray()))
         }
     }
 
