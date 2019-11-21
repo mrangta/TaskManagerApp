@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Task Manager</string>
+    <string name="channel_name">Task Manager Notifications</string>
+    <string name="channel_description">Notifications from Task Manager</string>
+    <string name="added_to_project_notif_title">You\'ve been added to the project!</string>
+    <string name="added_to_project_notif_text">you\'ve added to project</string>
+    <string name="assigned_to_task_notif_title">You\'ve been assigned to the task!</string>
+    <string name="assigned_to_task_notif_text">you\'ve been assigned to task:</string>
+    <string name="task_deadline_notif_title">You are approaching deadline!</string>
+    <string name="task_deadline_notif_description">deadline is coming for </string>
+    <string name="deadline_channel_description">Notifications for deadlines</string>
+    <string name="deadline_channel_name">Tasks deadlines</string>
 </resources>

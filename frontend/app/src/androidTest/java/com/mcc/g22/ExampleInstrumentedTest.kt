@@ -29,8 +29,12 @@ class ExampleInstrumentedTest {
 
     @Test
     fun createTaskSimple() {
+<<<<<<< HEAD
         val t = Task.createTask("projectId", "Desc", Date.from(Instant.ofEpochMilli(100)))
         assertEquals(t.projectId, "projectId")
+=======
+        val t = Task.createTask("Name", "Desc", Date.from(Instant.ofEpochMilli(100)))
+>>>>>>> notifications
         assertEquals(t.description, "Desc")
         assertEquals(t.deadline, Date.from(Instant.ofEpochMilli(100)))
         assertEquals(t.status, Task.TaskStatus.PENDING)

@@ -1,7 +1,10 @@
 package com.mcc.g22
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import com.google.firebase.database.DataSnapshot
@@ -16,6 +19,8 @@ import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
+import kotlin.random.Random
 
 /**
  * Task to be added to a project
@@ -30,6 +35,10 @@ class Task {
 
     var projectId: String = ""
         private set
+
+    private var alarmRequestCode: Int = -1
+
+    var name: String = ""
 
     var description: String = ""
         private set
@@ -251,8 +260,56 @@ class Task {
     /**
      * Return users assigned to this task.
      */
-    fun getAssignedUsers(): Set<User> {
+    fun getAssignedUsers(): MutableSet<User> {
         return assignedUsers
+    }
+
+    /** Set reminder of deadline for the task.
+     * @param context application context
+     * @param triggerIn time in which reminder should be shown (in milliseconds)
+     */
+    fun setReminder(context: Context, triggerIn: Long) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val pendingIntent = buildAlarmPendingIntent(context)
+        alarmManager.setExact(AlarmManager.RTC,
+            System.currentTimeMillis() + triggerIn,
+            pendingIntent)
+    }
+
+    /**
+     * Set reminder of deadline for the task.
+     * @param context application context
+     * @param triggerBefore how many milliseconds before task's deadline reminder should be shown
+     */
+    fun setReminder(context: Context, triggerBefore: Int) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val pendingIntent = buildAlarmPendingIntent(context)
+        alarmManager.setExact(AlarmManager.RTC,
+            deadline.time - triggerBefore,
+            pendingIntent)
+    }
+
+    /**
+     * Cancel reminder of deadline for the task
+     * @param context application context
+     */
+    fun cancelReminder(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel( buildAlarmPendingIntent(context) )
+    }
+
+    private fun buildAlarmPendingIntent(context: Context): PendingIntent {
+        var username = User.getRegisteredUser()?.username
+        if (username == null) username = "(unlogged user)"
+
+        val i = Intent(context, DeadlineAlarmReceiver::class.java)
+        i.putExtra(DeadlineAlarmReceiver.EXTRA_TASK_NAME, name)
+        i.putExtra(DeadlineAlarmReceiver.EXTRA_USERNAME, username)
+
+        if (alarmRequestCode == -1) alarmRequestCode = abs( Random.nextInt() )
+        return PendingIntent.getBroadcast(context, alarmRequestCode, i, 0)
     }
 
     fun makeTaskPending() {
