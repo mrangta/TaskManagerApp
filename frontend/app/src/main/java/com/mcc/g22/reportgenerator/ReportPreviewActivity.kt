@@ -1,7 +1,10 @@
 package com.mcc.g22.reportgenerator
 
+import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Bundle
 import android.print.PdfPrint
@@ -12,7 +15,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.mcc.g22.R
 import com.mcc.g22.Task
 import com.mcc.g22.User
@@ -26,6 +32,8 @@ import java.io.File
 class ReportPreviewActivity : AppCompatActivity() {
 
     companion object {
+        private const val MY_PERMISSIONS_REQUEST_WRITE_STORAGE: Int = 314
+
         private lateinit var projectName: String
         private lateinit var projectMembers: Set<User>
         private lateinit var projectTasks: Set<Task>
@@ -47,11 +55,15 @@ class ReportPreviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report_preview)
 
+        // Check if we have storage permission. If not, ask for it
+        if (getStoragePermission()) runActivity()
+    }
+
+    fun runActivity() {
         // Set button font
         val generateButton = findViewById<Button>(R.id.generate_report_button)
         val font = Typeface.createFromAsset(assets, "fonts/Montserrat-Bold.ttf")
         generateButton.typeface = font
-
 
         // Set information that report is generating and gray button
         generateButton.text = getString(R.string.report_is_loading)
@@ -140,4 +152,65 @@ class ReportPreviewActivity : AppCompatActivity() {
                 .show()
         }
     }
+
+    private fun requestStoragePermission() {
+        // No explanation needed, we can request the permission.
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            MY_PERMISSIONS_REQUEST_WRITE_STORAGE
+        )
+    }
+
+    private fun getStoragePermission(): Boolean {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
+                alertDialogBuilder.setCancelable(false)
+                alertDialogBuilder.setMessage(R.string.storage_permission_expl)
+                alertDialogBuilder.setPositiveButton("OK"
+                ) { _, _ -> requestStoragePermission() }
+            } else {
+                requestStoragePermission()
+            }
+            return true
+        } else {
+            // Permission already granted
+            return true
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_WRITE_STORAGE -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted, yay!
+                    runActivity()
+                } else {
+                    // permission denied, boo!
+                    Toast.makeText(applicationContext, R.string.storage_permission_needed,
+                        Toast.LENGTH_LONG).show()
+                    finish()
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
+        }
+    }
+
 }
