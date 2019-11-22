@@ -2,11 +2,12 @@ package com.mcc.g22.reportgenerator
 
 import android.Manifest
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.print.PdfPrint
 import android.print.PrintAttributes
 import android.print.PrintAttributes.Resolution
@@ -15,6 +16,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,7 +24,6 @@ import androidx.core.content.ContextCompat
 import com.mcc.g22.R
 import com.mcc.g22.Task
 import com.mcc.g22.User
-import java.io.File
 
 
 /**
@@ -59,7 +60,7 @@ class ReportPreviewActivity : AppCompatActivity() {
         if (getStoragePermission()) runActivity()
     }
 
-    fun runActivity() {
+    private fun runActivity() {
         // Set button font
         val generateButton = findViewById<Button>(R.id.generate_report_button)
         val font = Typeface.createFromAsset(assets, "fonts/Montserrat-Bold.ttf")
@@ -123,6 +124,7 @@ class ReportPreviewActivity : AppCompatActivity() {
             null)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun generatePdfReport(webView: WebView) {
         val reportFilename = "$projectName-Report.pdf"
         val attributes = PrintAttributes.Builder()
@@ -130,14 +132,9 @@ class ReportPreviewActivity : AppCompatActivity() {
             .setMediaSize(PrintAttributes.MediaSize.ISO_A4.asPortrait())
             .setResolution(Resolution("pdf", "pdf", 600, 600))
             .setMinMargins(PrintAttributes.Margins.NO_MARGINS).build()
-        val path = File(filesDir.absolutePath + "/TaskManager")
+        val path =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS )
         Log.i("MCC", path.absolutePath)
-
-        if (!path.mkdirs()) {
-            Toast.makeText(applicationContext, R.string.cannot_create_folder, Toast.LENGTH_LONG)
-                .show()
-            return
-        }
 
         try {
             val pdfPrint = PdfPrint(attributes)
@@ -157,12 +154,14 @@ class ReportPreviewActivity : AppCompatActivity() {
         // No explanation needed, we can request the permission.
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
             MY_PERMISSIONS_REQUEST_WRITE_STORAGE
         )
     }
 
     private fun getStoragePermission(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
 
