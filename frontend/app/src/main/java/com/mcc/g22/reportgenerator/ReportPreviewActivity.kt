@@ -124,7 +124,6 @@ class ReportPreviewActivity : AppCompatActivity() {
             null)
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun generatePdfReport(webView: WebView) {
         val reportFilename = "$projectName-Report.pdf"
         val attributes = PrintAttributes.Builder()
@@ -133,11 +132,17 @@ class ReportPreviewActivity : AppCompatActivity() {
             .setResolution(Resolution("pdf", "pdf", 600, 600))
             .setMinMargins(PrintAttributes.Margins.NO_MARGINS).build()
         val path =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS )
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/TaskManager")
         Log.i("MCC", path.absolutePath)
 
+        if (!path.exists() && !path.mkdirs()) {
+            Toast.makeText(applicationContext, R.string.cannot_create_folder, Toast.LENGTH_LONG)
+                .show()
+            return
+        }
+
         try {
-            val pdfPrint = PdfPrint(attributes)
+            val pdfPrint = PdfPrint(applicationContext, attributes)
             pdfPrint.print(
                 webView.createPrintDocumentAdapter(), // We do this with full responsibility
                 // method which is not deprecated was added in API 21

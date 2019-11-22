@@ -16,4 +16,9 @@
     <string name="report_is_loading">Report is loading...</string>
     <string name="storage_permission_needed">We really need to have this permission!</string>
     <string name="storage_permission_expl">We need this permission to save report on your phone. Nothing dangerous!</string>
+    <string name="generation_failed_title">Generating PDF has failed</string>
+    <string name="generation_failed_text">Generating project report failed. Error:</string>
+    <string name="generation_finished_title">Report is ready!</string>
+    <string name="generation_finished_text">Successfully generated project report</string>
+    <string name="generation_cancelled_title">Generating report has been cancelled</string>
 </resources>

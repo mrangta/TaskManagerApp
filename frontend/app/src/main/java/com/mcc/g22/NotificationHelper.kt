@@ -52,6 +52,7 @@ class NotificationHelper(
             .setContentTitle(title)
             .setContentText(text)
             .setPriority(priority)
+            .setAutoCancel(true)
         if (onTapAction != null) builder.setContentIntent(onTapAction)
 
         // Show notification
