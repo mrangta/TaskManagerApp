@@ -16,7 +16,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -85,7 +84,32 @@ class ReportPreviewActivity : AppCompatActivity() {
         report.append("<body>")
         report.append("<h1 align=\"center\">$projectName</h1>")
 
-        report.append("<p align=\"center\"><img style=\"width: 50%;\" src=\"icons/New Project.png\" /></p>")
+        report.append("<p><h3>Members</h3>")
+        report.append("<ul>")
+        for (u in projectMembers) {
+            report.append("<li>" + u.username + "</li>")
+        }
+        report.append("</ul></p>")
+
+        report.append("<p><h3>Tasks</h3>")
+        report.append("<ul>")
+        val sortedTasks = projectTasks.toSortedSet(Comparator { o1, o2 ->
+            when {
+                o1!!.deadline > o2!!.deadline -> {
+                    -1
+                }
+                o1!!.deadline < o2!!.deadline -> {
+                    1
+                }
+                else -> 0
+            }
+        })
+        for (t in sortedTasks) {
+            report.append("<li>" + t.description + "</li>")
+        }
+        report.append("</ul></p>")
+
+        report.append("</br><p align=\"center\"><img style=\"width: 25%;\" src=\"icons/New Project.png\" /></p>")
         report.append("</body>")
 
         report.append("</html>")
