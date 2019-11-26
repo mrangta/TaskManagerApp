@@ -29,17 +29,13 @@ class ExampleInstrumentedTest {
 
     @Test
     fun createTaskSimple() {
-<<<<<<< HEAD
         val t = Task.createTask("projectId", "Desc", Date.from(Instant.ofEpochMilli(100)))
         assertEquals(t.projectId, "projectId")
-=======
-        val t = Task.createTask("Name", "Desc", Date.from(Instant.ofEpochMilli(100)))
->>>>>>> notifications
         assertEquals(t.description, "Desc")
         assertEquals(t.deadline, Date.from(Instant.ofEpochMilli(100)))
         assertEquals(t.status, Task.TaskStatus.PENDING)
 
-        val u = User()
+        val u = User("test user")
         t.assignUser(u)
         assertEquals(t.status, Task.TaskStatus.ON_GOING)
         assertEquals(t.getAssignedUsers().size, 1)
@@ -53,7 +49,6 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         val countDownLatch = CountDownLatch(1)
         var result = false
-        Log.e("MCC", "error")
         val t = Task.createTask(appContext, "projectId",
                                 File("/storage/emulated/0/Download/wvx1u36r3xn21.jpg"),
             {
