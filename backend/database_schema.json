@@ -5,14 +5,16 @@
             "description": "Lorem ipsum",
             "status": "on-going",
             "deadline": "2019-11-07T18:11:59Z",
-            "users": ["Foo Bar"]
+            "users": {
+                "Foo Bar": true
+            }
         },
         "two": {
             "set-up": {
                 "description": "Lorem ipsum",
                 "status": "pending",
                 "deadline": "2019-11-07T18:11:59Z",
-                "users": []
+                "users": {}
             }
         }
       }
@@ -31,7 +33,10 @@
           "one": true,
           "two": true
       },
-      "favorites": ["foo bar personal project"]
+      "favorites": {
+          "foo bar": true,
+          "personal project": true
+      }
     }
   },
   
@@ -49,8 +54,14 @@
       "admin": "Foo Bar",
       "deadline": "2019-11-07T18:11:59Z",
       "badge": "image.jpg",
-      "keywords": ["group", "work"],
-      "attachments": ["schedule1.pdf", "tune1.mp4"],
+      "keywords": {
+          "group": true, 
+          "work": true
+      },
+      "attachments": {
+          "schedule1.pdf": true, 
+          "tune1.mp4": true
+      },
       "tasks": {
           "one": true
       }
@@ -68,8 +79,13 @@
       "admin": "Foo Bar",
       "deadline": "2019-11-07T18:11:59Z",
       "badge": null,
-      "keywords": ["personal"],
-      "attachments": ["schedule2.pdf", "tune2.pdf"],
+      "keywords": {
+          "personal": true
+      },
+      "attachments": {
+          "schedule2.pdf": true,
+          "tune2.pdf": true
+      },
       "tasks": {
           "two": true
       }
