@@ -16,4 +16,9 @@ class MainActivity : AppCompatActivity() {
         intent = Intent(this, ForgotPassActivity::class.java)
         startActivity(intent)
     }
+
+    fun signUp(view: View) {
+        intent = Intent(this, SignUpActivity::class.java)
+        startActivity(intent)
+    }
 }
