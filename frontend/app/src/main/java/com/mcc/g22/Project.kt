@@ -54,6 +54,9 @@ class Project {
     lateinit var tasks: Set<String>
         private set
 
+    lateinit var attachmentsManager: AttachmentsManager
+        private set
+
     companion object {
 
         private val projectsRef = FirebaseDatabase.getInstance().reference.
@@ -142,6 +145,8 @@ class Project {
                 mutableSetOfKeywords.add(a.key as String)
             }
             p.keywords = mutableSetOfKeywords
+
+            p.attachmentsManager = AttachmentsManager(p.projectId)
 
             return p
         }
