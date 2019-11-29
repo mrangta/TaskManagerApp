@@ -23,17 +23,17 @@ class ProjectFinder {
          *                      When null or empty project name is ignored
          * @param keyword find a project which has a keyword which contains this string.
          *                      When null or empty keywords are ignored
-         * @param onProjectsFound function to be called when some project(s) were found. projectsIds
+         * @param onProjectsFound function to be called when some project(s) were found. projects set
          *                          can be empty if there is no project with the given name or
          *                          keyword
          * @param onFailure function to be called when connection to the database cannot be
          *                  established
          */
         fun findProject(projectName: String?, keyword: String?,
-                        onProjectsFound: (projectsIds: Set<String>) -> Unit,
+                        onProjectsFound: (projectsIds: Set<Project>) -> Unit,
                         onFailure: () -> Unit) {
 
-            val projectsIds = mutableSetOf<String>()
+            val projects = mutableSetOf<Project>()
             projectsRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {
                     onFailure()
@@ -43,13 +43,13 @@ class ProjectFinder {
                     for (p in dataSnapshot.children) {
                         try {
                             if (isProjectSuitable(p, projectName, keyword)) {
-                                projectsIds.add(p.key!!)
+                                projects.add( Project.buildProjectFromDatabase(p) )
                             }
                         } catch (e: Exception){
                             Log.e("MCC", e.toString())
                         }
                     }
-                    onProjectsFound(projectsIds)
+                    onProjectsFound(projects)
                 }
             })
         }

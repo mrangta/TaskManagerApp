@@ -42,16 +42,13 @@ class Project {
     var badge: String = ""
         private set
 
-    lateinit var members: Set<String>
+    lateinit var membersIds: Set<String>
         private set
 
     lateinit var keywords: Set<String>
         private set
 
-    lateinit var attachments: Set<String>
-        private set
-
-    lateinit var tasks: Set<String>
+    lateinit var tasksIds: Set<String>
         private set
 
     lateinit var attachmentsManager: AttachmentsManager
@@ -105,7 +102,7 @@ class Project {
                 })
         }
 
-        private fun buildProjectFromDatabase(dataSnapshot: DataSnapshot): Project {
+        fun buildProjectFromDatabase(dataSnapshot: DataSnapshot): Project {
             val p = Project()
 
             p.projectId = dataSnapshot.key as String
@@ -126,19 +123,13 @@ class Project {
             for (m in dataSnapshot.child("members").children) {
                 mutableSetOfMembers.add(m.key as String)
             }
-            p.members = mutableSetOfMembers
+            p.membersIds = mutableSetOfMembers
 
             val mutableSetOfTasks = mutableSetOf<String>()
             for (t in dataSnapshot.child("tasks").children) {
                 mutableSetOfTasks.add(t.key as String)
             }
-            p.tasks = mutableSetOfTasks
-
-            val mutableSetOfAttachments = mutableSetOf<String>()
-            for (a in dataSnapshot.child("attachments").children) {
-                mutableSetOfAttachments.add(a.key as String)
-            }
-            p.attachments = mutableSetOfAttachments
+            p.tasksIds = mutableSetOfTasks
 
             val mutableSetOfKeywords = mutableSetOf<String>()
             for (a in dataSnapshot.child("keywords").children) {
@@ -167,7 +158,7 @@ class Project {
         ApiClient.api.addMemberToProject(projectId,
                                             InlineObject(userIds = usersIds.toTypedArray()))
 
-        members = members + usersIds
+        membersIds = membersIds + usersIds
     }
 
     /**
