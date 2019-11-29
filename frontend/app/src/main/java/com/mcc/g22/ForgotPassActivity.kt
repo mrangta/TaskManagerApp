@@ -5,15 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 
-class MainActivity : AppCompatActivity() {
+class ForgotPassActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_forgot_pass)
     }
 
-    fun forgotPassword(view: View) {
-        intent = Intent(this, ForgotPassActivity::class.java)
+    fun backToLogIn(view: View) {
+        intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 }

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Task Manager</string>
+    <string name="intro1">Hassle free, flexible and efficient</string>
+    <string name="intro2">way to organise task for individual and collaborative work</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="logIn">Login</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="create_account">Create it!</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="back_to_logIn">Back to Login</string>
+    <string name="enter_email">Enter your registered email to recover your password</string>
 </resources>
