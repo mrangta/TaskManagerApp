@@ -1,10 +1,15 @@
 package com.mcc.g22
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.net.Uri
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.mcc.g22.apiclient.ApiClient
 import com.mcc.g22.apiclient.infrastructure.ClientException
 import com.mcc.g22.apiclient.infrastructure.ServerException
@@ -55,6 +60,7 @@ class Project {
         private set
 
     companion object {
+        private val storage: FirebaseStorage = FirebaseStorage.getInstance()
 
         private val projectsRef = FirebaseDatabase.getInstance().reference.
             child("projects")
@@ -170,5 +176,22 @@ class Project {
      */
     fun deleteThisProject() {
         ApiClient.api.deleteProjectWithId(projectId)
+    }
+
+    fun changeBadge(newBadgeUri: Uri, onBadgeUploaded: () -> Unit, onFailure: () -> Unit) {
+        val tmpBadge = newBadgeUri.lastPathSegment!!
+        val uploading = storage.reference.child("$projectId/badge/$tmpBadge").putFile(newBadgeUri)
+        uploading.addOnCanceledListener { onFailure() }
+        uploading.addOnCompleteListener {
+            badge = tmpBadge
+            projectsRef.child(projectId).child("badge").setValue(badge)
+            onBadgeUploaded()
+        }
+    }
+
+    fun loadBadgeIntoImageView(context: Context, targetImageView: ImageView) {
+        if (badge.isEmpty()) return
+        val imageRef = storage.reference.child("$projectId/badge/$badge")
+        Glide.with(context).load(imageRef).into(targetImageView)
     }
 }
