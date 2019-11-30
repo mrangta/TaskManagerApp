@@ -11,18 +11,29 @@
 */
 package com.mcc.g22.apiclient.models
 
-import com.mcc.g22.apiclient.models.Status
 
 import com.squareup.moshi.Json
+
 /**
- * 
- * @param status 
- */
+* 
+* Values: pending,ongoing,completed
+*/
 
-data class InlineObject1 (
-    @Json(name = "status")
-    val status: Status
-) 
+enum class Status(val value: kotlin.String){
 
 
+    @Json(name = "pending")
+    pending("pending"),
+
+
+    @Json(name = "ongoing")
+    ongoing("ongoing"),
+
+
+    @Json(name = "completed")
+    completed("completed");
+
+
+
+}
 
