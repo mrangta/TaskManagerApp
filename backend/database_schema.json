@@ -7,7 +7,7 @@
         "users": {
           "FooBar": true
         },
-        "project_id": "groupWork"
+        "projectId": "groupWork"
     },
     "two": {
         "description": "Lorem ipsum",

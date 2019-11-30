@@ -49,8 +49,8 @@ paths:
           $ref: '#/responses/DefaultError'
   /projects/{project_id}/members:
     put:
-      summary: Assign users to task
-      description: Assigns users with the Ids in the body to the task with the given id
+      summary: Assign users to project
+      description: Assigns users with the Ids in the body to the project with the given id
       operationId: addMemberToProject
       consumes: [ application/json ]
       parameters:
@@ -61,7 +61,7 @@ paths:
           description: succesfully assigned users to project
         default:
           $ref: '#/responses/DefaultError'
-  /projects/{project_id}/tasks:
+  /tasks:
     post:
       summary: Creates a task
       description: Creates a task
@@ -76,33 +76,30 @@ paths:
         default:
           $ref: '#/responses/DefaultError'
       parameters:
-      - $ref: '#/parameters/projectIdPathParam'
       - $ref: '#/parameters/taskParam'
-  /projects/{project_id}/tasks/{task_id}:
+  /tasks/{task_id}:
     put:
       summary: Update task status
       description: Updates the status of the task with the given ID
       operationId: updateStatusOfTaskWithId
       consumes: [ application/json ]
       parameters:
-      - $ref: '#/parameters/projectIdPathParam'
       - $ref: '#/parameters/taskIdPathParam'
-      - $ref: '#/parameters/taskParam'
+      - $ref: '#/parameters/taskStatusParam'
       responses:
         '204':
           description: successfully updated task status
         default:
           $ref: '#/responses/DefaultError'
-  /projects/{project_id}/tasks/{task_id}/users:
+  /tasks/{task_id}/users:
     put:
       summary: Assign users to task
       description: Assigns users with the Ids in the body to the task with the given id
       operationId: assignUsersToTask
       consumes: [ application/json ]
       parameters:
-      - $ref: '#/parameters/projectIdPathParam'
-      - $ref: '#/parameters/taskIdPathParam'
       - $ref: '#/parameters/idListParam'
+      - $ref: '#/parameters/taskIdPathParam'
       responses:
         '204':
           description: succesfully assigned users
@@ -128,6 +125,18 @@ parameters:
     required: true
     schema:
       $ref: '#/definitions/Task'
+    description: task to create
+  taskStatusParam:
+    in: body
+    name: taskStatus
+    required: true
+    schema:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+         $ref: '#/definitions/Status'
     description: task to create
   projectParam:
     in: body
@@ -168,22 +177,27 @@ definitions:
     properties:
       id:
         type: string
+  Status:
+    type: string
+    minLength: 1
+    enum:
+    - pending
+    - ongoing
+    - completed
   Task:
     type: object
     required:
       - description
       - status
       - deadline
+      - projectId
     properties:
+      projectId:
+        type: string
       description:
         type: string
       status:
-        type: string
-        minLength: 1
-        enum:
-          - pending
-          - ongoing
-          - completed
+        $ref: '#/definitions/Status'
       deadline:
         type: string
         format: date-time
