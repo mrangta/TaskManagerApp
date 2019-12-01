@@ -58,7 +58,7 @@ class Task {
     private var usersHaveBeenAssigned: Boolean = false
     private var descriptionHasChanged: Boolean = false
 
-    companion object StaticFactories {
+    companion object {
         @SuppressLint("SimpleDateFormat")
         private val deadlineDataFormat: DateFormat =
                                             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")

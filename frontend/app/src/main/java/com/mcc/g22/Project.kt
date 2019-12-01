@@ -17,6 +17,7 @@ import com.mcc.g22.apiclient.models.InlineObject
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.CountDownLatch
 
 class Project {
 
@@ -71,26 +72,30 @@ class Project {
 
         /**
          * Fetch from the database all projects which has the currently logged user as a member.
+         *
+         * This function is blocking!
          */
         fun getAllUsersProjects(onProjectsFound: (projects: Set<Project>) -> Unit,
                                 onFailure: () -> Unit) {
             val user = User.getRegisteredUser() ?: return
 
             val projects = mutableSetOf<Project>()
-            projectsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(databaseError: DatabaseError) {
-                    onFailure()
-                }
+            val latch = CountDownLatch(user.projects.size)
 
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (p in dataSnapshot.children) {
-                        if (p.child("members").hasChild(user.username)) {
-                            projects.add( buildProjectFromDatabase(p) )
-                        }
+            for (projectId in user.projects) {
+                projectsRef.child(projectId).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        onFailure()
                     }
-                    onProjectsFound(projects)
-                }
-            })
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        projects.add(buildProjectFromDatabase(dataSnapshot))
+                        latch.countDown()
+                    }
+                })
+            }
+            latch.await()
+            onProjectsFound(projects)
         }
 
         fun fromProjectId(projectId: String, onProjectFound: (p: Project) -> Unit,

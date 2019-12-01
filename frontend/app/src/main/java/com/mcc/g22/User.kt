@@ -11,6 +11,9 @@ class User(val username: String) {
     var profileImage: String = ""
         private set
 
+    var projects: Set<String> = mutableSetOf()
+        private set
+
     companion object {
         private val storage: FirebaseStorage = FirebaseStorage.getInstance()
         private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
