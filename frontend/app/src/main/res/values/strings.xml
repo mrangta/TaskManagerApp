@@ -12,4 +12,7 @@
     <string name="invalid_mail">Invalid Email.</string>
     <string name="email_required">Email Required.</string>
     <string name="password_check_login">Password must be at least 6 characters.</string>
+    <string name="enter_email">Enter your registered email to recover your password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="check_email">Check your Email</string>
 </resources>

@@ -12,12 +12,13 @@
         android:id="@+id/profile_image"
         android:layout_width="50dp"
         android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:background="@mipmap/ic_launcher" />
     
     <EditText
         android:id="@+id/displayName_register_editText"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="@string/displayName"
         android:layout_gravity="center_horizontal"/>
 
@@ -48,7 +49,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/back_to_login"
         android:layout_gravity="center_horizontal"/>
 

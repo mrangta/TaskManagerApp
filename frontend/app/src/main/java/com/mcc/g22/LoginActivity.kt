@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.mcc.g22.utils.checkFormatEmail
 import com.mcc.g22.utils.login
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.regex.Pattern
@@ -40,18 +41,8 @@ class LoginActivity : AppCompatActivity() {
         val email = email_login_editText.text.toString()
         val password = password_login_editText.text.toString()
 
-        if(email.isEmpty()){
-            email_login_editText.error = resources.getString(R.string.email_required)
-            email_login_editText.requestFocus()
+        if(!checkFormatEmail(email, email_login_editText))
             return
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            email_login_editText.error = resources.getString(R.string.invalid_mail)
-            email_login_editText.requestFocus()
-            return
-        }
-
 
         if (password.isEmpty() || password.length < 6){
             password_login_editText.error = resources.getString(R.string.password_check_login)
