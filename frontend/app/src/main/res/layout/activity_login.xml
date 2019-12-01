@@ -30,7 +30,7 @@
     <TextView
         android:id="@+id/forgotPassword_textView"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/forgot_password"
         android:layout_gravity="center_horizontal"/>
 

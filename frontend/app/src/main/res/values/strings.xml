@@ -8,5 +8,8 @@
     <string name="login">Login me</string>
     <string name="DonNot_have_account">Don\'t have account? Create it!</string>
     <string name="forgot_password">Forgot Password?</string>
-
+    <string name="failed_login">Failed to Login.\nPlease check your login info and try again.</string>
+    <string name="invalid_mail">Invalid Email.</string>
+    <string name="email_required">Email Required.</string>
+    <string name="password_check_login">Password must be at least 6 characters.</string>
 </resources>
