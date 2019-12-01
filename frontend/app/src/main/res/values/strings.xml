@@ -15,4 +15,6 @@
     <string name="enter_email">Enter your registered email to recover your password</string>
     <string name="reset_password">Reset Password</string>
     <string name="check_email">Check your Email</string>
+    <string name="create_user">Successfuly created User.</string>
+    <string name="failed_create_user">Failed to create User</string>
 </resources>

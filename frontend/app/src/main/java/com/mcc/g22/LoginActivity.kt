@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         create_account_login_textView.setOnClickListener{
-            startActivity(Intent(this@LoginActivity , ResetPasswordActivity :: class.java))
+            startActivity(Intent(this@LoginActivity , RegisterActivity :: class.java))
         }
 
 
