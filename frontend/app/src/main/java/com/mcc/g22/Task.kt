@@ -15,6 +15,7 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.mcc.g22.apiclient.ApiClient
 import com.mcc.g22.apiclient.models.InlineObject1
+import com.mcc.g22.apiclient.models.InlineObject2
 import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -88,9 +89,9 @@ class Task {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val d = dataSnapshot.child("description").value as String
                     val s = when (dataSnapshot.child("status").value) {
-                        com.mcc.g22.apiclient.models.Task.Status.pending -> TaskStatus.PENDING
-                        com.mcc.g22.apiclient.models.Task.Status.ongoing -> TaskStatus.ON_GOING
-                        com.mcc.g22.apiclient.models.Task.Status.completed -> TaskStatus.COMPLETED
+                        com.mcc.g22.apiclient.models.Status.pending -> TaskStatus.PENDING
+                        com.mcc.g22.apiclient.models.Status.ongoing -> TaskStatus.ON_GOING
+                        com.mcc.g22.apiclient.models.Status.completed -> TaskStatus.COMPLETED
                         else -> {
                             onFailure()
                             return
@@ -148,9 +149,9 @@ class Task {
             t.projectId = projectId
             t.description = task.description
             t.status = when(task.status) {
-                com.mcc.g22.apiclient.models.Task.Status.pending -> TaskStatus.PENDING
-                com.mcc.g22.apiclient.models.Task.Status.ongoing -> TaskStatus.ON_GOING
-                com.mcc.g22.apiclient.models.Task.Status.completed -> TaskStatus.COMPLETED
+                com.mcc.g22.apiclient.models.Status.pending -> TaskStatus.PENDING
+                com.mcc.g22.apiclient.models.Status.ongoing -> TaskStatus.ON_GOING
+                com.mcc.g22.apiclient.models.Status.completed -> TaskStatus.COMPLETED
             }
             t.deadline = deadlineDataFormat.parse(task.deadline)!!
             t.taskHasBeenCreated = true
@@ -338,10 +339,10 @@ class Task {
         val apiTask = toApiModelTask()
 
         if (taskHasBeenCreated) {
-            taskId = ApiClient.api.createTask(projectId, apiTask).id
+            taskId = ApiClient.api.createTask(apiTask).id
         }
         if (statusHasChanged) {
-            ApiClient.api.updateStatusOfTaskWithId(projectId, taskId, apiTask)
+            ApiClient.api.updateStatusOfTaskWithId(taskId, InlineObject1(status = apiTask.status))
         }
         if (descriptionHasChanged) {
             FirebaseDatabase.getInstance().reference.child("tasks")
@@ -350,7 +351,7 @@ class Task {
         if (usersHaveBeenAssigned) {
             val usersIds = mutableListOf<String>()
             assignedUsers.forEach { usersIds.add(it.username) }
-            ApiClient.api.assignUsersToTask(projectId, taskId, InlineObject1(usersIds.toTypedArray()))
+            ApiClient.api.assignUsersToTask(taskId, InlineObject2(usersIds.toTypedArray()))
         }
     }
 
@@ -361,9 +362,10 @@ class Task {
         return com.mcc.g22.apiclient.models.Task(description = description,
             deadline = deadlineDataFormat.format(deadline),
             status = when(status) {
-                TaskStatus.PENDING -> com.mcc.g22.apiclient.models.Task.Status.pending
-                TaskStatus.ON_GOING -> com.mcc.g22.apiclient.models.Task.Status.ongoing
-                TaskStatus.COMPLETED -> com.mcc.g22.apiclient.models.Task.Status.completed
-            })
+                TaskStatus.PENDING -> com.mcc.g22.apiclient.models.Status.pending
+                TaskStatus.ON_GOING -> com.mcc.g22.apiclient.models.Status.ongoing
+                TaskStatus.COMPLETED -> com.mcc.g22.apiclient.models.Status.completed
+            },
+            projectId = projectId)
     }
 }
