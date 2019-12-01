@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Task Manager</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="displayName">Display name</string>
+    <string name="email">Email address</string>
+    <string name="password">Password</string>
+    <string name="signUp">Sign Up</string>
+    <string name="login">Login me</string>
+    <string name="DonNot_have_account">Don\'t have account? Create it!</string>
+    <string name="forgot_password">Forgot Password?</string>
+
 </resources>

@@ -5,11 +5,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center_vertical"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
+
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"/>
+    
+    <EditText
+        android:id="@+id/displayName_register_editText"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:hint="@string/displayName"
+        android:layout_gravity="center_horizontal"/>
 
     <EditText
-        android:id="@+id/email_login_editText"
+        android:id="@+id/email_register_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -18,7 +31,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <EditText
-        android:id="@+id/password_login_editText"
+        android:id="@+id/password_register_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -26,33 +39,17 @@
         android:hint="@string/password"
         android:layout_gravity="center_horizontal"/>
 
-
-    <TextView
-        android:id="@+id/forgotPassword_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="@string/forgot_password"
-        android:layout_gravity="center_horizontal"/>
-
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/signUp_register_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:text="@string/login"
+        android:text="@string/signUp"
         android:layout_gravity="center_horizontal"/>
 
     <TextView
-        android:id="@+id/create_account_login_textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/DonNot_have_account"
+        android:layout_height="match_parent"
+        android:text="@string/back_to_login"
         android:layout_gravity="center_horizontal"/>
 
-
-    <ProgressBar
-        android:id="@+id/progressbar_login"
-        android:visibility="gone"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 </LinearLayout>
