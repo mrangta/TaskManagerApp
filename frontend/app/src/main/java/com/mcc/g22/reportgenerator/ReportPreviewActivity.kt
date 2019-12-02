@@ -2,7 +2,9 @@ package com.mcc.g22.reportgenerator
 
 import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.LocusId
 import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Build
@@ -20,6 +22,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.mcc.g22.Project
 import com.mcc.g22.R
 import com.mcc.g22.Task
 import com.mcc.g22.User
@@ -30,20 +37,24 @@ import com.mcc.g22.User
  * the report.
  */
 class ReportPreviewActivity : AppCompatActivity() {
+    private val report = StringBuilder()
+    private lateinit var generateButton: Button
+
+    private class Event {
+        var eventId: String = ""
+        var eventType: String = ""
+        var description: String = ""
+        var timestamp: String = ""
+    }
 
     companion object {
         private const val MY_PERMISSIONS_REQUEST_WRITE_STORAGE: Int = 314
 
-        private lateinit var projectName: String
-        private lateinit var projectMembers: Set<User>
-        private lateinit var projectTasks: Set<Task>
+        private lateinit var project: Project
 
-        fun startShowingPreview(context: Context, projectName: String, projectMembers: Set<User>,
-                                projectTasks: Set<Task>) {
+        fun startShowingPreview(context: Context, project: Project) {
 
-            ReportPreviewActivity.projectMembers = projectMembers
-            ReportPreviewActivity.projectName = projectName
-            ReportPreviewActivity.projectTasks = projectTasks
+            ReportPreviewActivity.project = project
 
             val i = Intent(context, ReportPreviewActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -61,7 +72,7 @@ class ReportPreviewActivity : AppCompatActivity() {
 
     private fun runActivity() {
         // Set button font
-        val generateButton = findViewById<Button>(R.id.generate_report_button)
+        generateButton = findViewById(R.id.generate_report_button)
         val font = Typeface.createFromAsset(assets, "fonts/Montserrat-Bold.ttf")
         generateButton.typeface = font
 
@@ -70,43 +81,81 @@ class ReportPreviewActivity : AppCompatActivity() {
         generateButton.isEnabled = false
 
         // Generate preview
-        val report = StringBuilder()
         report.append("<html>")
 
         report.append("<head>")
-        report.append("<title>$projectName</title>")
-        report.append("<style>@font-face {\n" +
-                "    font-family: 'Montserrat';\n" +
-                "    src: url('fonts/Montserrat-Regular.ttf');\n" +
-                "}\nbody {font-family: 'Montserrat';}</style>")
+        report.append("<title>${project.name}</title>")
+        report.append(
+            "<style>@font-face {\n" +
+                    "    font-family: 'Montserrat';\n" +
+                    "    src: url('fonts/Montserrat-Regular.ttf');\n" +
+                    "}\nbody {font-family: 'Montserrat';}</style>"
+        )
         report.append("</head>")
 
         report.append("<body>")
-        report.append("<h1 align=\"center\">$projectName</h1>")
+        report.append("<h1 align=\"center\">${project.name}</h1>")
 
         report.append("<p><h3>Members</h3>")
         report.append("<ul>")
-        for (u in projectMembers) {
-            report.append("<li>" + u.username + "</li>")
+        for (u in project.membersIds) {
+            report.append("<li>$u</li>")
         }
         report.append("</ul></p>")
 
         report.append("<p><h3>Tasks</h3>")
         report.append("<ul>")
-        val sortedTasks = projectTasks.toSortedSet(Comparator { o1, o2 ->
-            when {
-                o1!!.deadline > o2!!.deadline -> {
-                    -1
+
+        // Get logs from the database
+        val logRef = FirebaseDatabase.getInstance().reference
+            .child("log").child(project.projectId)
+        logRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError) {
+
+                runOnUiThread {
+                    generateButton.text = getString(R.string.error)
+
+                    val builder = AlertDialog.Builder(applicationContext)
+                    builder.setCancelable(true)
+                    builder.setMessage(R.string.error_in_generating_report)
+                    builder.setNeutralButton(R.string.ok) { dialog, which -> ;}
+                    builder.create().show()
                 }
-                o1!!.deadline < o2!!.deadline -> {
-                    1
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val projectEvents = mutableSetOf<Event>()
+                for (task in dataSnapshot.children) {
+                    for (event in task.children) {
+                        val e = Event()
+                        e.eventId = event.key as String
+                        e.description = event.child("description").value as String
+                        e.eventType = event.child("eventType").value as String
+                        e.timestamp = event.child("timestamp").value as String
+                        projectEvents.add(e)
+                    }
                 }
-                else -> 0
+                val sortedEvents = projectEvents.toSortedSet(Comparator { o1, o2 ->
+                    when {
+                        o1!!.timestamp > o2!!.timestamp -> {
+                            -1
+                        }
+                        o1.timestamp < o2.timestamp -> {
+                            1
+                        }
+                        else -> 0
+                    }
+                })
+                for (t in sortedEvents) {
+                    report.append("<li>" + t.description + "</li>")
+                }
+
+                runOnUiThread { finishAndLoad() }
             }
         })
-        for (t in sortedTasks) {
-            report.append("<li>" + t.description + "</li>")
-        }
+    }
+
+    private fun finishAndLoad() {
         report.append("</ul></p>")
 
         report.append("</br><p align=\"center\"><img style=\"width: 25%;\" src=\"icons/New Project.png\" /></p>")
@@ -149,7 +198,7 @@ class ReportPreviewActivity : AppCompatActivity() {
     }
 
     private fun generatePdfReport(webView: WebView) {
-        val reportFilename = "$projectName-Report.pdf"
+        val reportFilename = "${project.name}-Report.pdf"
         val attributes = PrintAttributes.Builder()
             .setColorMode(PrintAttributes.COLOR_MODE_COLOR)
             .setMediaSize(PrintAttributes.MediaSize.ISO_A4.asPortrait())
