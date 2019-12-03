@@ -43,10 +43,10 @@ class Project {
     var admin: String = ""
         private set
 
-    var deadline: Instant = Instant.now()
+    var deadline: Instant? = null
         private set
 
-    var badgeUrl: String = ""
+    var badgeUrl: String? = null
         private set
 
     var membersIds: Set<String> = mutableSetOf()
@@ -118,13 +118,21 @@ class Project {
             p.isPrivate = dataSnapshot.child("private").value as Boolean
             p.description = dataSnapshot.child("description").value as String
             p.admin = dataSnapshot.child("admin").value as String
-            p.badgeUrl = dataSnapshot.child("badgeUrl").value as String
+            p.badgeUrl = dataSnapshot.child("badgeUrl").value as String?
             p.creationDate =
                 Instant.parse( dataSnapshot.child("creationDate").value as String )
-            p.lastModificationDate =
-                Instant.parse( dataSnapshot.child("lastModificationDate").value as String )
-            p.deadline =
-                Instant.parse( dataSnapshot.child("deadline").value as String )
+
+            val lastMod = dataSnapshot.child("lastModificationDate").value as String?
+            if (lastMod == null) {
+                p.lastModificationDate = p.creationDate
+            } else {
+                p.lastModificationDate = Instant.parse(lastMod)
+            }
+
+            val deadlineStr = dataSnapshot.child("deadline").value as String?
+            if (deadlineStr != null) {
+                p.deadline = Instant.parse(deadlineStr)
+            }
 
             val mutableSetOfMembers = mutableSetOf<String>()
             for (m in dataSnapshot.child("members").children) {
@@ -139,10 +147,12 @@ class Project {
             p.tasksIds = mutableSetOfTasks
 
             val mutableSetOfKeywords = mutableSetOf<String>()
-            for (a in dataSnapshot.child("keywords").children) {
-                mutableSetOfKeywords.add(a.key as String)
+            if (dataSnapshot.hasChild("keywords")) {
+                for (a in dataSnapshot.child("keywords").children) {
+                    mutableSetOfKeywords.add(a.key as String)
+                }
+                p.keywords = mutableSetOfKeywords
             }
-            p.keywords = mutableSetOfKeywords
 
             p.attachmentsManager = AttachmentsManager(p.projectId)
 
@@ -180,18 +190,21 @@ class Project {
     }
 
     fun changeBadge(newBadgeUri: Uri, onBadgeUploaded: () -> Unit, onFailure: () -> Unit) {
-        val tmpBadge = newBadgeUri.lastPathSegment!!
-        val uploading = storage.reference.child("$projectId/badge/$tmpBadge").putFile(newBadgeUri)
+        val filename = UUID.randomUUID().toString()
+        val ref = storage.getReference(filename)
+        val uploading = ref.putFile(newBadgeUri)
         uploading.addOnCanceledListener { onFailure() }
         uploading.addOnCompleteListener {
-            badgeUrl = tmpBadge
-            projectsRef.child(projectId).child("badgeUrl").setValue(badgeUrl)
-            onBadgeUploaded()
+            ref.downloadUrl.addOnSuccessListener {
+                badgeUrl = it.toString()
+                projectsRef.child(projectId).child("badgeUrl").setValue(badgeUrl)
+                onBadgeUploaded()
+            }.addOnFailureListener { onFailure() }
         }
     }
 
     fun loadBadgeIntoImageView(context: Context, targetImageView: ImageView) {
-        if (badgeUrl.isEmpty()) return
+        if (badgeUrl == null) return
         Glide.with(context).load(badgeUrl).into(targetImageView)
     }
 }
