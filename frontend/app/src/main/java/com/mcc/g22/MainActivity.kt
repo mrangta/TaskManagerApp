@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
         // That's why it is here
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true)
 
-        Project.fromProjectId("-LvBSjjg5rfhs7lPLsi7", {
+        Project.fromProjectId("-LvBqZKJ7x10SS05X5j1", {
+            Log.i("MCC", "got proejct")
             ReportPreviewActivity.startShowingPreview(applicationContext, it)
         }, {
             Log.i("MCC", "Failed to get project")

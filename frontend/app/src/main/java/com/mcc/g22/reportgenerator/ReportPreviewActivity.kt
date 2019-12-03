@@ -30,6 +30,7 @@ import com.mcc.g22.Project
 import com.mcc.g22.R
 import com.mcc.g22.Task
 import com.mcc.g22.User
+import java.util.concurrent.CountDownLatch
 
 
 /**
@@ -41,6 +42,7 @@ class ReportPreviewActivity : AppCompatActivity() {
     private lateinit var generateButton: Button
 
     private class Event {
+        lateinit var task: Task
         var eventId: String = ""
         var eventType: String = ""
         var description: String = ""
@@ -107,12 +109,10 @@ class ReportPreviewActivity : AppCompatActivity() {
         report.append("<ul>")
 
         // Get logs from the database
-        Log.i("MCC", "Project id " + project.projectId)
         val logRef = FirebaseDatabase.getInstance().reference
             .child("log").child(project.projectId)
         logRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(databaseError: DatabaseError) {
-
+            fun errorOccurred() {
                 runOnUiThread {
                     generateButton.text = getString(R.string.error)
 
@@ -124,21 +124,37 @@ class ReportPreviewActivity : AppCompatActivity() {
                 }
             }
 
+            override fun onCancelled(databaseError: DatabaseError) {
+                errorOccurred()
+            }
+
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val projectEvents = mutableSetOf<Event>()
+                val latch = CountDownLatch(dataSnapshot.childrenCount.toInt())
 
                 for (task in dataSnapshot.children) {
 
-                    for (event in task.children) {
+                    Task.getTaskFromDatabase(project.projectId, task.key as String,
+                        {
+                            for (event in task.children) {
 
-                        val e = Event()
-                        e.eventId = event.key as String
-                        e.description = event.child("description").value as String
-                        e.eventType = event.child("eventType").value as String
-                        e.timestamp = event.child("timestamp").value as String
-                        projectEvents.add(e)
-                    }
+                                val e = Event()
+                                e.task = it
+                                e.eventId = event.key as String
+                                e.description = event.child("description").value as String
+                                e.eventType = event.child("eventType").value as String
+                                e.timestamp = event.child("timestamp").value as String
+                                projectEvents.add(e)
+                            }
+                            latch.countDown()
+                        }, {
+                            errorOccurred()
+                            latch.countDown()
+                        })
                 }
+
+                latch.await() // We can wait because this function is called
+                                // in a separate thread so it won't block UI
 
                 val sortedEvents = projectEvents.toSortedSet(Comparator { o1, o2 ->
                     when {
@@ -152,7 +168,7 @@ class ReportPreviewActivity : AppCompatActivity() {
                     }
                 })
                 for (t in sortedEvents) {
-                    report.append("<li>" + t.description + "</li>")
+                    report.append("<li><b>" + t.task.name + "</b><br />" + t.description + "</li>")
                 }
 
                 runOnUiThread { finishAndLoad() }
@@ -211,7 +227,6 @@ class ReportPreviewActivity : AppCompatActivity() {
             .setMinMargins(PrintAttributes.Margins.NO_MARGINS).build()
         val path =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS + "/TaskManager")
-        Log.i("MCC", path.absolutePath)
 
         if (!path.exists() && !path.mkdirs()) {
             Toast.makeText(applicationContext, R.string.cannot_create_folder, Toast.LENGTH_LONG)

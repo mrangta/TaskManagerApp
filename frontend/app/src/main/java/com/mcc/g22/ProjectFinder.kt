@@ -82,10 +82,12 @@ class ProjectFinder {
 
             if (checkKeyword) {
                 val lowerCasesKeyword = keyword!!.toLowerCase()
-                for (keywordInDatabase in projectInDatabase.child("keywords").children) {
-                    if (keywordInDatabase.key!!.toLowerCase().contains(lowerCasesKeyword)) {
-                        keywordFound = true
-                        break
+                if (projectInDatabase.hasChild("keywords")) {
+                    for (keywordInDatabase in projectInDatabase.child("keywords").children) {
+                        if (keywordInDatabase.key!!.toLowerCase().contains(lowerCasesKeyword)) {
+                            keywordFound = true
+                            break
+                        }
                     }
                 }
             } else keywordFound = true
