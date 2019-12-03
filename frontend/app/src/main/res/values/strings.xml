@@ -20,4 +20,13 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="notification_number">0</string>
+    <string name="username">Johnson123</string>
+    <string name="user_email">johnson167@gmail.com</string>
+    <string name="change_password">Change Password</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="update">Update</string>
+
 </resources>
