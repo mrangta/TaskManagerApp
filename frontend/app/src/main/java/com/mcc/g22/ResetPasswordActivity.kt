@@ -1,5 +1,6 @@
 package com.mcc.g22
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -20,6 +21,11 @@ class ResetPasswordActivity : AppCompatActivity() {
         reset_password_button.setOnClickListener {
             resetPassword()
         }
+
+        back_login_reset.setOnClickListener {
+            startActivity(Intent(this@ResetPasswordActivity , LoginActivity :: class.java))
+        }
+
     }
 
     private fun resetPassword(){
@@ -35,7 +41,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                 if(task.isSuccessful)
                     Toast.makeText(this, resources.getString(R.string.check_email),Toast.LENGTH_SHORT).show()
                 else{
-                    Toast.makeText(this, task.exception?.message!! , Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, resources.getString(R.string.email_notFound_reset) , Toast.LENGTH_SHORT).show()
                 }
 
             }
