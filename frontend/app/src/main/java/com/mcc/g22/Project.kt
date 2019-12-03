@@ -16,6 +16,7 @@ import com.mcc.g22.apiclient.infrastructure.ServerException
 import com.mcc.g22.apiclient.models.InlineObject
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.util.*
 import java.util.concurrent.CountDownLatch
 
@@ -30,10 +31,10 @@ class Project {
     var isPrivate: Boolean = false
         private set
 
-    var creationDate: Date = Date()
+    var creationDate: Instant = Instant.now()
         private set
 
-    var lastModificationDate: Date = Date()
+    var lastModificationDate: Instant = Instant.now()
         private set
 
     var description: String = ""
@@ -42,19 +43,19 @@ class Project {
     var admin: String = ""
         private set
 
-    var deadline: Date = Date()
+    var deadline: Instant = Instant.now()
         private set
 
-    var badge: String = ""
+    var badgeUrl: String = ""
         private set
 
-    lateinit var membersIds: Set<String>
+    var membersIds: Set<String> = mutableSetOf()
         private set
 
-    lateinit var keywords: Set<String>
+    var keywords: Set<String> = mutableSetOf()
         private set
 
-    lateinit var tasksIds: Set<String>
+    var tasksIds: Set<String> = mutableSetOf()
         private set
 
     lateinit var attachmentsManager: AttachmentsManager
@@ -65,10 +66,6 @@ class Project {
 
         private val projectsRef = FirebaseDatabase.getInstance().reference.
             child("projects")
-
-        @SuppressLint("SimpleDateFormat")
-        private val dataFormat: DateFormat =
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
 
         /**
          * Fetch from the database all projects which has the currently logged user as a member.
@@ -121,14 +118,13 @@ class Project {
             p.isPrivate = dataSnapshot.child("private").value as Boolean
             p.description = dataSnapshot.child("description").value as String
             p.admin = dataSnapshot.child("admin").value as String
-            p.badge = dataSnapshot.child("badge").value as String
-
+            p.badgeUrl = dataSnapshot.child("badgeUrl").value as String
             p.creationDate =
-                dataFormat.parse( dataSnapshot.child("creation_date").value as String ) as Date
+                Instant.parse( dataSnapshot.child("creationDate").value as String )
             p.lastModificationDate =
-                dataFormat.parse( dataSnapshot.child("last_modification_date").value as String ) as Date
+                Instant.parse( dataSnapshot.child("lastModificationDate").value as String )
             p.deadline =
-                dataFormat.parse( dataSnapshot.child("deadline").value as String ) as Date
+                Instant.parse( dataSnapshot.child("deadline").value as String )
 
             val mutableSetOfMembers = mutableSetOf<String>()
             for (m in dataSnapshot.child("members").children) {
@@ -188,15 +184,14 @@ class Project {
         val uploading = storage.reference.child("$projectId/badge/$tmpBadge").putFile(newBadgeUri)
         uploading.addOnCanceledListener { onFailure() }
         uploading.addOnCompleteListener {
-            badge = tmpBadge
-            projectsRef.child(projectId).child("badge").setValue(badge)
+            badgeUrl = tmpBadge
+            projectsRef.child(projectId).child("badgeUrl").setValue(badgeUrl)
             onBadgeUploaded()
         }
     }
 
     fun loadBadgeIntoImageView(context: Context, targetImageView: ImageView) {
-        if (badge.isEmpty()) return
-        val imageRef = storage.reference.child("$projectId/badge/$badge")
-        Glide.with(context).load(imageRef).into(targetImageView)
+        if (badgeUrl.isEmpty()) return
+        Glide.with(context).load(badgeUrl).into(targetImageView)
     }
 }

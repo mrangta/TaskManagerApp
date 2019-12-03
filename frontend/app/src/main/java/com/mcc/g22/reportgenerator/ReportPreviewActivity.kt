@@ -107,6 +107,7 @@ class ReportPreviewActivity : AppCompatActivity() {
         report.append("<ul>")
 
         // Get logs from the database
+        Log.i("MCC", "Project id " + project.projectId)
         val logRef = FirebaseDatabase.getInstance().reference
             .child("log").child(project.projectId)
         logRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -125,8 +126,11 @@ class ReportPreviewActivity : AppCompatActivity() {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val projectEvents = mutableSetOf<Event>()
+
                 for (task in dataSnapshot.children) {
+
                     for (event in task.children) {
+
                         val e = Event()
                         e.eventId = event.key as String
                         e.description = event.child("description").value as String
@@ -135,6 +139,7 @@ class ReportPreviewActivity : AppCompatActivity() {
                         projectEvents.add(e)
                     }
                 }
+
                 val sortedEvents = projectEvents.toSortedSet(Comparator { o1, o2 ->
                     when {
                         o1!!.timestamp > o2!!.timestamp -> {
