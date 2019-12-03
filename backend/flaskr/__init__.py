@@ -29,25 +29,41 @@ def create_app():
         project_id = data.get('projectId')
         project_tasks_ref = db.reference('/projects/').child(project_id).child('tasks')
         project_tasks_ref.update({new_task_id: True})
+        log_ref = db.reference('/log')
+        log_event_ref = log_ref.child(project_id).child(new_task_id).push()
+        log_event_ref.set({'type': 'CREATED', 'description': 'Task Created', 'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")})
         return {'id': new_task_id }, 201
 
     @app.route('/tasks/<task_id>', methods=['PUT'])
-    def task_with_id( task_id):
+    def task_with_id(task_id):
         data = request.get_json()
         task_ref = db.reference('/tasks').child(task_id)
         task_ref.update(data)
+        log_ref = db.reference('/log')
+        project_id = task_ref.child('projectId').get()
+        log_event_ref = log_ref.child(project_id).child(task_id).push()
+        log_event_ref.set({'type': 'STATUS', 'description': 'Task status changed to ' + data['status'],
+                           'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")})
+
         return jsonify_no_content()
 
     @app.route('/tasks/<task_id>/users', methods=['PUT'])
-    def task_users( task_id):
+    def task_users(task_id):
         user_ids = request.get_json().get('userIds', [])
         array_as_dict = array_to_fb_object(user_ids)
-        task_users_ref = db.reference('/tasks').child(task_id).child('users')
+        task_ref = db.reference('/tasks').child(task_id)
+        task_users_ref = task_ref.child('users')
         task_users_ref.update(array_as_dict)
+        log_ref = db.reference('/log')
+        project_id = task_ref.child('projectId').get()
         for user_id in user_ids:
-            user_tasks_ref = db.reference('/users').child(user_id).child('tasks')
+            user_ref = db.reference('/users').child(user_id)
+            user_tasks_ref = user_ref.child('tasks')
             user_tasks_ref.update({task_id: True})
-        return jsonify_no_content()
+            log_event_ref = log_ref.child(project_id).child(task_id).push()
+            log_event_ref.set({'type': 'ASSIGNMENT', 'description': 'User ' + user_ref.child('name').get() + ' assigned to task',
+                               'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")})
+            return jsonify_no_content()
 
     @app.route('/projects', methods=['POST'])
     def projects():
