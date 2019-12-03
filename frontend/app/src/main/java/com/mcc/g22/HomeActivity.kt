@@ -30,5 +30,5 @@ class HomeActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(Navigation.findNavController(this , R.id.nav_host_fragment), drawer_layout)
     }
-    
+
 }
