@@ -28,5 +28,7 @@
     <string name="new_password">New password</string>
     <string name="confirm_new_password">Confirm new password</string>
     <string name="update">Update</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logOut">Logout</string>
 
 </resources>

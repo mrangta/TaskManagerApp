@@ -4,13 +4,13 @@
         <menu>
             <item
                 android:id="@+id/nav_profile"
-                android:title="Edit Profile" />
-            <item android:id="@+id/nav_notifications"
-                android:title="Notifications"/>
-            <item android:id="@+id/nav_projects"
-                android:title="Created Projects"/>
-            <item android:id="@+id/nav_logOut"
-                android:title="Logout"/>
+                android:title="@string/edit_profile" />
+            <item
+                android:id="@+id/nav_changePassword"
+                android:title="@string/change_password" />
+            <item
+                android:id="@+id/nav_logOut"
+                android:title="@string/logOut" />
         </menu>
     </item>
 </menu>
