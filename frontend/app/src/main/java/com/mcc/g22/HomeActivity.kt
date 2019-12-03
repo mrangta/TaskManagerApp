@@ -2,6 +2,9 @@ package com.mcc.g22
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -11,14 +14,30 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
 
+    lateinit var logoutButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        logoutButton.setOnClickListener {
 
-        FirebaseAuth.getInstance().signOut()
-        logout()
+            val alert = AlertDialog.Builder(this@HomeActivity)
+            alert.setTitle("Confirm")
+            alert.setMessage(resources.getString(R.string.alertExit))
+
+            alert.setPositiveButton("YES") { dialog, yes ->
+                FirebaseAuth.getInstance().signOut()
+                logout()
+            }
+            alert.setNegativeButton("No") { dialog, no ->
+            }
+
+            val dialog: AlertDialog = alert.create()
+            dialog.show()
+        }
+
+    }
         /*setSupportActionBar(home_toolbar)
 
         val host: NavHostFragment = supportFragmentManager
@@ -30,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
 */
 
 
-    }
+
 
     //opening our navigation drawer and also back button
     override fun onSupportNavigateUp(): Boolean {
