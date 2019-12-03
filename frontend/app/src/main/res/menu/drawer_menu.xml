@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:title="Edit Profile" />
+        <item android:id="@+id/nav_notifications"
+            android:title="Notifications"/>
+        <item android:id="@+id/nav_projects"
+            android:title="Created Projects"/>
+        <item android:id="@+id/nav_logOut"
+            android:title="Logout"/>
+        </menu>
+    </item>
+</menu>

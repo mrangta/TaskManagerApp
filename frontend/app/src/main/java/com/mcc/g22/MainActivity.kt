@@ -21,4 +21,9 @@ class MainActivity : AppCompatActivity() {
         intent = Intent(this, SignUpActivity::class.java)
         startActivity(intent)
     }
+
+    fun logIn(view: View) {
+        intent = Intent(this, DashboardActivity::class.java)
+       startActivity(intent)
+    }
 }

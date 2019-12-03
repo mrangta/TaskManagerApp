@@ -10,4 +10,13 @@
     <string name="back_to_logIn">Back to Login</string>
     <string name="enter_email">Enter your registered email to recover your password</string>
     <string name="sign_up">Sign Up</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="dashboard_welcome">Welcome John, you have 4 tasks due today.</string>
+    <string name="task_status">TASK STATUS</string>
+    <string name="completed">COMPLETED</string>
+    <string name="ongoing">ONGOING</string>
+    <string name="pending">PENDING</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
