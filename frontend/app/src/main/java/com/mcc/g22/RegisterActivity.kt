@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,14 +28,13 @@ class RegisterActivity : AppCompatActivity() {
     private var profilePhoto: Uri? = null
 
     private val storage: FirebaseStorage = FirebaseStorage.getInstance()
-    private val database = FirebaseDatabase.getInstance().getReference("/users")
+    private val database = FirebaseDatabase.getInstance().getReference("users")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
         registerAuth = FirebaseAuth.getInstance()
-        // logout()
         signUp_register_button.setOnClickListener {
             registerUser()
         }
@@ -69,6 +69,9 @@ class RegisterActivity : AppCompatActivity() {
         val email = email_register_editText.text.toString()
         val password = password_register_editText.text.toString()
         val username = displayName_register_editText.text.toString()
+
+        var recommendedUsername = "You can try these user names"
+
         if (!checkFormatEmail(email, email_register_editText))
             return
 
@@ -78,58 +81,61 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        checkUsernameUnique(username)
-        val uid = FirebaseAuth.getInstance().uid ?: ""
-        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        if(!checkUsernameUnique(username)){
+            Toast.makeText(this , resources.getString(R.string.usernameTaken), Toast.LENGTH_SHORT).show()
+            for (i in 0..3){
+                var tmp = username + createRandomAlphanumeric()
 
-        val user = User(uid, username, profilePhoto)
+                while(!checkUsernameUnique(tmp)){
+                    tmp = username + createRandomAlphanumeric()
+                }
+                recommendedUsername += " , $tmp"
+            }
 
-        ref.setValue(user)
-            .addOnSuccessListener {
-                progressbar_register.visibility = View.VISIBLE
+            recommended_username_textView.text = recommendedUsername
+            return
+        }
 
-                registerAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this) { task ->
-                        progressbar_register.visibility = View.GONE
+        progressbar_register.visibility = View.VISIBLE
 
-                        if (task.isSuccessful) {
-                            Toast.makeText(this, resources.getString(R.string.create_user), Toast.LENGTH_SHORT).show()
-                            login()
+        registerAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                progressbar_register.visibility = View.GONE
 
-                            if (!uploadProfileImageToFirebase())
-                                saveUserToFirebase(null)
+                if (task.isSuccessful) {
+                    Toast.makeText(this, resources.getString(R.string.create_user), Toast.LENGTH_SHORT).show()
+                    login()
 
-                        } else {
-                            Toast.makeText(this, resources.getString(R.string.failed_create_user), Toast.LENGTH_SHORT ).show()
-                            return@addOnCompleteListener
-                        }
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this,"Failed to create user: ${it.message}", Toast.LENGTH_SHORT).show()
-                    }
+                    if (!uploadProfileImageToFirebase())
+                        saveUserToFirebaseDatabase(null)
+
+                } else {
+                    Toast.makeText(this, resources.getString(R.string.failed_create_user), Toast.LENGTH_SHORT ).show()
+                    return@addOnCompleteListener
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this,"Failed to create user: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
-    // check username is unique, if not suggest 3 other alternatives
-    private fun checkUsernameUnique(displayName: String):List<String> {
 
-        val recommendedUsername = mutableListOf<String>()
+    // check username is unique or not
+    private fun checkUsernameUnique(displayName: String) : Boolean{
+
+        var result = true
         database.orderByChild("username").equalTo(displayName).addValueEventListener(object: ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (i in 0..3){
-                        recommendedUsername.add(displayName + createRandomAlphanumeric())
-                    }
+            //    Log.d("username unique" , dataSnapshot.value().toString())
+                if(dataSnapshot.exists())
+                    result = false
                 }
-            }
-
             override fun onCancelled(error: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
-        return recommendedUsername
-      }
+        return result
+    }
 
     private fun createRandomAlphanumeric(): String{
 
@@ -140,12 +146,23 @@ class RegisterActivity : AppCompatActivity() {
                randomText += chars[floor(Math.random() * chars.length).toInt()]
 
         return randomText
-
     }
 
-    private fun saveUserToFirebase(profilePhotoUrl: String?) {
+    private fun saveUserToFirebaseDatabase(profilePhotoUrl: String?) {
 
+        val uid = registerAuth.uid ?: ""
+        val displayName = displayName_register_editText.text.toString()
+        val newUser = User(displayName , profilePhotoUrl)
 
+        val refUser = database.child(uid)
+        refUser.setValue(newUser)
+            .addOnCompleteListener{
+                Toast.makeText(this,"user added to database completely", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener{
+                Toast.makeText(this,"Failed to add user to database${it.message}", Toast.LENGTH_SHORT).show()
+
+            }
     }
 
 
@@ -155,13 +172,17 @@ class RegisterActivity : AppCompatActivity() {
             return false
 
         val filename = UUID.randomUUID().toString()
-        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+        val ref = storage.getReference("/Images/$filename")
 
         ref.putFile(profilePhoto!!)
             .addOnSuccessListener {
-
-                ref.downloadUrl.addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener{
+                    saveUserToFirebaseDatabase(filename)
                 }
+            }
+            .addOnFailureListener{
+                Toast.makeText(this,"Failed to upload image${it.message}", Toast.LENGTH_SHORT).show()
+
             }
 
         return true

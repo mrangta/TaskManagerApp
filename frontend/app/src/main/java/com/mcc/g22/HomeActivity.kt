@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.google.firebase.auth.FirebaseAuth
+import com.mcc.g22.utils.logout
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -14,7 +16,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        setSupportActionBar(home_toolbar)
+
+        FirebaseAuth.getInstance().signOut()
+        logout()
+        /*setSupportActionBar(home_toolbar)
 
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
@@ -22,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
 
         NavigationUI.setupWithNavController(nav_menu_view , navController)
         NavigationUI.setupActionBarWithNavController(this , navController , drawer_layout)
+*/
 
 
     }
