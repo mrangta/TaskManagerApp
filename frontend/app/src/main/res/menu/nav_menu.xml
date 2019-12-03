@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/logout"
+        android:title="@string/logout"/>
+
+    <item
+        android:id="@+id/edit_profile_fragment"
+        android:title="@string/EditProfile"
+        />
+
+    <item
+        android:id="@+id/notification_fragment"
+        android:title="@string/notifications"
+        />
+
+    <item
+        android:id="@+id/home_fragment"
+        android:title="Home"
+        />
+</menu>

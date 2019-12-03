@@ -17,4 +17,7 @@
     <string name="check_email">Check your Email</string>
     <string name="create_user">Successfuly created User.</string>
     <string name="failed_create_user">Failed to create User</string>
+    <string name="logout">Logout</string>
+    <string name="EditProfile">Edit Profile</string>
+    <string name="notifications">Notifications</string>
 </resources>
