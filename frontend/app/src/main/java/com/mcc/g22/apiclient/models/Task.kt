@@ -11,27 +11,35 @@
 */
 package com.mcc.g22.apiclient.models
 
-import com.mcc.g22.apiclient.models.Status
 
 import com.squareup.moshi.Json
 /**
  * 
- * @param projectId 
  * @param description 
  * @param status 
  * @param deadline 
  */
 
 data class Task (
-    @Json(name = "projectId")
-    val projectId: kotlin.String,
     @Json(name = "description")
     val description: kotlin.String,
     @Json(name = "status")
-    val status: Status,
+    val status: Task.Status,
     @Json(name = "deadline")
-    val deadline: java.time.LocalDateTime
+    val deadline: kotlin.String
 ) 
 
 
+{
+    /**
+    * 
+    * Values: pending,ongoing,completed
+    */
+    
+    enum class Status(val value: kotlin.String){
+        @Json(name = "pending") pending("pending"),
+        @Json(name = "ongoing") ongoing("ongoing"),
+        @Json(name = "completed") completed("completed");
+    }
+}
 

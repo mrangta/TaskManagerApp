@@ -1,13 +1,11 @@
 package com.mcc.g22
 
-import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,11 +14,8 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.mcc.g22.apiclient.ApiClient
 import com.mcc.g22.apiclient.models.InlineObject1
-import com.mcc.g22.apiclient.models.InlineObject2
 import java.io.File
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.Instant
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -45,7 +40,7 @@ class Task {
     var description: String = ""
         private set
 
-    var deadline: Date = Date()
+    var deadline: Instant = Instant.now()
         private set
 
     var status: TaskStatus = TaskStatus.PENDING
@@ -60,9 +55,6 @@ class Task {
     private var descriptionHasChanged: Boolean = false
 
     companion object {
-        @SuppressLint("SimpleDateFormat")
-        private val deadlineDataFormat: DateFormat =
-                                            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
 
         /**
          * Create new pending task with empty description and deadline set to now
@@ -100,7 +92,7 @@ class Task {
                     }
                     val deadline = dataSnapshot.child("deadline").value as String
 
-                    val task = createTask(projectId, d, deadlineDataFormat.parse(deadline)!!)
+                    val task = createTask(projectId, d, Instant.parse(deadline)!!)
 
                     for (u in dataSnapshot.child("users").children) {
                         task.assignedUsers.add( User(u.key.toString()) )
@@ -116,7 +108,7 @@ class Task {
         /**
          * Create pending task.
          */
-        fun createTask(projectId: String, description: String, deadline: Date): Task {
+        fun createTask(projectId: String, description: String, deadline: Instant): Task {
             val t = Task()
             t.projectId = projectId
             t.description = description
@@ -129,7 +121,7 @@ class Task {
         /**
          * Create task with assigned users. If number of the users is > 0, task in on-going
          */
-        fun createTask(projectId: String, description: String, deadline: Date, assignedUsers: MutableSet<User>): Task {
+        fun createTask(projectId: String, description: String, deadline: Instant, assignedUsers: MutableSet<User>): Task {
             val t = Task()
             t.projectId = projectId
             t.description = description
@@ -150,11 +142,11 @@ class Task {
             t.projectId = projectId
             t.description = task.description
             t.status = when(task.status) {
-                com.mcc.g22.apiclient.models.Status.pending -> TaskStatus.PENDING
-                com.mcc.g22.apiclient.models.Status.ongoing -> TaskStatus.ON_GOING
-                com.mcc.g22.apiclient.models.Status.completed -> TaskStatus.COMPLETED
+                com.mcc.g22.apiclient.models.Task.Status.pending -> TaskStatus.PENDING
+                com.mcc.g22.apiclient.models.Task.Status.ongoing -> TaskStatus.ON_GOING
+                com.mcc.g22.apiclient.models.Task.Status.completed -> TaskStatus.COMPLETED
             }
-            t.deadline = deadlineDataFormat.parse(task.deadline)!!
+            t.deadline = Instant.parse(task.deadline)
             t.taskHasBeenCreated = true
             return t
         }
@@ -173,7 +165,7 @@ class Task {
 
             val image = FirebaseVisionImage.fromBitmap(bitmap)
             runTextDetector(image, {
-                onTaskReady( createTask(projectId, it, Date()) )
+                onTaskReady( createTask(projectId, it, Instant.now()) )
             }, onFailure)
         }
 
@@ -192,7 +184,7 @@ class Task {
 
             val image = FirebaseVisionImage.fromFilePath(context, imageUri)
             runTextDetector(image, {
-                onTaskReady(createTask(projectId, it, Date()))
+                onTaskReady(createTask(projectId, it, Instant.now()))
             }, onFailure)
         }
 
@@ -289,7 +281,7 @@ class Task {
 
         val pendingIntent = buildAlarmPendingIntent(context)
         alarmManager.setExact(AlarmManager.RTC,
-            deadline.time - triggerBefore,
+             deadline.toEpochMilli() - triggerBefore,
             pendingIntent)
     }
 
@@ -340,10 +332,10 @@ class Task {
         val apiTask = toApiModelTask()
 
         if (taskHasBeenCreated) {
-            taskId = ApiClient.api.createTask(apiTask).id
+            taskId = ApiClient.api.createTask(projectId, apiTask).id
         }
         if (statusHasChanged) {
-            ApiClient.api.updateStatusOfTaskWithId(taskId, InlineObject1(status = apiTask.status))
+            ApiClient.api.updateStatusOfTaskWithId(projectId, taskId, toApiModelTask())
         }
         if (descriptionHasChanged) {
             FirebaseDatabase.getInstance().reference.child("tasks")
@@ -352,7 +344,7 @@ class Task {
         if (usersHaveBeenAssigned) {
             val usersIds = mutableListOf<String>()
             assignedUsers.forEach { usersIds.add(it.username) }
-            ApiClient.api.assignUsersToTask(taskId, InlineObject2(usersIds.toTypedArray()))
+            ApiClient.api.assignUsersToTask(projectId, taskId, InlineObject1(usersIds.toTypedArray()))
         }
     }
 
@@ -361,12 +353,11 @@ class Task {
      */
     private fun toApiModelTask(): com.mcc.g22.apiclient.models.Task {
         return com.mcc.g22.apiclient.models.Task(description = description,
-            deadline = deadlineDataFormat.format(deadline),
+            deadline = deadline.toString(),
             status = when(status) {
-                TaskStatus.PENDING -> com.mcc.g22.apiclient.models.Status.pending
-                TaskStatus.ON_GOING -> com.mcc.g22.apiclient.models.Status.ongoing
-                TaskStatus.COMPLETED -> com.mcc.g22.apiclient.models.Status.completed
-            },
-            projectId = projectId)
+                TaskStatus.PENDING -> com.mcc.g22.apiclient.models.Task.Status.pending
+                TaskStatus.ON_GOING -> com.mcc.g22.apiclient.models.Task.Status.ongoing
+                TaskStatus.COMPLETED -> com.mcc.g22.apiclient.models.Task.Status.completed
+            })
     }
 }
