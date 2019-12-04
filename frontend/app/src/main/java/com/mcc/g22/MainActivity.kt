@@ -17,11 +17,13 @@ class MainActivity : AppCompatActivity() {
         // That's why it is here
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true)
 
-        Project.fromProjectId("-LvBqZKJ7x10SS05X5j1", {
+        /*Project.fromProjectId("-LvBqZKJ7x10SS05X5j1", {
             ReportPreviewActivity.startShowingPreview(applicationContext, it)
         }, {
             Log.i("MCC", "Failed to get project")
-        })
+        })*/
+
+        NotificationsService.startNotificationService(this)
 
         /*Translation.translate("Cześć", "en", {
             Log.i("MCC", it)

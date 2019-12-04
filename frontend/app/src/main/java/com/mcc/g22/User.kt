@@ -30,7 +30,9 @@ class User(val username: String) {
          * Return user registered on this device
          */
         fun getRegisteredUser(): User? {
-            return User("test user")
+            val u =  User("test user")
+            u.uid = "SZ7PaxG8uWWKIOTN1TIv4H6E3qx2"
+            return u
         }
 
         /**

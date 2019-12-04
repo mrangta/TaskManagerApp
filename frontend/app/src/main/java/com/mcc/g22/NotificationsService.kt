@@ -1,19 +1,13 @@
 package com.mcc.g22
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.icu.text.CaseMap
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.database.*
-import kotlin.random.Random
 
 class NotificationsService : Service() {
     private lateinit var assignChangedListener: ChildEventListener
@@ -25,7 +19,8 @@ class NotificationsService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         // Get name of the user to watch
-        val usernameToWatch = intent!!.extras!!.get(EXTRA_USERNAME_TO_WATCH) as String
+        val userToWatch = User.getRegisteredUser()!!
+        val usernameToWatch = userToWatch.uid
 
         // Get reference to the database
         database = FirebaseDatabase.getInstance().reference
@@ -58,7 +53,7 @@ class NotificationsService : Service() {
 
                 // Value must be true
                 if (!(dataSnapshot.value as Boolean)) return
-                showAddedToProjectNotification(usernameToWatch, dataSnapshot.key as String)
+                showAddedToProjectNotification(userToWatch.username, dataSnapshot.key as String)
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
@@ -88,7 +83,7 @@ class NotificationsService : Service() {
 
                 // Value must be true
                 if (!(dataSnapshot.value as Boolean)) return
-                showAssignedToTaskNotification(usernameToWatch, dataSnapshot.key as String)
+                showAssignedToTaskNotification(userToWatch.username, dataSnapshot.key as String)
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
@@ -100,6 +95,7 @@ class NotificationsService : Service() {
             .child("tasks")
             .addChildEventListener(assignChangedListener)
 
+        isServiceStarted = true
         return START_STICKY
     }
 
@@ -152,33 +148,31 @@ class NotificationsService : Service() {
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (dp in dataSnapshot.children) {
-                        val notificationTitle = getString(R.string.assigned_to_task_notif_title)
-                        val taskName = dp.key as String
-                        val notificationText = username + ", " +
+                    val notificationTitle = getString(R.string.assigned_to_task_notif_title)
+                    val taskName = dataSnapshot.child("description").value as String
+                    val notificationText = username + ", " +
                                 getString(R.string.assigned_to_task_notif_text) + " " + taskName
 
-                        // TODO add proper icon
-                        // TODO add proper onTapAction
-                        notificationHelper.showNotification(notificationTitle, notificationText)
-                    }
+                    // TODO add proper icon
+                    // TODO add proper onTapAction
+                    notificationHelper.showNotification(notificationTitle, notificationText)
                 }
             }
         )
     }
 
     companion object {
-        private const val EXTRA_USERNAME_TO_WATCH: String = "USERNAME_TO_WATCH"
         private const val TAG: String = "MCC"
+        private var isServiceStarted: Boolean = false
 
         /**
          * Start service so it could show notifications to the user
          * @param ctx application context
-         * @param username
          */
-        fun startNotificationService(ctx: Context, username: String) {
+        fun startNotificationService(ctx: Context) {
+            if (isServiceStarted) return
+
             val i = Intent(ctx, NotificationsService::class.java)
-            i.putExtra(EXTRA_USERNAME_TO_WATCH, username)
             ctx.startService(i)
         }
     }
