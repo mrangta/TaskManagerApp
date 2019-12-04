@@ -4,109 +4,147 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ForgotPassActivity">
+    tools:context=".ForgotPassActivity"
+    android:paddingLeft="@dimen/parent_padding"
+    android:paddingTop="@dimen/parent_top"
+    android:paddingRight="@dimen/parent_padding">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <LinearLayout
+        android:id="@+id/logo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="20dp">
+
+        <ImageView
+            android:id="@+id/logo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/logo_symbol"
+            android:paddingTop="30dp"
+            app:srcCompat="@drawable/ic_logo" />
+
+        <ImageView
+            android:id="@+id/logo2"
+            android:layout_width="226dp"
+            android:layout_height="81dp"
+            android:contentDescription="@string/logo2"
+            android:paddingStart="@dimen/parent_top"
+            android:paddingEnd="@dimen/parent_padding"
+            app:srcCompat="@drawable/ic_logo_text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cloud_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_layout"
+        tools:layout_editor_absoluteX="20dp">
+
+        <ImageView
+            android:id="@+id/cloud_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/cloud_image"
+            android:paddingStart="0dp"
+            android:paddingTop="@dimen/cloud_top"
+            android:paddingEnd="@dimen/cloud_end"
+            app:srcCompat="@drawable/ic_cloud_image" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/tagline_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/path" />
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cloud_layout">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_alternates"
+            android:text="@string/forgot_password"
+            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/font_size_extra_large"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tagline2"
+            android:layout_width="426dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_alternates"
+            android:text="@string/enter_email"
+            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/font_size_large" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/form_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/path2" />
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tagline_layout">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/field_top"
+            android:layout_marginBottom="@dimen/field_top"
+            android:autofillHints=""
+            android:background="@drawable/edit_text"
+            android:hint="@string/email_address"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="@dimen/text_padding"
+            android:paddingRight="@dimen/text_padding"
+            android:textSize="@dimen/font_size_medium"
+            />
+
+        <Button
+            android:id="@+id/forgotPassword"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/field_top"
+            android:background="@drawable/button_background"
+            android:text="@string/reset_password"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_medium"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/link_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/path3" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/form_layout">
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="141dp"
-        android:layout_height="81dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024"
-        app:srcCompat="@drawable/new_project" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="166dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="140dp"
-        android:text="@string/forgot_password"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.012" />
+        <TextView
+            android:id="@+id/back_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="backToLogIn"
+            android:text="@string/back_to_logIn"
+            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/font_size_small" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="320dp"
-        android:layout_height="36dp"
-        android:text="@string/enter_email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="298dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="36dp"
-        android:ems="10"
-        android:hint="Email address"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="300dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="52dp"
-        android:text="@string/reset_password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:clickable="true"
-        android:onClick="backToLogIn"
-        android:text="@string/back_to_logIn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

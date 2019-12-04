@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">Task Manager</string>
-    <string name="intro1">Hassle free, flexible and efficient</string>
+    <string name="intro">Hassle free,</string>
+    <string name="intro1">flexible and efficient</string>
     <string name="intro2">way to organise task for individual and collaborative work</string>
-    <string name="forgot_password">Forgot password?</string>
-    <string name="logIn">Login</string>
+    <string name="forgot_password">Forgot password? </string>
+    <string name="logIn">Login me</string>
     <string name="no_account">Don\'t have an account?</string>
-    <string name="create_account">Create it!</string>
+    <string name="create_account"><u>Create it!</u></string>
     <string name="reset_password">Reset Password</string>
-    <string name="back_to_logIn">Back to Login</string>
+    <string name="back_to_logIn"><u>Back to Login</u></string>
     <string name="enter_email">Enter your registered email to recover your password</string>
     <string name="sign_up">Sign Up</string>
     <string name="profile_settings">Profile Settings</string>
@@ -30,5 +31,13 @@
     <string name="update">Update</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="logOut">Logout</string>
+    <string name="logo2">logo2</string>
+    <string name="logo_symbol">logo</string>
+    <string name="cloud_image">cloud_image</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="enter_name">Enter username</string>
+    <string name="upload">Upload</string>
+    <string name="upload_text">Upload profile pic</string>
 
 </resources>

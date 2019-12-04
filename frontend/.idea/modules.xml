@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Task Manager.iml" filepath="$PROJECT_DIR$/Task Manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend-Task Manager.iml" filepath="$PROJECT_DIR$/frontend-Task Manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/frontend-app.iml" filepath="$PROJECT_DIR$/app/frontend-app.iml" />
     </modules>
   </component>
 </project>
