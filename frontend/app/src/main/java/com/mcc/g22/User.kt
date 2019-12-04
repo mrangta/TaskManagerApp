@@ -3,7 +3,6 @@ package com.mcc.g22
 import android.content.Context
 import android.net.Uri
 import android.widget.ImageView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -14,6 +13,9 @@ import java.util.*
 
 class User(val username: String) {
     var profileImage: String = ""
+        private set
+
+    var uid: String = ""
         private set
 
     var projects: Set<String> = mutableSetOf()
@@ -71,7 +73,8 @@ class User(val username: String) {
             .addOnSuccessListener {
                 ref.downloadUrl.addOnSuccessListener{
                     profileImage = it.toString()
-                    database.child(username).child("profileImage").setValue(profileImage)
+                    if (uid.isNotEmpty())
+                        database.child(uid).child("profileImage").setValue(profileImage)
                     onProfileImageUploaded()
                 }.addOnFailureListener { onFailure() }
             }

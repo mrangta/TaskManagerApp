@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -89,9 +90,9 @@ class Task {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val d = dataSnapshot.child("description").value as String
                     val s = when (dataSnapshot.child("status").value) {
-                        com.mcc.g22.apiclient.models.Status.pending -> TaskStatus.PENDING
-                        com.mcc.g22.apiclient.models.Status.ongoing -> TaskStatus.ON_GOING
-                        com.mcc.g22.apiclient.models.Status.completed -> TaskStatus.COMPLETED
+                        com.mcc.g22.apiclient.models.Status.pending.value -> TaskStatus.PENDING
+                        com.mcc.g22.apiclient.models.Status.ongoing.value -> TaskStatus.ON_GOING
+                        com.mcc.g22.apiclient.models.Status.completed.value -> TaskStatus.COMPLETED
                         else -> {
                             onFailure()
                             return

@@ -31,6 +31,7 @@ import com.mcc.g22.R
 import com.mcc.g22.Task
 import com.mcc.g22.User
 import java.util.concurrent.CountDownLatch
+import kotlin.concurrent.thread
 
 
 /**
@@ -38,6 +39,7 @@ import java.util.concurrent.CountDownLatch
  * the report.
  */
 class ReportPreviewActivity : AppCompatActivity() {
+    private lateinit var errorMsgDialog: AlertDialog
     private val report = StringBuilder()
     private lateinit var generateButton: Button
 
@@ -51,6 +53,7 @@ class ReportPreviewActivity : AppCompatActivity() {
 
     companion object {
         private const val MY_PERMISSIONS_REQUEST_WRITE_STORAGE: Int = 314
+        private const val MAX_DESCRIPTION_SIZE: Int = 30
 
         private lateinit var project: Project
 
@@ -67,6 +70,12 @@ class ReportPreviewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report_preview)
+
+        val builder = AlertDialog.Builder(this)
+        builder.setCancelable(true)
+        builder.setMessage(R.string.error_in_generating_report)
+        builder.setNeutralButton(R.string.ok) { dialog, which -> ;}
+        errorMsgDialog = builder.create()
 
         // Check if we have storage permission. If not, ask for it
         if (getStoragePermission()) runActivity()
@@ -115,12 +124,7 @@ class ReportPreviewActivity : AppCompatActivity() {
             fun errorOccurred() {
                 runOnUiThread {
                     generateButton.text = getString(R.string.error)
-
-                    val builder = AlertDialog.Builder(applicationContext)
-                    builder.setCancelable(true)
-                    builder.setMessage(R.string.error_in_generating_report)
-                    builder.setNeutralButton(R.string.ok) { dialog, which -> ;}
-                    builder.create().show()
+                    errorMsgDialog.show()
                 }
             }
 
@@ -153,25 +157,37 @@ class ReportPreviewActivity : AppCompatActivity() {
                         })
                 }
 
-                latch.await() // We can wait because this function is called
-                                // in a separate thread so it won't block UI
+                thread(
+                    start = true,
+                    isDaemon = false,
+                    contextClassLoader = null,
+                    name = null,
+                    priority = -1
+                ) {
+                    latch.await() // We can wait because this function is called
+                    // in a separate thread so it won't block UI
 
-                val sortedEvents = projectEvents.toSortedSet(Comparator { o1, o2 ->
-                    when {
-                        o1!!.timestamp > o2!!.timestamp -> {
-                            -1
+                    val sortedEvents = projectEvents.toSortedSet(Comparator { o1, o2 ->
+                        when {
+                            o1!!.timestamp > o2!!.timestamp -> {
+                                -1
+                            }
+                            o1.timestamp < o2.timestamp -> {
+                                1
+                            }
+                            else -> 0
                         }
-                        o1.timestamp < o2.timestamp -> {
-                            1
+                    })
+                    for (t in sortedEvents) {
+                        var title = t.task.description
+                        if (title.length > MAX_DESCRIPTION_SIZE) {
+                            title = title.substring(0, MAX_DESCRIPTION_SIZE) + "..."
                         }
-                        else -> 0
+                        report.append("<li><b>" + title + "</b><br />" + t.description + "</li>")
                     }
-                })
-                for (t in sortedEvents) {
-                    report.append("<li><b>" + t.task.name + "</b><br />" + t.description + "</li>")
-                }
 
-                runOnUiThread { finishAndLoad() }
+                    runOnUiThread { finishAndLoad() }
+                }
             }
         })
     }
