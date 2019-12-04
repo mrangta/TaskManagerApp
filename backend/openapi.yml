@@ -19,6 +19,13 @@ schemes:
 #security:
 #    - firebase: []
 paths:
+  /alive:
+    get:
+      summary: response OK
+      operationId: alive
+      responses:
+        200:
+          description: app is alive
   /projects:
     post:
       summary: Creates a project
@@ -214,6 +221,9 @@ definitions:
         type: string
       badgeUrl:
         type: string
+      deadline:
+        type: string
+        format: date-time
       private:
         type: boolean
       keywords:

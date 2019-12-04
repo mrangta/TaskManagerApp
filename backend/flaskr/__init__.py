@@ -19,6 +19,10 @@ def create_app():
         }
     })
 
+    @app.route('/alive', methods=['GET'])
+    def alive():
+        return {'status': 'OK'}, 200
+
     @app.route('/tasks', methods=['POST'])
     def tasks():
         data = request.get_json()
@@ -31,7 +35,7 @@ def create_app():
         project_tasks_ref.update({new_task_id: True})
         log_ref = db.reference('/log')
         log_event_ref = log_ref.child(project_id).child(new_task_id).push()
-        log_event_ref.set({'type': 'CREATED', 'description': 'Task Created', 'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")})
+        log_event_ref.set({'type': 'CREATED', 'description': 'Task Created', 'timestamp': datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'})
         return {'id': new_task_id }, 201
 
     @app.route('/tasks/<task_id>', methods=['PUT'])
@@ -43,7 +47,7 @@ def create_app():
         project_id = task_ref.child('projectId').get()
         log_event_ref = log_ref.child(project_id).child(task_id).push()
         log_event_ref.set({'type': 'STATUS', 'description': 'Task status changed to ' + data['status'],
-                           'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")})
+                           'timestamp': datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'})
 
         return jsonify_no_content()
 
@@ -62,7 +66,7 @@ def create_app():
             user_tasks_ref.update({task_id: True})
             log_event_ref = log_ref.child(project_id).child(task_id).push()
             log_event_ref.set({'type': 'ASSIGNMENT', 'description': 'User ' + user_ref.child('name').get() + ' assigned to task',
-                               'timestamp': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")})
+                               'timestamp': datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'})
             return jsonify_no_content()
 
     @app.route('/projects', methods=['POST'])
@@ -73,7 +77,9 @@ def create_app():
         if keywords is not None:
             data['keywords'] = array_to_fb_object(keywords)
         data['admin'] = 'adminUser'
-        data['creationDate'] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
+        date = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'
+        data['creationDate'] = date
+        data['lastModifiedDate'] = date
         new_project_ref = projects_ref.push()
         new_project_ref.set(data)
         return {'id': new_project_ref.key }, 201
