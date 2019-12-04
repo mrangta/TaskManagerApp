@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.mcc.g22.utils.checkFormatEmail
-import kotlinx.android.synthetic.main.activity_reset_password.*
+import kotlinx.android.synthetic.main.activity_forgot_pass.*
 
 class ResetPasswordActivity : AppCompatActivity() {
 

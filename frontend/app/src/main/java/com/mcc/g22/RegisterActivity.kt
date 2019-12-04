@@ -20,6 +20,11 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 import kotlin.math.floor
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -44,7 +49,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // select photo for profile
-        profile_image.setOnClickListener{
+        upload_profile_pic_button.setOnClickListener{
 
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -58,8 +63,11 @@ class RegisterActivity : AppCompatActivity() {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
 
             profilePhoto = data.data
-            val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, profilePhoto)
-            profile_image.setImageBitmap(bitmap)
+          //  val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, profilePhoto)
+          //  profile_image.setImageBitmap(bitmap)
+            val path = getPathFromURI(profilePhoto)
+            profile_pic_path_textView.setText(path)
+
 
         }
     }
@@ -92,7 +100,7 @@ class RegisterActivity : AppCompatActivity() {
                 recommendedUsername += " , $tmp"
             }
 
-            recommended_username_textView.text = recommendedUsername
+           // recommended_username_textView.text = recommendedUsername
             return
         }
 
@@ -186,6 +194,19 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         return true
+    }
+
+    private fun getPathFromURI(contentUri: Uri?): String? {
+
+        var res: String? = null
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(contentUri!!, proj, null, null, null)
+        if (cursor!!.moveToFirst()) {
+            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            res = cursor.getString(columnIndex)
+        }
+        cursor.close()
+        return res
     }
 
     override fun onStart() {
