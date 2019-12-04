@@ -1,5 +1,6 @@
 backend-docker-release:
-    before_script: "cd backend"
+    before_script: 
+        - "cd backend"
     script: "make release"
     only:
         changes:
