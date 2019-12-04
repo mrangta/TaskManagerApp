@@ -11,6 +11,7 @@
     <string name="failed_login">Failed to Login.\nPlease check your login info and try again.</string>
     <string name="invalid_mail">Invalid Email.</string>
     <string name="email_required">Email Required.</string>
+    <string name="password_required">Password Required</string>
     <string name="password_check_login">Password must be at least 6 characters.</string>
     <string name="enter_email">Enter your registered email to recover your password</string>
     <string name="reset_password">Reset Password</string>
@@ -26,4 +27,5 @@
     <string name="email_notFound_reset">A user with that email address could not be found</string>
     <string name="usernameTaken">This username is already taken</string>
     <string name="alertExit">Are you sure you want to exit?</string>
+    <string name="invalid_password">Password doesn\'t match!</string>
 </resources>

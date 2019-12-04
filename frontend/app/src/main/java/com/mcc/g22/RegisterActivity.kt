@@ -124,7 +124,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun checkUsernameUnique(displayName: String) : Boolean{
 
         var result = true
-        database.orderByChild("username").equalTo(displayName).addValueEventListener(object: ValueEventListener {
+        database.orderByChild("username").equalTo(displayName).addListenerForSingleValueEvent(object: ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
             //    Log.d("username unique" , dataSnapshot.value().toString())
@@ -154,7 +154,7 @@ class RegisterActivity : AppCompatActivity() {
         val displayName = displayName_register_editText.text.toString()
         val newUser = User(displayName , profilePhotoUrl)
 
-        val refUser = database.child(uid)
+        val refUser = database.child("username")
         refUser.setValue(newUser)
             .addOnCompleteListener{
                 Toast.makeText(this,"user added to database completely", Toast.LENGTH_SHORT).show()

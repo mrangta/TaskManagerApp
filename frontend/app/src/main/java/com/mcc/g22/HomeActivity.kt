@@ -38,15 +38,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
     }
-        /*setSupportActionBar(home_toolbar)
-
-        val host: NavHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
-        val navController = host.navController
-
-        NavigationUI.setupWithNavController(nav_menu_view , navController)
-        NavigationUI.setupActionBarWithNavController(this , navController , drawer_layout)
-*/
+        
 
 
 
