@@ -36,6 +36,13 @@ class MainActivity : AppCompatActivity() {
             Log.i("MCC", "Creating failed")
         })*/
 
+        Project.createProject("ProjectAPI", false, "Project created from API call",
+            arrayOf("test", "project"), arrayOf(User.getRegisteredUser()!!), {
+                Log.i("MCC", "Project created")
+            }, {
+                Log.i("MCC", "Error while creating a project")
+            })
+
         /*Translation.translate("Cześć", "en", {
             Log.i("MCC", it)
         }, {

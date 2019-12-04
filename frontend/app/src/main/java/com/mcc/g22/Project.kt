@@ -16,6 +16,7 @@ import com.mcc.g22.apiclient.models.InlineObject
 import java.time.Instant
 import java.util.*
 import java.util.concurrent.CountDownLatch
+import kotlin.concurrent.thread
 
 class Project {
 
@@ -63,6 +64,59 @@ class Project {
 
         private val projectsRef = FirebaseDatabase.getInstance().reference.
             child("projects")
+
+        fun createProject(name: String, isPrivate: Boolean, description: String,
+                          keywords: Array<String>, members: Array<User>,
+                          onProjectCreated: (p: Project) -> Unit,
+                          onFailure: () -> Unit,
+                          deadline: Instant? = null,
+                          badge: Uri? = null) {
+            val p = Project()
+            p.creationDate = Instant.now()
+            p.name = name
+            p.admin = User.getRegisteredUser()!!.uid
+            p.description = description
+            p.isPrivate = isPrivate
+            p.deadline = deadline
+
+            val ks = mutableSetOf<String>()
+            for (k in keywords) {
+                ks.add(k)
+            }
+            p.keywords = ks
+
+            val memsIds = mutableSetOf<String>()
+            for (i in members) {
+                memsIds.add(i.uid)
+            }
+            p.membersIds = memsIds
+
+            thread {
+                val apiProject = com.mcc.g22.apiclient.models.Project(
+                    name = p.name,
+                    description = p.description, private = isPrivate, badgeUrl = null,
+                    keywords = keywords, deadline = p.deadline?.toString()
+                )
+
+                try {
+                    p.projectId = ApiClient.api.createProject(apiProject).id
+                    p.addMembers(members)
+                    if (badge == null) {
+                        onProjectCreated(p)
+                        return@thread
+                    }
+                } catch (e: Exception) {
+                    onFailure()
+                    return@thread
+                }
+
+                p.changeBadge(badge, {
+                    onProjectCreated(p)
+                }, {
+                    onFailure()
+                })
+            }
+        }
 
         /**
          * Fetch from the database all projects which has the currently logged user as a member.
@@ -132,8 +186,10 @@ class Project {
             }
 
             val mutableSetOfMembers = mutableSetOf<String>()
-            for (m in dataSnapshot.child("members").children) {
-                mutableSetOfMembers.add(m.key as String)
+            if (dataSnapshot.hasChild("members")) {
+                for (m in dataSnapshot.child("members").children) {
+                    mutableSetOfMembers.add(m.key as String)
+                }
             }
             p.membersIds = mutableSetOfMembers
 
@@ -168,7 +224,7 @@ class Project {
         if (newMembers.isEmpty()) return
 
         val usersIds = mutableListOf<String>()
-        newMembers.forEach { usersIds.add(it.username) }
+        newMembers.forEach { usersIds.add(it.uid) }
         ApiClient.api.addMemberToProject(projectId,
                                             InlineObject(userIds = usersIds.toTypedArray()))
 
