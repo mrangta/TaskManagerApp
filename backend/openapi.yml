@@ -214,12 +214,15 @@ definitions:
       - name
       - description
       - private
+      - admin
     properties:
       name:
         type: string
       description:
         type: string
       badgeUrl:
+        type: string
+      admin:
         type: string
       deadline:
         type: string

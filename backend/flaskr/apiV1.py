@@ -78,7 +78,6 @@ def projects():
     keywords = data.get('keywords')
     if keywords is not None:
         data['keywords'] = array_to_fb_object(keywords)
-    data['admin'] = 'adminUser'
     date = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'
     data['creationDate'] = date
     data['lastModifiedDate'] = date
