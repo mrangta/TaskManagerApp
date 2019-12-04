@@ -18,6 +18,7 @@ import com.squareup.moshi.Json
  * @param name 
  * @param description 
  * @param badgeUrl 
+ * @param admin 
  * @param deadline 
  * @param `private` 
  * @param keywords 
@@ -28,6 +29,8 @@ data class Project (
     val name: kotlin.String,
     @Json(name = "description")
     val description: kotlin.String,
+    @Json(name = "admin")
+    val admin: kotlin.String,
     @Json(name = "private")
     val `private`: kotlin.Boolean,
     @Json(name = "badgeUrl")

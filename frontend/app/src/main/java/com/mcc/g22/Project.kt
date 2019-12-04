@@ -92,7 +92,7 @@ class Project {
             p.membersIds = memsIds
 
             thread {
-                val apiProject = com.mcc.g22.apiclient.models.Project(
+                val apiProject = com.mcc.g22.apiclient.models.Project( admin = p.admin,
                     name = p.name,
                     description = p.description, private = isPrivate, badgeUrl = null,
                     keywords = keywords, deadline = p.deadline?.toString()
