@@ -30,8 +30,8 @@ class EditProfileActivity : AppCompatActivity() {
             return
         }
 
-        user?.let {user ->
-            val authCredential = EmailAuthProvider.getCredential(user.email, currentPassword)
+        if(user?.email != null){
+            val authCredential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
             //TODO create a progressbar is better
             user.reauthenticate(authCredential)
                 .addOnCompleteListener {
