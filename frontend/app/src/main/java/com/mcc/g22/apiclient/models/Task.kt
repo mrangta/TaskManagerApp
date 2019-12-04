@@ -30,7 +30,7 @@ data class Task (
     @Json(name = "status")
     val status: Status,
     @Json(name = "deadline")
-    val deadline: kotlin.String
+    val deadline: java.time.LocalDateTime
 ) 
 
 
