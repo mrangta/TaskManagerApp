@@ -11,6 +11,7 @@
 */
 package com.mcc.g22.apiclient.apis
 
+import android.util.Log
 import com.mcc.g22.apiclient.models.Error
 import com.mcc.g22.apiclient.models.IdObject
 import com.mcc.g22.apiclient.models.InlineObject
@@ -160,6 +161,10 @@ class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.co
             query = localVariableQuery,
             headers = localVariableHeaders
         )
+
+        Log.e("MCC", "/projects/{project_id}/tasks".replace("{"+"project_id"+"}", "$projectId"))
+        Log.e("MCC", baseUrl)
+
         val localVarResponse = request<IdObject>(
             localVariableConfig,
             localVariableBody

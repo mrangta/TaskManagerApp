@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.FirebaseDatabase
 import com.mcc.g22.reportgenerator.ReportPreviewActivity
+import java.time.Instant
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,7 +24,15 @@ class MainActivity : AppCompatActivity() {
             Log.i("MCC", "Failed to get project")
         })*/
 
-        NotificationsService.startNotificationService(this)
+        //NotificationsService.startNotificationService(this)
+
+        val t = Task.createTask("-LvBqZKJ7x10SS05X5j1", "Test crested by call to API",
+            Instant.ofEpochSecond(Instant.now().toEpochMilli() / 1000 + 999999))
+        t.commitChanges({
+            Log.i("MCC", "Task created")
+        }, {
+            Log.i("MCC", "Creating failed")
+        })
 
         /*Translation.translate("Cześć", "en", {
             Log.i("MCC", it)

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -16,6 +17,7 @@ import com.mcc.g22.apiclient.ApiClient
 import com.mcc.g22.apiclient.models.InlineObject1
 import java.io.File
 import java.time.Instant
+import kotlin.concurrent.thread
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -328,10 +330,21 @@ class Task {
      * Update the task in the backend using API.
      * This function is blocking so do not call it in the UI thread
      */
-    fun commitChanges() {
+    fun commitChanges(onCommitted: () -> Unit, onFailure: () -> Unit) {
+        thread { try {
+            doCommitChanges()
+            onCommitted()
+        } catch (e: Exception) {
+            Log.e("MCC", e.toString())
+            onFailure()
+        }}
+    }
+
+    private fun doCommitChanges() {
         val apiTask = toApiModelTask()
 
         if (taskHasBeenCreated) {
+            Log.i("MCC", "Creating task")
             taskId = ApiClient.api.createTask(projectId, apiTask).id
         }
         if (statusHasChanged) {
