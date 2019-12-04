@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="parent_padding">16dp</dimen>
-    <dimen name="parent_top">5dp</dimen>
+    <dimen name="parent_top">4dp</dimen>
     <dimen name="field_top">10dp</dimen>
-    <dimen name="cloud_top">-310dp</dimen>
-    <dimen name="cloud_end">-180dp</dimen>
+    <dimen name="cloud_top">-490dp</dimen>
+    <dimen name="cloud_end">-120dp</dimen>
     <dimen name="text_padding">15dp</dimen>
 
-    <dimen name="font_size_extra_small">12sp</dimen>
-    <dimen name="font_size_small">14sp</dimen>
-    <dimen name="font_size_medium">16sp</dimen>
-    <dimen name="font_size_large">18sp</dimen>
-    <dimen name="font_size_extra_large">24sp</dimen>
+    <dimen name="font_size_extra_small">8sp</dimen>
+    <dimen name="font_size_small">10sp</dimen>
+    <dimen name="font_size_medium">12sp</dimen>
+    <dimen name="font_size_large">14sp</dimen>
+    <dimen name="font_size_extra_large">20sp</dimen>
 </resources>
