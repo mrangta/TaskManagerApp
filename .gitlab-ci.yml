@@ -7,7 +7,7 @@ backend_docker_build:
         DOCKER_DRIVER: overlay
     before_script:
         - "cd backend"
-        - apt-get install build-essential
+        - "cat /etc/*-release"
     script: 
         - "make build-nc"
     only:
@@ -22,7 +22,6 @@ backend_docker_publish:
         DOCKER_DRIVER: overlay
     before_script:
         - "cd backend"
-        - apt-get install build-essential
         - "echo $GCLOUD_SERVICE_ACCOUNT | base64 -d > ${HOME}/gcloud-service-key.json"
         - "docker login -u _json_key --password-stdin https://eu.gcr.io < ${HOME}/gcloud-service-key.json"
     script: 
