@@ -66,7 +66,7 @@ def task_users(task_id):
         user_tasks_ref = user_ref.child('tasks')
         user_tasks_ref.update({task_id: True})
         log_event_ref = log_ref.child(project_id).child(task_id).push()
-        log_event_ref.set({'type': 'ASSIGNMENT', 'description': 'User ' + user_ref.child('name').get() + ' assigned to task',
+        log_event_ref.set({'type': 'ASSIGNMENT', 'description': 'User ' + user_ref.child('username').get() + ' assigned to task',
                            'timestamp': datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'})
         return jsonify_no_content()
 

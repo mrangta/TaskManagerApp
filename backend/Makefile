@@ -71,7 +71,7 @@ version: ## Output the current version
 	@echo $(VERSION)
 
 deploy: ## Deploy :latest image from GCR to App Engine
-	gcloud app deploy --image-url $(DOCKER_REPO)/$(PROJECT_ID)/$(APP_NAME):latest
+	gcloud app deploy --quiet --image-url $(DOCKER_REPO)/$(PROJECT_ID)/$(APP_NAME):latest
 
 browse: ## Open the app running on Google Cloud
 	gcloud app browse
