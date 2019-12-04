@@ -1,4 +1,5 @@
 backend_docker_build:
+    stage: build
     image: docker:19.03.1
     services:
       - docker:dind
@@ -6,12 +7,14 @@ backend_docker_build:
         DOCKER_DRIVER: overlay
     before_script:
         - "cd backend"
+        - sudo apt-get install build-essential
     script: 
         - "make build-nc"
     only:
         changes:
           - backend/**/*
 backend_docker_publish:
+    stage: publish
     image: docker:19.03.1
     services:
       - docker:dind
@@ -19,6 +22,7 @@ backend_docker_publish:
         DOCKER_DRIVER: overlay
     before_script:
         - "cd backend"
+        - sudo apt-get install build-essential
         - "echo $GCLOUD_SERVICE_ACCOUNT | base64 -d > ${HOME}/gcloud-service-key.json"
         - "docker login -u _json_key --password-stdin https://eu.gcr.io < ${HOME}/gcloud-service-key.json"
     script: 
