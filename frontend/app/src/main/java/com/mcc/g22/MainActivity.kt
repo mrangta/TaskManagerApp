@@ -26,13 +26,15 @@ class MainActivity : AppCompatActivity() {
 
         //NotificationsService.startNotificationService(this)
 
-        val t = Task.createTask("-LvBqZKJ7x10SS05X5j1", "Test crested by call to API",
+        /*val t = Task.createTask("-LvBqZKJ7x10SS05X5j1", "Test crested by call to API",
             Instant.ofEpochSecond(Instant.now().toEpochMilli() / 1000 + 999999))
+        t.assignUser( User.getRegisteredUser()!! )
+        t.makeTaskCompleted()
         t.commitChanges({
             Log.i("MCC", "Task created")
         }, {
             Log.i("MCC", "Creating failed")
-        })
+        })*/
 
         /*Translation.translate("Cześć", "en", {
             Log.i("MCC", it)

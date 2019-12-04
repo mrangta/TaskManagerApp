@@ -11,16 +11,17 @@
 */
 package com.mcc.g22.apiclient.models
 
+import com.mcc.g22.apiclient.models.Status
 
 import com.squareup.moshi.Json
 /**
- * A list of user ids
- * @param userIds 
+ * 
+ * @param status 
  */
 
 data class InlineObject1 (
-    @Json(name = "userIds")
-    val userIds: kotlin.Array<kotlin.String>
+    @Json(name = "status")
+    val status: Status
 ) 
 
 
