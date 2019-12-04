@@ -1,6 +1,5 @@
 package com.mcc.g22
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.widget.ImageView
@@ -14,8 +13,6 @@ import com.mcc.g22.apiclient.ApiClient
 import com.mcc.g22.apiclient.infrastructure.ClientException
 import com.mcc.g22.apiclient.infrastructure.ServerException
 import com.mcc.g22.apiclient.models.InlineObject
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.*
 import java.util.concurrent.CountDownLatch

@@ -3,12 +3,14 @@ package com.mcc.g22
 import android.content.Context
 import android.net.Uri
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import java.util.*
 
 class User(val username: String) {
     var profileImage: String = ""
@@ -59,28 +61,32 @@ class User(val username: String) {
         }
     }
 
-    fun setProfileImage(newProfileImage: Uri,
+    fun setProfileImage(profilePhoto: Uri,
                         onProfileImageUploaded: () -> Unit, onFailure: () -> Unit) {
-        val tmpImage = newProfileImage.lastPathSegment!!
-        val uploading = storage.reference
-                    .child("$username/profile_image/$tmpImage").putFile(newProfileImage)
-        uploading.addOnCanceledListener { onFailure() }
-        uploading.addOnCompleteListener {
-            profileImage = tmpImage
-            database.child(username).child("profile_image").setValue(profileImage)
-            onProfileImageUploaded()
-        }
+
+        val filename = UUID.randomUUID().toString()
+        val ref = storage.getReference(filename)
+
+        ref.putFile(profilePhoto)
+            .addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener{
+                    profileImage = it.toString()
+                    database.child(username).child("profileImage").setValue(profileImage)
+                    onProfileImageUploaded()
+                }.addOnFailureListener { onFailure() }
+            }
+            .addOnFailureListener{
+                onFailure()
+            }
     }
 
     fun showProfileImage(context: Context, targetImageView: ImageView) {
         if (profileImage.isEmpty()) {
             // Load default profile
-            // TODO
+            // TODO load default profile
         } else {
             // Load from the storage
-            val imageRef = storage.reference
-                        .child("$username/profile_image/$profileImage")
-            Glide.with(context).load(imageRef).into(targetImageView)
+            Glide.with(context).load(profileImage).into(targetImageView)
         }
     }
 }

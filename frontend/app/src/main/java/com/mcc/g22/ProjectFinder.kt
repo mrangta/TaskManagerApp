@@ -64,7 +64,6 @@ class ProjectFinder {
             if (!checkProjectName && !checkKeyword) return false
 
             // We aren't the member of the project
-            // TODO should this condition really be? Or we look up in the whole database of projects?
             if (!projectInDatabase.child("members").hasChild(user.username)) {
                 return false
             }
