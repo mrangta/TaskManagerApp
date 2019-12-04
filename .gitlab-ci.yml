@@ -1,9 +1,10 @@
 backend-docker-release:
+    image: docker:latest
     before_script: 
         - "cd backend"
+        - "docker login -u _json_key --password-stdin https://eu.gcr.io < echo ${GCLOUD_SERVICE_ACCOUNT}"
     script: 
         - "make release"
     only:
         changes:
           - backend/**/*
-    
