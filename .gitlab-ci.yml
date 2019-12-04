@@ -1,5 +1,9 @@
 backend-docker-release:
-    image: docker:latest
+    image: docker:19.03.1
+    services:
+      - docker:dind
+    variables:
+        DOCKER_DRIVER: overlay
     before_script: 
         - "cd backend"
         - "echo $GCLOUD_SERVICE_KEY | base64 -d > ${HOME}/gcloud-service-key.json"
