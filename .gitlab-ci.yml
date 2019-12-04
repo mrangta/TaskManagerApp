@@ -1,14 +1,21 @@
+test_variable:
+  stage: test
+  image: docker:19.03.1
+  script:
+    - echo $TEST
 backend-docker-release:
     image: docker:19.03.1
     services:
       - docker:dind
     variables:
         DOCKER_DRIVER: overlay
-    before_script: 
+    before_script:
+        - echo $TEST
         - "cd backend"
         - "echo $GCLOUD_SERVICE_KEY | base64 -d > ${HOME}/gcloud-service-key.json"
         - "docker login -u _json_key --password-stdin https://eu.gcr.io < ${HOME}/gcloud-service-key.json"
     script: 
+        - echo $TEST
         - "make release"
     only:
         changes:
