@@ -1,5 +1,4 @@
 backend-docker-release:
-    image: google/cloud-sdk:latest
     before_script: 
         - "cd backend"
     script: 
