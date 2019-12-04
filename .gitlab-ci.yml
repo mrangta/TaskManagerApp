@@ -14,7 +14,7 @@ backend_docker_build:
         changes:
           - backend/**/*
 backend_docker_publish:
-    stage: publish
+    stage: deploy
     image: docker:19.03.1
     services:
       - docker:dind
