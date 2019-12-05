@@ -11,9 +11,11 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    BottomNavigationView.OnNavigationItemSelectedListener {
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
@@ -23,6 +25,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
         nav_view.setNavigationItemSelectedListener(this)
+        bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
         //adding items in list
         for (i in 0..1) {
@@ -63,7 +66,15 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 logOut()
                 return true
             }
-
+            R.id.nav_home -> {
+                returnHome()
+            }
+            R.id.nav_add -> {
+                createProject()
+            }
+            R.id.nav_tasks -> {
+                myTasks()
+            }
         }
         return true
     }
@@ -83,7 +94,18 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     }
 
-   
+    fun returnHome() {
+        intent = Intent(this, DashboardActivity::class.java)
+        startActivity(intent)
+    }
 
+    fun createProject() {
+        intent = Intent(this, CreateProjectActivity::class.java)
+        startActivity(intent)
+    }
 
+    fun myTasks() {
+        intent = Intent(this, MyTasksActivity::class.java)
+        startActivity(intent)
+    }
 }
