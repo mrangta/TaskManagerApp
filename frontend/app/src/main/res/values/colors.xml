@@ -7,4 +7,5 @@
     <color name="seaGreen">#40F6C8</color>
     <color name="accentBlue">#01C3F9</color>
     <color name="white">#FFFFFF</color>
+    <color name="redError">#E71561</color>
 </resources>

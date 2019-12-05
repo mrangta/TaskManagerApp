@@ -23,12 +23,8 @@ import kotlin.math.floor
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View.OnFocusChangeListener
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 
@@ -39,7 +35,7 @@ class RegisterActivity : AppCompatActivity() {
     private var profilePhoto: Uri? = null
 
     private val storage: FirebaseStorage = FirebaseStorage.getInstance()
-    private val database = FirebaseDatabase.getInstance().getReference("users")
+    private val database = FirebaseDatabase.getInstance().getReference("/users")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,18 +61,18 @@ class RegisterActivity : AppCompatActivity() {
 
         displayName_register_editText.setOnFocusChangeListener { _ , hasFocus ->
             var username = displayName_register_editText.text.toString()
-            if (!hasFocus) {
-                Toast.makeText(this, "Got the focus", Toast.LENGTH_LONG).show()
-            }
-        }
 
-       /* val username = displayName_register_editText.text.toString()
-        displayName_register_editText.addTextChangedListener(object : TextWatcher {
-            var recommendedUsername = "users are"
-            override fun afterTextChanged(s: Editable) {
+            if(hasFocus){
+                recommended_textView.text = ""
+                recommended_textView.visibility = View.GONE
+
+                user_taken_textView.text = ""
+                user_taken_textView.visibility = View.GONE
+            }
+            if (!hasFocus) {
+                var recommendedUsername = "Try these"
 
                 if(!checkUsernameUnique(username)){
-                    Toast.makeText(this@RegisterActivity , resources.getString(R.string.usernameTaken), Toast.LENGTH_SHORT).show()
                     for (i in 0..3){
                         var tmp = username + createRandomAlphanumeric()
 
@@ -85,23 +81,16 @@ class RegisterActivity : AppCompatActivity() {
                         }
                         recommendedUsername += " , $tmp"
                     }
-
                 }
-                if(recommendedUsername !="")
-                    displayName_register_editText.error = recommendedUsername
+                if(recommendedUsername !="") {
+                    recommended_textView.visibility = View.VISIBLE
+                    recommended_textView.text = recommendedUsername
+
+                    user_taken_textView.visibility = View.VISIBLE
+                    user_taken_textView.text = resources.getString(R.string.usernameTaken)
+                }
             }
-
-
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-
-            }
-        })*/
-
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -109,12 +98,8 @@ class RegisterActivity : AppCompatActivity() {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
 
             profilePhoto = data.data
-          //  val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, profilePhoto)
-          //  profile_image.setImageBitmap(bitmap)
             val path = getPathFromURI(profilePhoto)
-            profile_pic_path_textView.setText(path)
-
-
+            profile_pic_path_textView.text = path
         }
     }
 
@@ -122,9 +107,6 @@ class RegisterActivity : AppCompatActivity() {
 
         val email = email_register_editText.text.toString()
         val password = password_register_editText.text.toString()
-        val username = displayName_register_editText.text.toString()
-
-       // var recommendedUsername = "You can try these user names"
 
         if (!checkFormatEmail(email, email_register_editText))
             return
@@ -134,7 +116,6 @@ class RegisterActivity : AppCompatActivity() {
             password_register_editText.requestFocus()
             return
         }
-
 
         progressbar_register.visibility = View.VISIBLE
 
@@ -164,18 +145,25 @@ class RegisterActivity : AppCompatActivity() {
     private fun checkUsernameUnique(displayName: String) : Boolean{
 
         var result = true
+       // database.child("username").equalTo(displayName).addListenerForSingleValueEvent(object: ValueEventListener {
         database.orderByChild("username").equalTo(displayName).addListenerForSingleValueEvent(object: ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-            //    Log.d("username unique" , dataSnapshot.value().toString())
-                if(dataSnapshot.exists())
-                    result = false
+            Log.d("" , "username Unique")
+                for (childDataSnapshot in dataSnapshot.children) {
+                    Log.d("", "PARENT: " + childDataSnapshot.key!!)
+                    Log.d("", "" + childDataSnapshot.child("username").value!!)
                 }
+                if(dataSnapshot.exists()){
+                    result = false
+                    Log.d("username unique","username Unique")
+                }}
             override fun onCancelled(error: DatabaseError) {
             }
         })
         return result
     }
+
 
     private fun createRandomAlphanumeric(): String{
 
@@ -192,7 +180,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val uid = registerAuth.uid ?: ""
         val displayName = displayName_register_editText.text.toString()
-        val newUser = User(displayName , profilePhotoUrl)
+        val newUser = User(displayName , profilePhotoUrl!!)
 
         val refUser = database.child("username")
         refUser.setValue(newUser)

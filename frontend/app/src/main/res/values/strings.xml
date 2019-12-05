@@ -59,7 +59,7 @@
     <string name="notifications">Notifications</string>
 
     <string name="email_notFound_reset">A user with that email address could not be found</string>
-    <string name="usernameTaken">This username is already taken</string>
+    <string name="usernameTaken">Username already taken!</string>
     <string name="alertExit">Are you sure you want to exit?</string>
     <string name="invalid_password">Invalid Password</string>
     <string name="password_not_match">Password doesn\'t match!</string>
