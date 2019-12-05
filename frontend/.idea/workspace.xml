@@ -11,9 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df0ac145-bfd8-4440-a3c3-37bee1da979e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_project.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -134,8 +132,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="43" column="41" lean-forward="true" selection-start-line="42" selection-start-column="42" selection-end-line="43" selection-end-column="41" />
+            <state relative-caret-position="502">
+              <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
             </state>
           </provider>
         </entry>
@@ -534,7 +532,7 @@
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49850747" weight="0.32827735" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5735608" side_tool="true" weight="0.312026" />
       <window_info anchor="bottom" id="Version Control" order="6" weight="0.3288835" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.42643923" visible="true" weight="0.312026" />
+      <window_info active="true" anchor="bottom" id="Build" order="7" sideWeight="0.42643923" visible="true" weight="0.312026" />
       <window_info anchor="bottom" id="Android Profiler" order="8" />
       <window_info anchor="bottom" id="Find" order="9" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -909,8 +907,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="43" column="41" lean-forward="true" selection-start-line="42" selection-start-column="42" selection-end-line="43" selection-end-column="41" />
+        <state relative-caret-position="502">
+          <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
         </state>
       </provider>
     </entry>

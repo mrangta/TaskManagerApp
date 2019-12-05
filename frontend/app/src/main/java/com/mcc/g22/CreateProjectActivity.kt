@@ -25,7 +25,7 @@ class CreateProjectActivity : AppCompatActivity() {
             popupMenu.menuInflater.inflate(R.menu.project_type, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.personal ->ie
+                    R.id.personal ->
                         project_type.text = "Personal"
                     R.id.group ->
                         project_type.text = "Group"
