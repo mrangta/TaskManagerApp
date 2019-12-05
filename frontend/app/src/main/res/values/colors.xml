@@ -3,8 +3,10 @@
     <color name="darkGrey">#555555</color>
     <color name="mediumGrey">#888888</color>
     <color name="lightGrey">#9B9B9B</color>
+    <color name="bottomNav">#26888888</color>
 
     <color name="seaGreen">#40F6C8</color>
+    <color name="lightBlue">#26E1DC</color>
     <color name="accentBlue">#01C3F9</color>
     <color name="white">#FFFFFF</color>
 </resources>
