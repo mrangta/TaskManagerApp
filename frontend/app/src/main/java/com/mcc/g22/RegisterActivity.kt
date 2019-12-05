@@ -23,6 +23,12 @@ import kotlin.math.floor
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View.OnFocusChangeListener
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 
 
@@ -45,7 +51,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         back_login_register.setOnClickListener{
-            startActivity(Intent(this@RegisterActivity , RegisterActivity :: class.java))
+            startActivity(Intent(this@RegisterActivity , LoginActivity :: class.java))
         }
 
         // select photo for profile
@@ -56,6 +62,46 @@ class RegisterActivity : AppCompatActivity() {
             startActivityForResult(intent, 0)
 
         }
+
+        displayName_register_editText.setOnFocusChangeListener { _ , hasFocus ->
+            var username = displayName_register_editText.text.toString()
+            if (!hasFocus) {
+                Toast.makeText(this, "Got the focus", Toast.LENGTH_LONG).show()
+            }
+        }
+
+       /* val username = displayName_register_editText.text.toString()
+        displayName_register_editText.addTextChangedListener(object : TextWatcher {
+            var recommendedUsername = "users are"
+            override fun afterTextChanged(s: Editable) {
+
+                if(!checkUsernameUnique(username)){
+                    Toast.makeText(this@RegisterActivity , resources.getString(R.string.usernameTaken), Toast.LENGTH_SHORT).show()
+                    for (i in 0..3){
+                        var tmp = username + createRandomAlphanumeric()
+
+                        while(!checkUsernameUnique(tmp)){
+                            tmp = username + createRandomAlphanumeric()
+                        }
+                        recommendedUsername += " , $tmp"
+                    }
+
+                }
+                if(recommendedUsername !="")
+                    displayName_register_editText.error = recommendedUsername
+            }
+
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+            }
+        })*/
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -78,7 +124,7 @@ class RegisterActivity : AppCompatActivity() {
         val password = password_register_editText.text.toString()
         val username = displayName_register_editText.text.toString()
 
-        var recommendedUsername = "You can try these user names"
+       // var recommendedUsername = "You can try these user names"
 
         if (!checkFormatEmail(email, email_register_editText))
             return
@@ -89,20 +135,6 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        if(!checkUsernameUnique(username)){
-            Toast.makeText(this , resources.getString(R.string.usernameTaken), Toast.LENGTH_SHORT).show()
-            for (i in 0..3){
-                var tmp = username + createRandomAlphanumeric()
-
-                while(!checkUsernameUnique(tmp)){
-                    tmp = username + createRandomAlphanumeric()
-                }
-                recommendedUsername += " , $tmp"
-            }
-
-           // recommended_username_textView.text = recommendedUsername
-            return
-        }
 
         progressbar_register.visibility = View.VISIBLE
 

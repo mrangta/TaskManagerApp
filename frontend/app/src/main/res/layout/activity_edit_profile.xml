@@ -40,13 +40,12 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:clickable="true"
-
-            <!--android:onClick="toggleDrawer"
-            -->
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/controls" />
+
+        <!--android:onClick="toggleDrawer"
+           -->
 
         <ImageView
             android:id="@+id/imageView5"
@@ -94,10 +93,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:clickable="true"
-               <!--
-                android:onClick="returnHome"
-                -->
                 app:srcCompat="@drawable/ic_home" />
+
+            <!--
+              android:onClick="returnHome"
+              -->
 
             <ImageView
                 android:id="@+id/imageView10"
@@ -126,6 +126,30 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 app:srcCompat="@drawable/ic_home" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_password_button"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/update_password_button"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_password_editText"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/confirm_new_password_editText"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_password_editText"/>
         </LinearLayout>
 
 
