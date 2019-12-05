@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/parent_padding"
+    android:paddingTop="@dimen/parent_top"
+    android:paddingRight="@dimen/parent_padding"
+    tools:context=".MyTasksActivity">
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/logo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/logo_symbol"
+            android:paddingTop="30dp"
+            app:srcCompat="@drawable/ic_logo" />
+
+        <ImageView
+            android:id="@+id/logo2"
+            android:layout_width="226dp"
+            android:layout_height="81dp"
+            android:contentDescription="@string/logo2"
+            android:paddingStart="@dimen/parent_top"
+            android:paddingEnd="@dimen/parent_padding"
+            app:srcCompat="@drawable/ic_logo_text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/label_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/darkGrey"
+            android:text="@string/my_tasks" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/form_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_layout">
+
+        <TextView
+            android:id="@+id/ongoing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkGrey"
+            android:text="@string/ongoing" />
+
+        <ListView
+            android:id="@+id/ongoingList"
+            android:layout_width="match_parent"
+            android:textColor="@color/lightGrey"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/pending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pending"
+            android:textColor="@color/darkGrey" />
+
+        <ListView
+            android:id="@+id/pendingList"
+            android:layout_width="match_parent"
+            android:textColor="@color/lightGrey"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/completed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/completed"
+            android:textColor="@color/darkGrey" />
+
+        <ListView
+            android:id="@+id/completedList"
+            android:layout_width="match_parent"
+            android:textColor="@color/lightGrey"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
