@@ -45,8 +45,7 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
 
     fun logOut() {
-        intent = Intent(this, CreateProjectActivity::class.java)
-        startActivity(intent)
+
     }
 
     fun toggleDrawer(view: View){
