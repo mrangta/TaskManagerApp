@@ -27,7 +27,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        //adding items in list
+        //adding projects in list
         for (i in 0..1) {
             val project = ProjectListDetails()
             project.id = i

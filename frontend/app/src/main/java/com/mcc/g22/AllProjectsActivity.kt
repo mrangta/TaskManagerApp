@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -13,11 +15,29 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
+
+    private var pRecyclerView: RecyclerView? = null
+    private var pAdapter: RecyclerView.Adapter<*>? = null
+    var listOfprojects: ArrayList<ProjectListDetails> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_projects)
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
+
+        //adding projects in list
+        for (i in 0..6) {
+            val project = ProjectListDetails()
+            project.id = i
+            project.project_title = "Project Title $i"
+            listOfprojects!!.add(project)
+        }
+        pRecyclerView = findViewById(R.id.projectRecyclerView)
+        var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        pRecyclerView!!.layoutManager = pLayoutManager
+        pAdapter = ProjectListAdapter(listOfprojects)
+        pRecyclerView!!.adapter = pAdapter
     }
 
     fun toggleDrawer(view: View){

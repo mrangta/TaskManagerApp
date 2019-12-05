@@ -80,6 +80,8 @@
     <string name="tasks">Tasks</string>
     <string name="profileSettings">Profile Settings</string>
     <string name="update_password">Update Password</string>
+    <string name="favourite_projects">Favourite Projects</string>
+    <string name="all_projects">All Projects</string>
 
 
 </resources>
