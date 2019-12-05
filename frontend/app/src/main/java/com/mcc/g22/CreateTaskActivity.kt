@@ -11,7 +11,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.android.synthetic.main.activity_create_task.bottom_nav_view
-import kotlinx.android.synthetic.main.activity_dashboard.*
 
 class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
