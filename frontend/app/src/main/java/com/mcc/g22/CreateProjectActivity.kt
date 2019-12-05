@@ -12,7 +12,9 @@ import kotlinx.android.synthetic.main.activity_my_tasks.*
 
 class CreateProjectActivity : AppCompatActivity() {
 
-    var array = arrayOf("")
+    var arrayList = ArrayList<String>()
+
+    private lateinit var adapter : ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,7 @@ class CreateProjectActivity : AppCompatActivity() {
             popupMenu.menuInflater.inflate(R.menu.project_type, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.personal ->
+                    R.id.personal ->ie
                         project_type.text = "Personal"
                     R.id.group ->
                         project_type.text = "Group"
@@ -33,23 +35,21 @@ class CreateProjectActivity : AppCompatActivity() {
             popupMenu.show()
         }
 
+        adapter = ArrayAdapter(this,
+            R.layout.keyword, arrayList)
+
+        keyword_list.adapter = adapter
+
         project_keywords.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-                addKeyword()
-                return@OnKeyListener true
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (event.action == KeyEvent.ACTION_UP) {
+                    arrayList.add(project_keywords.text.toString())
+                    adapter.notifyDataSetChanged()
+                    return@OnKeyListener true
+                }
             }
             false
         })
     }
-
-    fun addKeyword() {
-        //var list = array.toMutableList()
-        //array = arrayOfNulls(list.size)
-        val adapter = ArrayAdapter(this,
-            R.layout.keyword, array)
-
-        keyword_list.setAdapter(adapter)
-    }
-
 
 }
