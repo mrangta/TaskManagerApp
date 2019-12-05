@@ -326,6 +326,7 @@
         android:layout_width="wrap_content"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu"/>
+        app:menu="@menu/drawer_menu"
+        android:background="@drawable/menu_background"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

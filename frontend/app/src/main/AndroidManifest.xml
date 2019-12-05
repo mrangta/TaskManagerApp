@@ -14,7 +14,6 @@
         <activity android:name=".CreateProjectActivity" />
         <activity android:name=".CreateTaskActivity" />
         <activity android:name=".MyTasksActivity" />
-        <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity
             android:name=".ProfileActivity"

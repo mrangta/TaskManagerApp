@@ -66,10 +66,6 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         startActivity(intent)
     }
 
-    fun logOut() {
-
-    }
-
     fun returnHome() {
         intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
@@ -78,6 +74,11 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     fun createProject() {
         intent = Intent(this, CreateProjectActivity::class.java)
         startActivity(intent)
+    }
+
+
+    fun logOut() {
+
     }
 
     fun myTasks() {
