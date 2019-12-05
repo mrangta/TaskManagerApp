@@ -28,13 +28,14 @@ class User(val username: String, var profileImage: String = "") {
 
         private var currentUser: User? = null
 
-        fun listenToAuthState() {
+        fun listenToAuthState(ctx: Context) {
             FirebaseAuth.getInstance().addAuthStateListener {
                 val authUser = it.currentUser
                 try {
                     currentUser = User(authUser!!.displayName!!, authUser.photoUrl!!.toString())
                     currentUser!!.uid = authUser.uid
                     currentUser!!.email = authUser.email!!
+                    NotificationsService.startNotificationService(ctx)
                 } catch (e: Exception) {
                     currentUser = null
                 }
@@ -118,7 +119,7 @@ class User(val username: String, var profileImage: String = "") {
                         onProfileImageUploaded: () -> Unit, onFailure: () -> Unit) {
 
         val filename = UUID.randomUUID().toString()
-        val ref = storage.getReference(filename)
+        val ref = storage.getReference("/Images/$filename")
 
         ref.putFile(profilePhoto)
             .addOnSuccessListener {
@@ -192,7 +193,7 @@ class User(val username: String, var profileImage: String = "") {
             })
     }
 
-    fun getUsersProjects(onProjectsReady: (tasks: Set<Project>) -> Unit, onFailure: () -> Unit) {
+    fun getUsersProjects(onProjectsReady: (projects: Set<Project>) -> Unit, onFailure: () -> Unit) {
 
         database.child(uid).child("projects").ref
             .addListenerForSingleValueEvent(object : ValueEventListener {

@@ -12,4 +12,10 @@
 /captures
 .externalNativeBuild
 .cxx
+<<<<<<< HEAD
 /app/google-service*.json
+=======
+app/google-services.json
+gradle.properties
+
+>>>>>>> origin/profile-setting

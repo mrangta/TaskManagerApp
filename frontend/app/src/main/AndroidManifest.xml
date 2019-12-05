@@ -35,7 +35,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,6 +59,7 @@
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />
+        <activity android:name=".RegisterActivity" />
     </application>
 
 </manifest>
