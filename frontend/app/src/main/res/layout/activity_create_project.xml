@@ -127,7 +127,7 @@
             android:textSize="@dimen/font_size_medium" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/testView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/project_keywords"
@@ -148,11 +148,12 @@
 
         <ListView
             android:id="@+id/keyword_list"
-            android:layout_marginTop="@dimen/field_top"
-            android:layout_marginBottom="@dimen/field_top"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:textSize="@dimen/font_size_medium"/>
+            android:layout_marginTop="@dimen/field_top"
+            android:layout_marginBottom="@dimen/field_top"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/font_size_medium" />
 
         <TextView
             android:id="@+id/textView8"
