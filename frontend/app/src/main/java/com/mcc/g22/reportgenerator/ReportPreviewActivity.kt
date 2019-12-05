@@ -132,7 +132,7 @@ class ReportPreviewActivity : AppCompatActivity() {
 
                 for (task in dataSnapshot.children) {
 
-                    Task.getTaskFromDatabase(project.projectId, task.key as String,
+                    Task.getTaskFromDatabase(task.key as String,
                         {
                             for (event in task.children) {
 

@@ -4,19 +4,21 @@ import android.content.Context
 import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import java.lang.Exception
 import java.util.*
 
 class User(val username: String, var profileImage: String = "") {
 
-    var uid: String = ""
+    var email: String = ""
         private set
 
-    var projects: Set<String> = mutableSetOf()
+    var uid: String = ""
         private set
 
     companion object {
@@ -24,13 +26,26 @@ class User(val username: String, var profileImage: String = "") {
         private val database = FirebaseDatabase.getInstance()
             .reference.child("users")
 
+        private var currentUser: User? = null
+
+        fun listenToAuthState() {
+            FirebaseAuth.getInstance().addAuthStateListener {
+                val authUser = it.currentUser
+                try {
+                    currentUser = User(authUser!!.displayName!!, authUser.photoUrl!!.toString())
+                    currentUser!!.uid = authUser.uid
+                    currentUser!!.email = authUser.email!!
+                } catch (e: Exception) {
+                    currentUser = null
+                }
+            }
+        }
+
         /**
          * Return user registered on this device
          */
         fun getRegisteredUser(): User? {
-            val u =  User("test user")
-            u.uid = "SZ7PaxG8uWWKIOTN1TIv4H6E3qx2"
-            return u
+            return currentUser
         }
 
         fun resolveDisplayName(userId: String, onResolved: (displayName: String) -> Unit,
@@ -127,5 +142,81 @@ class User(val username: String, var profileImage: String = "") {
             // Load from the storage
             Glide.with(context).load(profileImage).into(targetImageView)
         }
+    }
+
+    fun getUserFavorites(onFavoritesReady: (favorites: Set<String>) -> Unit,
+                         onFailure: () -> Unit) {
+
+        database.child(uid).child("favorites").ref
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    onFailure()
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val favs = mutableSetOf<String>()
+                    for (f in dataSnapshot.children) {
+                        val fav = f.key
+                        if (fav != null) favs.add(fav)
+                    }
+                    onFavoritesReady(favs)
+                }
+            })
+    }
+
+    fun getUsersTasks(onTasksReady: (tasks: Set<Task>) -> Unit, onFailure: () -> Unit) {
+
+        database.child(uid).child("tasks").ref
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    onFailure()
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val tasks = mutableSetOf<Task>()
+                    val tasksToDownload = dataSnapshot.childrenCount.toInt()
+                    for (t in dataSnapshot.children) {
+                        if (t.key == null) continue
+                        val taskId = t.key as String
+                        Task.getTaskFromDatabase(taskId, {
+                            tasks.add(it)
+                            if (tasks.size == tasksToDownload) {
+                                onTasksReady(tasks)
+                            }
+                        }, {
+                            onFailure()
+                            return@getTaskFromDatabase
+                        })
+                    }
+                }
+            })
+    }
+
+    fun getUsersProjects(onProjectsReady: (tasks: Set<Project>) -> Unit, onFailure: () -> Unit) {
+
+        database.child(uid).child("projects").ref
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError) {
+                    onFailure()
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val projects = mutableSetOf<Project>()
+                    val projectsToDownload = dataSnapshot.childrenCount.toInt()
+                    for (t in dataSnapshot.children) {
+                        if (t.key == null) continue
+                        val projectId = t.key as String
+                        Project.fromProjectId(projectId, {
+                            projects.add(it)
+                            if (projects.size == projectsToDownload) {
+                                onProjectsReady(projects)
+                            }
+                        }, {
+                            onFailure()
+                            return@fromProjectId
+                        })
+                    }
+                }
+            })
     }
 }

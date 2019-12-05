@@ -118,34 +118,6 @@ class Project {
             }
         }
 
-        /**
-         * Fetch from the database all projects which has the currently logged user as a member.
-         *
-         * This function is blocking!
-         */
-        fun getAllUsersProjects(onProjectsFound: (projects: Set<Project>) -> Unit,
-                                onFailure: () -> Unit) {
-            val user = User.getRegisteredUser() ?: return
-
-            val projects = mutableSetOf<Project>()
-            val latch = CountDownLatch(user.projects.size)
-
-            for (projectId in user.projects) {
-                projectsRef.child(projectId).addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        onFailure()
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        projects.add(buildProjectFromDatabase(dataSnapshot))
-                        latch.countDown()
-                    }
-                })
-            }
-            latch.await()
-            onProjectsFound(projects)
-        }
-
         fun fromProjectId(projectId: String, onProjectFound: (p: Project) -> Unit,
                           onFailure: () -> Unit) {
             projectsRef.child(projectId).ref

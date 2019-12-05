@@ -72,7 +72,7 @@ class Task {
         /**
          * Read task from the database
          */
-        fun getTaskFromDatabase(projectId: String, taskId: String, onTaskReady: (task: Task) -> Unit,
+        fun getTaskFromDatabase(taskId: String, onTaskReady: (task: Task) -> Unit,
                        onFailure: () -> Unit) {
 
             val taskInDatabase = FirebaseDatabase.getInstance().reference.child("tasks")
@@ -83,6 +83,7 @@ class Task {
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val projectId = dataSnapshot.child("projectId").value as String
                     val d = dataSnapshot.child("description").value as String
                     val s = when (dataSnapshot.child("status").value) {
                         com.mcc.g22.apiclient.models.Status.pending.value -> TaskStatus.PENDING
