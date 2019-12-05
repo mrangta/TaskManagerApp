@@ -69,8 +69,14 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             R.id.nav_home -> {
                 returnHome()
             }
+            R.id.nav_fav -> {
+                myFavorites()
+            }
             R.id.nav_add -> {
                 createProject()
+            }
+            R.id.nav_project -> {
+                allProjects()
             }
             R.id.nav_tasks -> {
                 myTasks()
@@ -106,6 +112,16 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     fun myTasks() {
         intent = Intent(this, MyTasksActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun myFavorites() {
+        intent = Intent(this, FavoritesActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun allProjects() {
+        intent = Intent(this, AllProjectsActivity::class.java)
         startActivity(intent)
     }
 }
