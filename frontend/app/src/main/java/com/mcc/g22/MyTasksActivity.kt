@@ -10,7 +10,6 @@ import android.widget.ListView
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_my_tasks.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 
