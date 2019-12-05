@@ -78,10 +78,10 @@ class ReportPreviewActivity : AppCompatActivity() {
         errorMsgDialog = builder.create()
 
         // Check if we have storage permission. If not, ask for it
-        if (getStoragePermission()) runActivity()
+        if (getStoragePermission()) startGeneratingReport()
     }
 
-    private fun runActivity() {
+    private fun runActivity(displayNamesOfMembers: Set<String>) {
         // Set button font
         generateButton = findViewById(R.id.generate_report_button)
         val font = Typeface.createFromAsset(assets, "fonts/Montserrat-Bold.ttf")
@@ -109,7 +109,7 @@ class ReportPreviewActivity : AppCompatActivity() {
 
         report.append("<p><h3>Members</h3>")
         report.append("<ul>")
-        for (u in project.membersIds) {
+        for (u in displayNamesOfMembers) {
             report.append("<li>$u</li>")
         }
         report.append("</ul></p>")
@@ -121,12 +121,6 @@ class ReportPreviewActivity : AppCompatActivity() {
         val logRef = FirebaseDatabase.getInstance().reference
             .child("log").child(project.projectId)
         logRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            fun errorOccurred() {
-                runOnUiThread {
-                    generateButton.text = getString(R.string.error)
-                    errorMsgDialog.show()
-                }
-            }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 errorOccurred()
@@ -157,13 +151,7 @@ class ReportPreviewActivity : AppCompatActivity() {
                         })
                 }
 
-                thread(
-                    start = true,
-                    isDaemon = false,
-                    contextClassLoader = null,
-                    name = null,
-                    priority = -1
-                ) {
+                thread {
                     latch.await() // We can wait because this function is called
                     // in a separate thread so it won't block UI
 
@@ -308,7 +296,7 @@ class ReportPreviewActivity : AppCompatActivity() {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // permission was granted, yay!
-                    runActivity()
+                    startGeneratingReport()
                 } else {
                     // permission denied, boo!
                     Toast.makeText(applicationContext, R.string.storage_permission_needed,
@@ -326,4 +314,26 @@ class ReportPreviewActivity : AppCompatActivity() {
         }
     }
 
+    private fun startGeneratingReport() {
+        val displayNamesOfMembers = mutableSetOf<String>()
+        for (m in project.membersIds) {
+            User.resolveDisplayName(m, {
+                displayNamesOfMembers.add(it)
+
+                if (displayNamesOfMembers.size == project.membersIds.size) {
+                    runOnUiThread { runActivity(displayNamesOfMembers) }
+                }
+            }, {
+                errorOccurred()
+                return@resolveDisplayName
+            })
+        }
+    }
+
+    private fun errorOccurred() {
+        runOnUiThread {
+            generateButton.text = getString(R.string.error)
+            errorMsgDialog.show()
+        }
+    }
 }

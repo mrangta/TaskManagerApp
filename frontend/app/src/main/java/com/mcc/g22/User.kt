@@ -35,6 +35,42 @@ class User(val username: String) {
             return u
         }
 
+        fun resolveDisplayName(userId: String, onResolved: (displayName: String) -> Unit,
+                               onFailure: () -> Unit) {
+
+            database.child(userId).child("displayName").ref
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        onFailure()
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val displayName = dataSnapshot.value as String?
+                        if (displayName != null) {
+                            onResolved(displayName)
+                        } else onFailure()
+                    }
+                })
+        }
+
+        fun showProfileImageOfUserWithId(userId: String, context: Context,
+                                         targetImageView: ImageView) {
+
+            database.child(userId).child("profileImage").ref
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(databaseError: DatabaseError) {
+
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val profileImgUrl = dataSnapshot.value as String?
+                        if (profileImgUrl != null) {
+                            Glide.with(context).load(profileImgUrl).into(targetImageView)
+                        }
+                    }
+                })
+        }
+
         /**
          * Find users with display names which start with usernameStart
          *

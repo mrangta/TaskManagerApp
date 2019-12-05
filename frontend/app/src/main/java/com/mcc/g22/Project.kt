@@ -213,6 +213,17 @@ class Project {
         }
     }
 
+    fun addMemebers(newMembers: Array<User>, onDone: () -> Unit, onFailure: () -> Unit) {
+        thread {
+            try {
+                addMembers(newMembers)
+                onDone()
+            } catch (e: Exception) {
+                onFailure()
+            }
+        }
+    }
+
     /**
      * Add new member to the project
      *
@@ -220,7 +231,7 @@ class Project {
      * @throws ClientException If the API returns a client error response
      * @throws ServerException If the API returns a server error response
      */
-    fun addMembers(newMembers: Array<User>) {
+    private fun addMembers(newMembers: Array<User>) {
         if (newMembers.isEmpty()) return
 
         val usersIds = mutableListOf<String>()
@@ -231,6 +242,15 @@ class Project {
         membersIds = membersIds + usersIds
     }
 
+    fun delete(onDone: () -> Unit, onFailure: () -> Unit) {
+        thread { try {
+            deleteThisProject()
+            onDone()
+        } catch (e: Exception) {
+            onFailure()
+        }}
+    }
+
     /**
      * Delete this project in the backend. The local object is still valid!
      *
@@ -238,7 +258,7 @@ class Project {
      * @throws ClientException If the API returns a client error response
      * @throws ServerException If the API returns a server error response
      */
-    fun deleteThisProject() {
+    private fun deleteThisProject() {
         ApiClient.api.deleteProjectWithId(projectId)
     }
 
