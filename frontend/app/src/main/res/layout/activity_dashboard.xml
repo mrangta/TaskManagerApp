@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/drawer_layout"
-    tools:context=".DashboardActivity"
+    tools:context=".HomeActivity"
     tools:openDrawer="start">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
