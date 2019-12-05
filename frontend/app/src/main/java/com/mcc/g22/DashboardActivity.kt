@@ -55,10 +55,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 showProfile()
                 return true
             }
-            R.id.nav_changePassword -> {
-                changePassword()
-                return true
-            }
+
             R.id.nav_logOut -> {
                 logOut()
                 return true
@@ -74,10 +71,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
 
-    fun changePassword() {
-        intent = Intent(this, ChangePasswordActivity::class.java)
-        startActivity(intent)
-    }
+
 
     fun logOut() {
 

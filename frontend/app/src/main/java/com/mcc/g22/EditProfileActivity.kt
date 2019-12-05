@@ -26,10 +26,7 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 showProfile()
                 return true
             }
-            R.id.nav_changePassword -> {
-                changePassword()
-                return true
-            }
+
             R.id.nav_logOut -> {
                 logOut()
                 return true
@@ -45,10 +42,7 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
 
-    fun changePassword() {
-        intent = Intent(this, ChangePasswordActivity::class.java)
-        startActivity(intent)
-    }
+
 
     fun logOut() {
         intent = Intent(this, CreateProjectActivity::class.java)

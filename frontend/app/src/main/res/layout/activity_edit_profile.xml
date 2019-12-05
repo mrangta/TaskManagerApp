@@ -7,121 +7,215 @@
     android:fitsSystemWindows="true"
     android:id="@+id/drawer_layout"
     tools:context=".EditProfileActivity"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    android:paddingLeft="@dimen/dashboard_padding"
+    android:paddingRight="@dimen/dashboard_padding">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="99dp"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/profile_settings"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:clickable="true"
-            android:onClick="toggleDrawer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/controls" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="222dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="140dp"
-            android:text="@string/username"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="222dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="192dp"
-            android:text="@string/user_email"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
-        <LinearLayout
-            android:layout_width="318dp"
-            android:layout_height="63dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="50dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:clickable="true"
-                android:onClick="returnHome"
-                app:srcCompat="@drawable/ic_home" />
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/ic_home" />
+                <LinearLayout
+                    android:id="@+id/header_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/toolbar_border"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingVertical="10dp">
 
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/ic_home" />
+                    <ImageView
+                        android:id="@+id/menu_icon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="-80dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:contentDescription="@string/todo"
+                        android:focusable="true"
+                        android:onClick="toggleDrawer"
+                        app:srcCompat="@drawable/ic_controls" />
 
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/ic_home" />
+                    <TextView
+                        android:id="@+id/profile_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginEnd="130dp"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/profile_settings"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_large"
+                        android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/ic_home" />
-        </LinearLayout>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/pic_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="-60dp"
+                    android:layout_marginBottom="10dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/profile_pic"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center_horizontal"
+                        android:elevation="12dp"
+                        android:innerRadius="0dp"
+                        android:shape="ring"
+                        android:thicknessRatio="1.9"
+                        app:cardCornerRadius="80dp">
+
+                        <ImageView
+                            android:id="@+id/profile_picture"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="@string/profile_pic"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_user"></ImageView>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <ImageButton
+                        android:id="@+id/imageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="110dp"
+                        android:background="@drawable/transparent_background"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/form_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pic_layout"
+                    android:paddingHorizontal="10dp">
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:background="@drawable/view_text"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:text="John doe"
+                        android:textColor="@color/lightGrey"
+                        android:textSize="@dimen/font_size_medium"
+                        android:paddingVertical="10dp"/>
+
+                    <TextView
+                        android:id="@+id/emailaddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:background="@drawable/view_text"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:text="johndoe@gmail.com"
+                        android:textColor="@color/lightGrey"
+                        android:textSize="@dimen/font_size_medium"
+                        android:layout_marginTop="@dimen/field_top"
+                        android:paddingVertical="10dp"/>
+
+                    <TextView
+                        android:id="@+id/change_pwd_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="Change Password"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_small" />
+
+                    <EditText
+                        android:id="@+id/currentPwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="@dimen/field_top"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:autofillHints=""
+                        android:background="@drawable/edit_text"
+                        android:hint="Current Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textSize="@dimen/font_size_medium"
+                        android:textColor="@color/mediumGrey"/>
+
+                    <EditText
+                        android:id="@+id/newPwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:autofillHints=""
+                        android:background="@drawable/edit_text"
+                        android:hint="New Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textSize="@dimen/font_size_medium"
+                        android:textColor="@color/mediumGrey"
+                        />
+
+                    <EditText
+                        android:id="@+id/confirmPwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:autofillHints=""
+                        android:background="@drawable/edit_text"
+                        android:hint="Confirm New Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_medium"/>
+
+
+                    <Button
+                        android:id="@+id/updatePassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:background="@drawable/button_background"
+                        android:text="Update Password"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_size_medium"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+        </ScrollView>
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
