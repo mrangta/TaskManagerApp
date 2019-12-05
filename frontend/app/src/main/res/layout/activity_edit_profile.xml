@@ -77,52 +77,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
-        <LinearLayout
-            android:layout_width="318dp"
-            android:layout_height="63dp"
-            android:orientation="horizontal"
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/bottomNav"
+            app:labelVisibilityMode="unlabeled"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:clickable="true"
-                android:onClick="returnHome"
-                app:srcCompat="@drawable/ic_home" />
-
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/ic_home" />
-
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/ic_home" />
-
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/ic_home" />
-
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                app:srcCompat="@drawable/ic_home" />
-        </LinearLayout>
-
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:menu="@menu/bottom_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
