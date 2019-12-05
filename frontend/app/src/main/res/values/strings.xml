@@ -14,7 +14,6 @@
     <string name="profile_settings">Profile Settings</string>
     <string name="dashboard">Dashboard</string>
     <string name="dashboard_welcome">Welcome John, you have 4 tasks due today.</string>
-    <string name="task_status">TASK STATUS</string>
     <string name="completed">COMPLETED</string>
     <string name="ongoing">ONGOING</string>
     <string name="pending">PENDING</string>
@@ -39,5 +38,23 @@
     <string name="enter_name">Enter username</string>
     <string name="upload">Upload</string>
     <string name="upload_text">Upload profile pic</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="add_task">Add Task</string>
+    <string name="task_title">Task Title:</string>
+    <string name="task_description">Task Description:</string>
+    <string name="assigned_to">Assigned To:</string>
+    <string name="due_date">Due Date:</string>
+    <string name="task_status">Task Status:</string>
+    <string name="create_task">Create Task</string>
+    <string name="add_project">Add Project</string>
+    <string name="project_badge">Project Badge:</string>
+    <string name="project_title">Project Title:</string>
+    <string name="project_description">Project Description:</string>
+    <string name="project_keywords">Project Keywords:</string>
+    <string name="project_type">Project Type:</string>
+    <string name="add_members">Add Members:</string>
+    <string name="create_project">Create Project</string>
+    <string name="personal">Personal</string>
+    <string name="group">Group</string>
 
 </resources>
