@@ -11,9 +11,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 
-class User(val username: String) {
-    var profileImage: String = ""
-        private set
+class User(val username: String, var profileImage: String = "") {
 
     var uid: String = ""
         private set
