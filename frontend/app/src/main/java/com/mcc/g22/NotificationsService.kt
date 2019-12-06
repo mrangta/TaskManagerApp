@@ -175,5 +175,14 @@ class NotificationsService : Service() {
             val i = Intent(ctx, NotificationsService::class.java)
             ctx.startService(i)
         }
+
+        fun stopNotificationService(ctx: Context) {
+            if (!isServiceStarted) return
+
+            val i = Intent(ctx, NotificationsService::class.java)
+            ctx.stopService(i)
+        }
     }
+
+
 }

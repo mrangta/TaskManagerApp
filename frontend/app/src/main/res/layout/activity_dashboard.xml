@@ -11,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
 
         <LinearLayout
@@ -94,7 +93,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/montserrat_alternates"
                             android:paddingTop="20dp"
-                            android:text="@string/welcome"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="@dimen/font_size_medium" />
 
@@ -124,7 +123,7 @@
                         <ImageView
                             android:layout_height="60dp"
                             android:layout_width="match_parent"
-                            android:id="@+id/profile_picture"
+                            android:id="@+id/profile_picture_dashboard"
                             android:src="@drawable/ic_user"
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"

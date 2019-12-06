@@ -4,6 +4,7 @@ package com.mcc.g22
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.GravityCompat.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -15,10 +16,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.mcc.g22.utils.logout
-
+import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
+import kotlinx.android.synthetic.main.activity_dashboard.nav_view
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private val user = User.getRegisteredUser()
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
@@ -30,6 +35,8 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        editUserInfo()
+
         //adding items in list
         for (i in 0..1) {
             val project = ProjectListDetails()
@@ -37,6 +44,8 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             project.project_title = "Project Title $i"
             listOfprojects!!.add(project)
         }
+
+
         pRecyclerView = findViewById(R.id.projectRecyclerView)
         var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         pRecyclerView!!.layoutManager = pLayoutManager
@@ -44,6 +53,19 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         pRecyclerView!!.adapter = pAdapter
 
 
+    }
+
+    private fun editUserInfo() {
+
+
+        val newUser = FirebaseAuth.getInstance().currentUser
+      //  val user = User(newUser!!.displayName!! , newUser!!.photoUrl.toString()!!, newUser.email!!)
+       /* Log.d("" ,"USER ISSSSSS u${newUser.displayName}")
+        val name = user!!.username
+        welcome.text = (resources.getString(R.string.welcome) + name)
+
+        user.showProfileImage(this ,profile_picture_dashboard)
+*/
     }
 
     fun toggleDrawer(view: View){

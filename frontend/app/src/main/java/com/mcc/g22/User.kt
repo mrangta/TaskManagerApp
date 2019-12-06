@@ -13,10 +13,8 @@ import com.google.firebase.storage.FirebaseStorage
 import java.lang.Exception
 import java.util.*
 
-class User(val username: String, var profileImage: String = "") {
+class User(val username: String, var profileImage: String = "" , email :String) {
 
-    var email: String = ""
-        private set
 
     var uid: String = ""
         private set
@@ -32,12 +30,12 @@ class User(val username: String, var profileImage: String = "") {
             FirebaseAuth.getInstance().addAuthStateListener {
                 val authUser = it.currentUser
                 try {
-                    currentUser = User(authUser!!.displayName!!, authUser.photoUrl!!.toString())
+                    currentUser = User(authUser!!.displayName!!, authUser.photoUrl!!.toString(),  authUser.email!! )
                     currentUser!!.uid = authUser.uid
-                    currentUser!!.email = authUser.email!!
                     NotificationsService.startNotificationService(ctx)
                 } catch (e: Exception) {
                     currentUser = null
+                    NotificationsService.stopNotificationService(ctx)
                 }
             }
         }
@@ -46,6 +44,7 @@ class User(val username: String, var profileImage: String = "") {
          * Return user registered on this device
          */
         fun getRegisteredUser(): User? {
+
             return currentUser
         }
 
@@ -124,7 +123,7 @@ class User(val username: String, var profileImage: String = "") {
         ref.putFile(profilePhoto)
             .addOnSuccessListener {
                 ref.downloadUrl.addOnSuccessListener{
-                    profileImage = it.toString()
+                    profileImage = filename
                     if (uid.isNotEmpty())
                         database.child(uid).child("profileImage").setValue(profileImage)
                     onProfileImageUploaded()
@@ -141,7 +140,8 @@ class User(val username: String, var profileImage: String = "") {
             // TODO load default profile
         } else {
             // Load from the storage
-            Glide.with(context).load(profileImage).into(targetImageView)
+            val image = storage.getReference("/Images/$profileImage")
+            Glide.with(context).load(image).into(targetImageView)
         }
     }
 

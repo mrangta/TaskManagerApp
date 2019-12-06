@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.mcc.g22.utils.checkFormatEmail
@@ -125,10 +126,11 @@ class RegisterActivity : AppCompatActivity() {
 
                 if (task.isSuccessful) {
                     Toast.makeText(this, resources.getString(R.string.create_user), Toast.LENGTH_SHORT).show()
-                    login()
 
                     if (!uploadProfileImageToFirebase())
                         saveUserToFirebaseDatabase(null)
+
+                    login()
 
                 } else {
                     Toast.makeText(this, resources.getString(R.string.failed_create_user), Toast.LENGTH_SHORT ).show()
@@ -176,8 +178,10 @@ class RegisterActivity : AppCompatActivity() {
     private fun saveUserToFirebaseDatabase(profilePhotoUrl: String?) {
 
         val uid = registerAuth.uid ?: ""
-        val displayName = displayName_register_editText.text.toString()
-        val newUser = User(displayName , profilePhotoUrl!!)
+        val username = displayName_register_editText.text.toString()
+        val email = email_register_editText.text.toString()
+        Log.d("" , "EMAIL IS $email")
+        val newUser = User(username , profilePhotoUrl!!, email)
 
         val refUser = database.child(uid)
         refUser.setValue(newUser)
@@ -188,6 +192,23 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this,"Failed to add user to database${it.message}", Toast.LENGTH_SHORT).show()
 
             }
+
+        /*val user = registerAuth.currentUser
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(username)
+            .setPhotoUri(Uri.parse(profilePhotoUrl))
+            .build()
+
+        user?.updateProfile(profileUpdates)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this , "updateddddddddddd" , Toast.LENGTH_SHORT).show()
+                } else {
+                   Toast.makeText(this, "FAILED IN UPDATING", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+         */
     }
 
 

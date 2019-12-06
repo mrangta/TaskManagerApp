@@ -104,7 +104,7 @@
     <string name="create_project">Create Project</string>
     <string name="personal">Personal</string>
     <string name="group">Group</string>
-    <string name="welcome">Welcome John,</string>
+    <string name="welcome">Welcome</string>
     <string name="due_tasks">you have <u>4 tasks</u> due today</string>
     <string name="tasks_status">TASKS STATUS</string>
     <string name="todo">TODO</string>

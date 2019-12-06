@@ -49,7 +49,7 @@ class Task {
     var status: TaskStatus = TaskStatus.PENDING
         private set
 
-    private var assignedUsers: MutableSet<User> = mutableSetOf()
+    private var assignedUsersIds: MutableSet<String> = mutableSetOf()
     private var taskId: String = ""
 
     private var statusHasChanged: Boolean = false
@@ -99,7 +99,7 @@ class Task {
                     val task = createTask(projectId, d, Instant.parse(deadline)!!)
 
                     for (u in dataSnapshot.child("users").children) {
-                        task.assignedUsers.add( User(u.key.toString()) )
+                        task.assignedUsersIds.add( u.key.toString() )
                     }
                     task.status = s
                     task.taskId = taskId
@@ -125,13 +125,13 @@ class Task {
         /**
          * Create task with assigned users. If number of the users is > 0, task in on-going
          */
-        fun createTask(projectId: String, description: String, deadline: Instant, assignedUsers: MutableSet<User>): Task {
+        fun createTask(projectId: String, description: String, deadline: Instant, assignedUsers: MutableSet<String>): Task {
             val t = Task()
             t.projectId = projectId
             t.description = description
             t.deadline = deadline
-            t.assignedUsers = assignedUsers
-            if (t.assignedUsers.isNotEmpty()) {
+            t.assignedUsersIds = assignedUsers
+            if (t.assignedUsersIds.isNotEmpty()) {
                 t.status = TaskStatus.ON_GOING
             }
             t.taskHasBeenCreated = true
@@ -225,8 +225,8 @@ class Task {
      * Assign new user to the task
      */
     fun assignUser(u: User) {
-        assignedUsers.add(u)
-        if (assignedUsers.size == 1 && status == TaskStatus.PENDING) {
+        assignedUsersIds.add(u.uid)
+        if (assignedUsersIds.size == 1 && status == TaskStatus.PENDING) {
             status = TaskStatus.ON_GOING
             statusHasChanged = true
         }
@@ -236,9 +236,9 @@ class Task {
     /**
      * Assigned many users to the task
      */
-    fun assignUsers(users: Array<User>) {
-        assignedUsers.addAll(users)
-        if (assignedUsers.size >= 1 && status == TaskStatus.PENDING) {
+    fun assignUsers(users: Array<String>) {
+        assignedUsersIds.addAll(users)
+        if (assignedUsersIds.size >= 1 && status == TaskStatus.PENDING) {
             status = TaskStatus.ON_GOING
             statusHasChanged = true
         }
@@ -249,8 +249,8 @@ class Task {
      * Remove user from the task
      */
     fun removeUser(u: User) {
-        assignedUsers.remove(u)
-        if (assignedUsers.isEmpty() && status == TaskStatus.ON_GOING) {
+        assignedUsersIds.remove(u.uid)
+        if (assignedUsersIds.isEmpty() && status == TaskStatus.ON_GOING) {
             status = TaskStatus.PENDING
         }
     }
@@ -258,8 +258,8 @@ class Task {
     /**
      * Return users assigned to this task.
      */
-    fun getAssignedUsers(): MutableSet<User> {
-        return assignedUsers
+    fun getAssignedUsers(): MutableSet<String> {
+        return assignedUsersIds
     }
 
     /** Set reminder of deadline for the task.
@@ -356,9 +356,7 @@ class Task {
                 .child(taskId).child("description").setValue(description)
         }
         if (usersHaveBeenAssigned) {
-            val usersIds = mutableListOf<String>()
-            assignedUsers.forEach { usersIds.add(it.uid) }
-            ApiClient.api.assignUsersToTask(taskId, InlineObject2(userIds = usersIds.toTypedArray()))
+            ApiClient.api.assignUsersToTask(taskId, InlineObject2(userIds = assignedUsersIds.toTypedArray()))
         }
     }
 
