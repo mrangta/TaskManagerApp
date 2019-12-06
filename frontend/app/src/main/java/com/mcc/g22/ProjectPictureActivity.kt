@@ -44,10 +44,12 @@ class ProjectPictureActivity : AppCompatActivity(),
 
         val list = ArrayList<ImageModel>()
 
-        for (i in 0..1) {
+        var i = 0
+        while (i < imageList.size) {
             val imageModel = ImageModel()
             imageModel.setImage_drawables(imageList[i])
             list.add(imageModel)
+            i++
         }
 
         return list
