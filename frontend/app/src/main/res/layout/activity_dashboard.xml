@@ -49,8 +49,7 @@
                         android:id="@+id/menu_icon"
                         android:layout_width="0dp"
                         android:layout_height="25dp"
-                        android:layout_marginStart="-100dp"
-                        android:layout_marginEnd="0dp"
+                        android:layout_gravity="left"
                         android:layout_weight="1"
                         android:clickable="true"
                         android:contentDescription="@string/todo"
@@ -62,8 +61,8 @@
                         android:id="@+id/dashboard_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginEnd="130dp"
+                        android:gravity="center_horizontal"
+                        android:paddingHorizontal="110dp"
                         android:fontFamily="@font/montserrat_alternates"
                         android:text="@string/dashboard"
                         android:textColor="@color/darkGrey"
@@ -123,8 +122,10 @@
                         <ImageView
                             android:layout_height="60dp"
                             android:layout_width="match_parent"
+
                             android:id="@+id/profile_picture_dashboard"
                             android:src="@drawable/ic_user"
+
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"
                             android:scaleType="centerCrop">
@@ -297,10 +298,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/projectRecyclerView"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="50dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/projectRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </ScrollView>
+
+
             </LinearLayout>
 
 
@@ -326,6 +341,7 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu"
-        android:background="@drawable/menu_background"/>
+        android:background="@drawable/menu_background"
+        app:itemTextColor="@color/white"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

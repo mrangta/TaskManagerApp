@@ -5,38 +5,54 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.ListView
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_my_tasks.*
+import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
+import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
+import kotlinx.android.synthetic.main.activity_project_picture.*
 
-class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+class ProjectPictureActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private var pRecyclerView: RecyclerView? = null
-    private var pAdapter: RecyclerView.Adapter<*>? = null
-    var listOfprojects: ArrayList<ProjectListDetails> = ArrayList()
+    private var customAdapter: CustomAdapter? = null
+    private var imageModelArrayList: ArrayList<ImageModel>? = null
+
+    var imageList = intArrayOf(R.drawable.controls, R.drawable.ic_home)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_favorites)
+        setContentView(R.layout.activity_project_picture)
+
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        //adding projects in list
-        for (i in 0..6) {
-            val project = ProjectListDetails()
-            project.id = i
-            project.project_title = "Project Title $i"
-            listOfprojects!!.add(project)
+        imageModelArrayList = populateList()
+        customAdapter = CustomAdapter(this, imageModelArrayList!!)
+        today_list!!.adapter = customAdapter
+        yesterday_list!!.adapter = customAdapter
+        older_list!!.adapter = customAdapter
+    }
+
+    private fun populateList(): ArrayList<ImageModel> {
+
+        val list = ArrayList<ImageModel>()
+
+        var i = 0
+        while (i < imageList.size) {
+            val imageModel = ImageModel()
+            imageModel.setImage_drawables(imageList[i])
+            list.add(imageModel)
+            i++
         }
-        pRecyclerView = findViewById(R.id.projectRecyclerView)
-        var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        pRecyclerView!!.layoutManager = pLayoutManager
-        pAdapter = ProjectListAdapter(listOfprojects)
-        pRecyclerView!!.adapter = pAdapter
+
+        return list
     }
 
     fun toggleDrawer(view: View){
@@ -108,6 +124,26 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     fun allProjects() {
         intent = Intent(this, AllProjectsActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun createTask(view: View) {
+        intent = Intent(this, CreateTaskActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun tasksTab(view: View) {
+        intent = Intent(this, ProjectTasksActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun picturesTab(view: View) {
+        intent = Intent(this, ProjectPictureActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun filesTab(view: View) {
+        intent = Intent(this, ProjectFilesActivity::class.java)
         startActivity(intent)
     }
 }

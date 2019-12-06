@@ -38,6 +38,9 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         editUserInfo()
 
         //adding items in list
+
+        //adding projects in list
+
         for (i in 0..1) {
             val project = ProjectListDetails()
             project.id = i

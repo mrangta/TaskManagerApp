@@ -5,38 +5,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_my_tasks.*
 
-class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private var pRecyclerView: RecyclerView? = null
-    private var pAdapter: RecyclerView.Adapter<*>? = null
-    var listOfprojects: ArrayList<ProjectListDetails> = ArrayList()
+    var array = arrayOf("Create backend for the project", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_favorites)
+        setContentView(R.layout.activity_project_tasks)
+
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        //adding projects in list
-        for (i in 0..6) {
-            val project = ProjectListDetails()
-            project.id = i
-            project.project_title = "Project Title $i"
-            listOfprojects!!.add(project)
-        }
-        pRecyclerView = findViewById(R.id.projectRecyclerView)
-        var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        pRecyclerView!!.layoutManager = pLayoutManager
-        pAdapter = ProjectListAdapter(listOfprojects)
-        pRecyclerView!!.adapter = pAdapter
+        val adapter = ArrayAdapter(this,
+            R.layout.task, array)
+
+        ongoingList.setAdapter(adapter)
+        pendingList.setAdapter(adapter)
+        completedList.setAdapter(adapter)
     }
 
     fun toggleDrawer(view: View){
@@ -108,6 +100,26 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     fun allProjects() {
         intent = Intent(this, AllProjectsActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun createTask(view: View) {
+        intent = Intent(this, CreateTaskActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun tasksTab(view: View) {
+        intent = Intent(this, ProjectTasksActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun picturesTab(view: View) {
+        intent = Intent(this, ProjectPictureActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun filesTab(view: View) {
+        intent = Intent(this, ProjectFilesActivity::class.java)
         startActivity(intent)
     }
 }

@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 class MyTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    var array = arrayOf("Create backend for the project", "Write documentation")
+    var array = arrayOf("Create backend for the project", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

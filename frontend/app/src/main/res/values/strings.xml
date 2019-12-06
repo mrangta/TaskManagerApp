@@ -116,7 +116,7 @@
     <string name="expand_all">Expand All</string>
     <string name="member1">member1</string>
     <string name="view_tasks">VIEW TASKS</string>
-    <string name="project_badge">project_badge</string>
+    <string name="project_badge">Project Badge</string>
     <string name="member2">member2</string>
     <string name="member3">member3</string>
     <string name="trash">trash</string>
@@ -129,5 +129,16 @@
     <string name="tasks">Tasks</string>
     <string name="profileSettings">Profile Settings</string>
     <string name="update_password">Update Password</string>
+    <string name="favourite_projects">Favourite Projects</string>
+    <string name="all_projects">All Projects</string>
+    <string name="sample_description">We’re not just passionate purveyors of coffee, but everything else that goes with a full and rewarding coffeehouse experience. We also offer a selection of premium teas, ﬁne pastries and other delectable treats to please the taste buds.</string>
+    <string name="pictures">Pictures</string>
+    <string name="files">Files</string>
+    <string name="all_tasks">All Tasks</string>
+    <string name="upload_picture">Upload Picture</string>
+    <string name="today">Today:</string>
+    <string name="yesterday">Yesterday:</string>
+    <string name="older">Older:</string>
+    <string name="upload_file">Upload Files</string>
 
 </resources>

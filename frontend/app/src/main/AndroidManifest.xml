@@ -40,6 +40,10 @@
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".AllProjectsActivity"></activity>
+
+        <activity android:name=".ProjectFilesActivity"></activity>
+        <activity android:name=".ProjectPictureActivity" />
+        <activity android:name=".ProjectTasksActivity" />
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".CreateProjectActivity" />
         <activity android:name=".CreateTaskActivity" />
