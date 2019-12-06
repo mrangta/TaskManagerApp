@@ -5,22 +5,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.View.VISIBLE
+import android.widget.ArrayAdapter
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
-import kotlinx.android.synthetic.main.activity_edit_profile.*
-import kotlinx.android.synthetic.main.activity_edit_profile.nav_view
+import kotlinx.android.synthetic.main.activity_my_tasks.*
 
-class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
+
+    var array = arrayOf("Create backend for the project", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
+        setContentView(R.layout.activity_project_tasks)
+
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
+
+        val adapter = ArrayAdapter(this,
+            R.layout.task, array)
+
+        ongoingList.setAdapter(adapter)
+        pendingList.setAdapter(adapter)
+        completedList.setAdapter(adapter)
     }
 
     fun toggleDrawer(view: View){
@@ -66,6 +74,10 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         startActivity(intent)
     }
 
+    fun logOut() {
+
+    }
+
     fun returnHome() {
         intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
@@ -73,12 +85,6 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     fun createProject() {
         intent = Intent(this, CreateProjectActivity::class.java)
-        startActivity(intent)
-    }
-
-
-    fun logOut() {
-        intent = Intent(this, ProjectTasksActivity::class.java)
         startActivity(intent)
     }
 
@@ -97,5 +103,23 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         startActivity(intent)
     }
 
+    fun createTask(view: View) {
+        intent = Intent(this, CreateTaskActivity::class.java)
+        startActivity(intent)
+    }
 
+    fun tasksTab(view: View) {
+        intent = Intent(this, ProjectTasksActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun picturesTab(view: View) {
+        intent = Intent(this, ProjectPictureActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun filesTab(view: View) {
+        intent = Intent(this, ProjectFilesActivity::class.java)
+        startActivity(intent)
+    }
 }

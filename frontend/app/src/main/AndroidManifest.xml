@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AllProjectsActivity"></activity>
+        <activity android:name=".ProjectFilesActivity"></activity>
+        <activity android:name=".ProjectPictureActivity" />
+        <activity android:name=".RecyclerViewListener" />
+        <activity android:name=".ProjectTasksActivity" />
+        <activity android:name=".AllProjectsActivity" />
         <activity android:name=".FavoritesActivity" />
         <activity android:name=".CreateProjectActivity" />
         <activity android:name=".CreateTaskActivity" />

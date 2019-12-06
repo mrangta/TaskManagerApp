@@ -82,6 +82,13 @@
     <string name="update_password">Update Password</string>
     <string name="favourite_projects">Favourite Projects</string>
     <string name="all_projects">All Projects</string>
-
+    <string name="sample_description">We’re not just passionate purveyors of coffee, but everything else that goes with a full and rewarding coffeehouse experience. We also offer a selection of premium teas, ﬁne pastries and other delectable treats to please the taste buds.</string>
+    <string name="pictures">Pictures</string>
+    <string name="files">Files</string>
+    <string name="all_tasks">All Tasks</string>
+    <string name="upload_picture">Upload Picture</string>
+    <string name="today">Today:</string>
+    <string name="yesterday">Yesterday:</string>
+    <string name="older">Older:</string>
 
 </resources>
