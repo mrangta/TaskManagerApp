@@ -2,7 +2,16 @@ package com.mcc.g22
 
 class ImageModel {
 
+    var name: String? = null
     var image_drawable: Int = 0
+
+    fun getNames(): String {
+        return name.toString()
+    }
+
+    fun setNames(name: String) {
+        this.name = name
+    }
 
     fun getImage_drawables(): Int {
         return image_drawable

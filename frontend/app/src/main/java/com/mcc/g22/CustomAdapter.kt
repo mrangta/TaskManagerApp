@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import android.widget.TextView
 import java.util.ArrayList
 
 class CustomAdapter(private val context: Context, private val imageModelArrayList: ArrayList<ImageModel>) : BaseAdapter() {
@@ -41,6 +42,7 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView = inflater.inflate(R.layout.image, null, true)
 
+            holder.tvname = convertView!!.findViewById(R.id.name) as TextView
             holder.iv = convertView.findViewById(R.id.imgView) as ImageView
 
             convertView.tag = holder
@@ -49,6 +51,7 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
             holder = convertView.tag as ViewHolder
         }
 
+        holder.tvname!!.setText(imageModelArrayList[position].getNames())
         holder.iv!!.setImageResource(imageModelArrayList[position].getImage_drawables())
 
         return convertView!!
@@ -56,6 +59,7 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
 
     private inner class ViewHolder {
 
+        var tvname: TextView? = null
         internal var iv: ImageView? = null
 
     }
