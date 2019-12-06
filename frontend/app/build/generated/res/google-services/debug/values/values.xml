@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">742991704675-lvc3a5sagj5f7aoodcj21cp1a1u0sv1u.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://mcc-fall-2019-g22.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">742991704675</string>
+    <string name="google_api_key" translatable="false">AIzaSyDuoXl4A3hURJALLQ17r6hMBMUzZPf8Eqo</string>
+    <string name="google_app_id" translatable="false">1:742991704675:android:19c2a32515e66f8283be56</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDuoXl4A3hURJALLQ17r6hMBMUzZPf8Eqo</string>
+    <string name="google_storage_bucket" translatable="false">mcc-fall-2019-g22.appspot.com</string>
+    <string name="project_id" translatable="false">mcc-fall-2019-g22</string>
+</resources>

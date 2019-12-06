@@ -58,7 +58,9 @@
             app:srcCompat="@drawable/ic_cloud_image" />
     </LinearLayout>
     <LinearLayout
+
         android:id="@+id/tagLine_layout"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -97,6 +99,7 @@
 
         <EditText
             android:id="@+id/email_resetPW_editText"
+            app:layout_constraintTop_toBottomOf="@+id/tagLline_layout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="@dimen/field_top"

@@ -7,6 +7,9 @@
     <dimen name="cloud_end">-120dp</dimen>
     <dimen name="text_padding">15dp</dimen>
 
+    <dimen name="dashboard_padding">5dp</dimen>
+
+
     <dimen name="font_size_extra_small">8sp</dimen>
     <dimen name="font_size_small">10sp</dimen>
     <dimen name="font_size_medium">12sp</dimen>

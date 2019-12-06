@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Task Manager</string>
+
     <string name="channel_name">Task Manager Notifications</string>
     <string name="channel_description">Notifications from Task Manager</string>
     <string name="added_to_project_notif_title">You\'ve been added to the project!</string>
@@ -63,7 +64,6 @@
     <string name="enter_name">Enter username</string>
     <string name="upload">Upload</string>
     <string name="upload_text">Upload profile pic</string>
-
     <string name="back_to_login">Back to Login</string>
     <string name="displayName">Display name</string>
     <string name="email">Email address</string>
@@ -88,4 +88,46 @@
     <string name="invalid_password">Invalid Password</string>
     <string name="password_not_match">Password doesn\'t match!</string>
     <string name="password_updated">Password updated successfully</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="add_task">Add Task</string>
+    <string name="task_title">Task Title:</string>
+    <string name="task_description">Task Description:</string>
+    <string name="assigned_to">Assigned To:</string>
+    <string name="due_date">Due Date:</string>
+    <string name="create_task">Create Task</string>
+    <string name="add_project">Add Project</string>
+    <string name="project_title">Project Title:</string>
+    <string name="project_description">Project Description:</string>
+    <string name="project_keywords">Project Keywords:</string>
+    <string name="project_type">Project Type:</string>
+    <string name="add_members">Add Members:</string>
+    <string name="create_project">Create Project</string>
+    <string name="personal">Personal</string>
+    <string name="group">Group</string>
+    <string name="welcome">Welcome John,</string>
+    <string name="due_tasks">you have <u>4 tasks</u> due today</string>
+    <string name="tasks_status">TASKS STATUS</string>
+    <string name="todo">TODO</string>
+    <string name="profile_pic">profile_pic</string>
+    <string name="completed_counts">20</string>
+    <string name="ongoing_counts">4</string>
+    <string name="pending_counts">2</string>
+    <string name="recently_accessed_projects">RECENTLY ACCESSED PROJECTS</string>
+    <string name="expand_all">Expand All</string>
+    <string name="member1">member1</string>
+    <string name="view_tasks">VIEW TASKS</string>
+    <string name="project_badge">project_badge</string>
+    <string name="member2">member2</string>
+    <string name="member3">member3</string>
+    <string name="trash">trash</string>
+    <string name="last_modified">Last modified:</string>
+    <string name="_22_11_2019">22/11/2019</string>
+    <string name="home">Home</string>
+    <string name="fav">Fav</string>
+    <string name="add">Add</string>
+    <string name="projects">Projects</string>
+    <string name="tasks">Tasks</string>
+    <string name="profileSettings">Profile Settings</string>
+    <string name="update_password">Update Password</string>
+
 </resources>

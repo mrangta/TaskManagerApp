@@ -4,10 +4,8 @@
         <menu>
             <item
                 android:id="@+id/nav_profile"
-                android:title="@string/edit_profile" />
-            <item
-                android:id="@+id/nav_changePassword"
-                android:title="@string/change_password" />
+                android:title="@string/profileSettings" />
+
             <item
                 android:id="@+id/nav_logOut"
                 android:title="@string/logOut" />
