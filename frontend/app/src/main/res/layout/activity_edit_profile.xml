@@ -91,7 +91,7 @@
                             android:layout_centerHorizontal="true"
                             android:contentDescription="@string/profile_pic"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_user"></ImageView>
+                            app:srcCompat="@drawable/ic_user"></ImageView>
 
                     </androidx.cardview.widget.CardView>
 
