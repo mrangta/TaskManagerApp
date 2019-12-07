@@ -141,4 +141,5 @@
     <string name="older">Older:</string>
     <string name="upload_file">Upload Files</string>
     <string name="pick_date">Pick Date</string>
+    <string name="creating_a_project">Creating a project...</string>
 </resources>

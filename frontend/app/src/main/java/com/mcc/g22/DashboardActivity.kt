@@ -53,27 +53,28 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
             currentUser.showProfileImage(this , profile_picture_dashboard)
             currentUser.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
+            currentUser.getUsersProjects({
+
+                runOnUiThread {
+                            //adding projects in list
+                            pRecyclerView = findViewById(R.id.projectRecyclerView)
+                            val pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                            pRecyclerView!!.layoutManager = pLayoutManager
+                            pAdapter = ProjectListAdapter(it.toMutableList() as java.util.ArrayList<Project>)
+                            { itemDto: Project, position: Int ->
+                                intent = Intent(this, ProjectTasksActivity::class.java)
+                                intent.putExtra("project_title", listOfprojects[position].project_title)
+                                startActivity(intent)
+                            }
+                            pRecyclerView!!.adapter = pAdapter
+                        }
+                }, {
+
+                    Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
+                })
          },{ })
 
-        User.getRegisteredUser()!!.getUsersProjects({
-
-            runOnUiThread {
-                //adding projects in list
-                pRecyclerView = findViewById(R.id.projectRecyclerView)
-                val pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-                pRecyclerView!!.layoutManager = pLayoutManager
-                pAdapter = ProjectListAdapter(it.toMutableList() as java.util.ArrayList<Project>)
-                { itemDto: Project, position: Int ->
-                    intent = Intent(this, ProjectTasksActivity::class.java)
-                    intent.putExtra("project_title", listOfprojects[position].project_title)
-                    startActivity(intent)
-                }
-                pRecyclerView!!.adapter = pAdapter
-            }
-        }, {
-
-            Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
-        })
     }
 
     private fun getUserInfo(onLogedIn: (user : User) -> Unit , onLogedOut:() -> Unit) {

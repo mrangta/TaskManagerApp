@@ -161,24 +161,33 @@ class User(val username: String = "", var profileImage: String = "" , var email:
         }
     }
 
-    fun getUserFavorites(onFavoritesReady: (favorites: Set<String>) -> Unit,
+    fun getUserFavorites(onFavoritesReady: (favorites: Set<Project>) -> Unit,
                          onFailure: () -> Unit) {
 
         database.child(uid).child("favorites").ref
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(databaseError: DatabaseError) {
-                    onFailure()
-                }
-
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val favs = mutableSetOf<String>()
-                    for (f in dataSnapshot.children) {
-                        val fav = f.key
-                        if (fav != null) favs.add(fav)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        onFailure()
                     }
-                    onFavoritesReady(favs)
-                }
-            })
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val projects = mutableSetOf<Project>()
+                        val projectsToDownload = dataSnapshot.childrenCount.toInt()
+                        for (t in dataSnapshot.children) {
+                            if (t.key == null) continue
+                            val projectId = t.key as String
+                            Project.fromProjectId(projectId, {
+                                projects.add(it)
+                                if (projects.size == projectsToDownload) {
+                                    onFavoritesReady(projects)
+                                }
+                            }, {
+                                onFailure()
+                                return@fromProjectId
+                            })
+                        }
+                    }
+                })
     }
 
     fun getUsersTasks(onTasksReady: (tasks: Set<Task>) -> Unit, onFailure: () -> Unit) {
