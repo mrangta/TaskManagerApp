@@ -20,6 +20,7 @@
         <activity android:name=".CreateTaskActivity" />
         <activity android:name=".MyTasksActivity" />
         <activity android:name=".EditProfileActivity" />
+        <activity android:name=".SingleTaskActivity" />
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
