@@ -15,15 +15,23 @@ import com.google.android.material.navigation.NavigationView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.mcc.g22.utils.logout
 import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
 import kotlinx.android.synthetic.main.activity_dashboard.nav_view
+import kotlinx.android.synthetic.main.activity_edit_profile.*
+import kotlinx.android.synthetic.main.nav_header.*
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private val user = User.getRegisteredUser()
+    private var uid = FirebaseAuth.getInstance().currentUser!!.uid
+    private val database = FirebaseDatabase.getInstance()
+    private lateinit var currentUser :User
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
@@ -35,7 +43,12 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        editUserInfo()
+        getUserInfo({
+            currentUser = it
+            welcome.text = (resources.getString(R.string.welcome) + "  " + currentUser!!.username)
+            currentUser.showProfileImage(this , profile_picture_dashboard)
+            username_menu_textView.text = currentUser.username
+        },{ })
 
         //adding items in list
 
@@ -58,18 +71,26 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     }
 
-    private fun editUserInfo() {
+    private fun getUserInfo(onLogedIn: (user : User) -> Unit , onLogedOut:() -> Unit) {
 
 
-        val newUser = FirebaseAuth.getInstance().currentUser
-      //  val user = User(newUser!!.displayName!! , newUser!!.photoUrl.toString()!!, newUser.email!!)
-       /* Log.d("" ,"USER ISSSSSS u${newUser.displayName}")
-        val name = user!!.username
-        welcome.text = (resources.getString(R.string.welcome) + name)
+        database.getReference("users").child(uid).addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+                    val user = dataSnapshot.getValue(User::class.java)!!
+                    currentUser = user
+                   // Log.d("" ,"HEYYYYYYY ${currentUser.username}")
+                    onLogedIn(user)
+                  }
+                else onLogedOut()
+            }
+            override fun onCancelled(error: DatabaseError) {
+                onLogedOut()
+            }
+        })
 
-        user.showProfileImage(this ,profile_picture_dashboard)
-*/
     }
+
 
     fun toggleDrawer(view: View){
         if(drawer_layout.isDrawerOpen(START)) {

@@ -2,6 +2,7 @@ package com.mcc.g22
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -13,7 +14,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.lang.Exception
 import java.util.*
 
-class User(val username: String, var profileImage: String = "" , email :String) {
+class User(val username: String = "", var profileImage: String = "" , email :String = "") {
 
 
     var uid: String = ""
@@ -38,14 +39,30 @@ class User(val username: String, var profileImage: String = "" , email :String) 
                     NotificationsService.stopNotificationService(ctx)
                 }
             }
+
+
         }
 
         /**
          * Return user registered on this device
          */
-        fun getRegisteredUser(): User? {
+        fun getRegisteredUser():User?{
 
             return currentUser
+           /* val uid = FirebaseAuth.getInstance().currentUser!!.uid
+            database.child(uid).addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        val user = dataSnapshot.getValue(User::class.java)!!
+                        currentUser = user
+                        onLogedIn(user)
+                    }
+                    else onLogedOut()
+                }
+                override fun onCancelled(error: DatabaseError) {
+                        onLogedOut
+                }
+            })*/
         }
 
         fun resolveDisplayName(userId: String, onResolved: (displayName: String) -> Unit,
@@ -94,9 +111,9 @@ class User(val username: String, var profileImage: String = "" , email :String) 
                            onFailure: () -> Unit,
                            limitNumberOfResults: Int = 50) {
             val usersRef = database.orderByKey().startAt(usernameStart)
-                                .endAt(usernameStart + "\uf8ff")
-                                .limitToFirst(limitNumberOfResults)
-                                .ref
+                .endAt(usernameStart + "\uf8ff")
+                .limitToFirst(limitNumberOfResults)
+                .ref
 
             usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {

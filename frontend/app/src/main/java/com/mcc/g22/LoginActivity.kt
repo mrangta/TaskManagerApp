@@ -2,6 +2,7 @@ package com.mcc.g22
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +20,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         User.listenToAuthState(this)
-
         loginAuth = FirebaseAuth.getInstance()
         login_button.setOnClickListener {
             loginUser()
