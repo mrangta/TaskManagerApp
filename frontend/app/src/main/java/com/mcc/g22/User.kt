@@ -95,7 +95,9 @@ class User(val username: String = "", var profileImage: String = "" , var email:
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val profileImgUrl = dataSnapshot.value as String?
                         if (profileImgUrl != null) {
-                            Glide.with(context).load(profileImgUrl).into(targetImageView)
+
+                            val image = storage.getReference("/Images/$profileImgUrl")
+                            Glide.with(context).load(image).into(targetImageView)
                         }
                     }
                 })
