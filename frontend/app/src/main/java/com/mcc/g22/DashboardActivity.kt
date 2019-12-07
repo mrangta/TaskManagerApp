@@ -43,15 +43,12 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        currentUser = User.getRegisteredUser()!!
-       /* getUserInfo({
+        getUserInfo({
             currentUser = it
             welcome.text = (resources.getString(R.string.welcome) + "  " + currentUser!!.username)
             currentUser.showProfileImage(this , profile_picture_dashboard)
             username_menu_textView.text = currentUser.username
         },{ })
-*/
-        getUserInfo()
 
         //adding items in list
 
@@ -74,17 +71,30 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     }
 
-    private fun getUserInfo() {
+    private fun getUserInfo(onLogedIn: (user : User) -> Unit , onLogedOut:() -> Unit) {
 
-        var username = currentUser!!.username
-        username_menu_textView.text = ("" + username)
-        welcome.text = (resources.getString(R.string.welcome) + "  " + username)
-        Log.d("" , "USERNAME IS ${resources.getString(R.string.welcome) + "  " + username}")
 
-        currentUser!!.showProfileImage(this , profile_picture_dashboard)
+        //val newUser = FirebaseAuth.getInstance().currentUser
+        //  val user = User(newUser!!.displayName!! , newUser!!.photoUrl.toString()!!, newUser.email!!)
+        //Log.d("" ,"USER ISSSSSS u${newUser.displayName}")
+         //val name = newUser!!.username
+         //welcome.text = (resources.getString(R.string.welcome) + name)
+         database.getReference("users").child(uid).addListenerForSingleValueEvent(object: ValueEventListener{
+             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                 if(dataSnapshot.exists()){
+                     val user = dataSnapshot.getValue(User::class.java)!!
+                     currentUser = user
+                    // Log.d("" ,"HEYYYYYYY ${currentUser.username}")
+                     onLogedIn(user)
+                   }
+                 else onLogedOut()
+             }
+             override fun onCancelled(error: DatabaseError) {
+                 onLogedOut()
+             }
+         })
 
     }
-
 
     fun toggleDrawer(view: View){
         if(drawer_layout.isDrawerOpen(START)) {

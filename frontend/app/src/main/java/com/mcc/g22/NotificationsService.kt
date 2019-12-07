@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import com.google.firebase.database.*
+import java.lang.Exception
 
 class NotificationsService : Service() {
     private lateinit var assignChangedListener: ChildEventListener
@@ -101,8 +102,12 @@ class NotificationsService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        database.removeEventListener(projectsChangedListener)
-        database.removeEventListener(assignChangedListener)
+        try {
+            database.removeEventListener(projectsChangedListener)
+            database.removeEventListener(assignChangedListener)
+        } catch (e: Exception) {
+
+        }
     }
 
     override fun onBind(intent: Intent): IBinder {

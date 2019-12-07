@@ -277,6 +277,39 @@
                             android:drawableRight="@drawable/ic_down_arrow"/>
 
                         <TextView
+                            android:id="@+id/due_date_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/montserrat_alternates"
+                            android:text="@string/due_date"
+                            android:textColor="@color/mediumGrey"
+                            android:textSize="@dimen/font_size_small"
+                            android:paddingEnd="40dp"/>
+
+
+                        <Button
+                            android:id="@+id/pick_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="38dp"
+                            android:text="@string/pick_date" />
+
+                        <EditText
+                            android:id="@+id/due_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="@dimen/field_top"
+                            android:layout_marginBottom="@dimen/field_top"
+                            android:autofillHints=""
+                            android:background="@drawable/edit_text"
+                            android:inputType="date"
+                            android:paddingLeft="@dimen/text_padding"
+                            android:paddingRight="@dimen/text_padding"
+                            android:textSize="@dimen/font_size_medium"
+                            android:fontFamily="@font/montserrat_alternates" />
+
+
+                        <TextView
                             android:id="@+id/project_add_members_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -289,8 +322,8 @@
 
 
 
-                        <TextView
-                            android:id="@+id/add_members"
+                        <AutoCompleteTextView
+                            android:id="@+id/add_members_complete_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginTop="@dimen/field_top"
@@ -299,7 +332,18 @@
                             android:clickable="true"
                             android:paddingLeft="@dimen/text_padding"
                             android:paddingRight="@dimen/text_padding"
-                            android:textSize="@dimen/font_size_medium" />
+                            android:textSize="@dimen/font_size_medium"
+                            android:completionThreshold="3"/>
+
+                        <ListView
+                            android:id="@+id/members_list_create_project"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:scrollbars="vertical"
+                            android:textSize="@dimen/font_size_extra_small"
+                            android:fontFamily="@font/montserrat_alternates"
+                            android:layout_marginBottom="@dimen/field_top"
+                            android:textColor="@color/mediumGrey"/>
 
                         <Button
                             android:id="@+id/create_project"
