@@ -107,13 +107,10 @@ class User(val username: String = "", var profileImage: String = "" , var email:
          * @param usernameStart the beginning of the username to find
          */
         fun searchForUsers(usernameStart: String,
-                           onUsersFound: (fullUsernames: Set<String>) -> Unit,
+                           onUsersFound: (fullUsernames: Set<Pair<String, String>>) -> Unit,
                            onFailure: () -> Unit,
                            limitNumberOfResults: Int = 50) {
-            val usersRef = database.orderByKey().startAt(usernameStart)
-                .endAt(usernameStart + "\uf8ff")
-                .limitToFirst(limitNumberOfResults)
-                .ref
+            val usersRef = database.ref
 
             usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -121,9 +118,11 @@ class User(val username: String = "", var profileImage: String = "" , var email:
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val usersNames = mutableSetOf<String>()
+                    val usersNames = mutableSetOf<Pair<String, String>>()
                     for (usr in dataSnapshot.children) {
-                        usersNames.add( usr.key as String )
+                        val username = usr.child("username").value as String
+                        if (username.contains(usernameStart))
+                            usersNames.add( Pair(usr.key as String, username) )
                     }
                     onUsersFound(usersNames)
                 }

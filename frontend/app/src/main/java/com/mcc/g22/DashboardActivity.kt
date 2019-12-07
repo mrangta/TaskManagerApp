@@ -1,18 +1,19 @@
 package com.mcc.g22
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.core.view.GravityCompat.*
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat.START
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.navigation.NavigationView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,6 +24,17 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
 import kotlinx.android.synthetic.main.activity_dashboard.nav_view
+import kotlinx.android.synthetic.main.nav_header.*
+
+
+
+
+
+
+
+
+
+
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +55,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         getUserInfo({
             currentUser = it
+            username_menu_textView.text = currentUser.username
 
             val name = currentUser.username
            // Log.d("" , "USERNAME IN UP IS $name")
@@ -55,28 +68,28 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             currentUser.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
          },{ })
 
+        User.getRegisteredUser()!!.getUsersProjects({
 
-        for (i in 0..1) {
-            val project = ProjectListDetails()
-            project.id = i
-            project.project_title = "Project Title $i"
-            listOfprojects!!.add(project)
-        }
-        pRecyclerView = findViewById(R.id.projectRecyclerView)
-        var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        pRecyclerView!!.layoutManager = pLayoutManager
-        pAdapter = ProjectListAdapter(listOfprojects){ itemDto: ProjectListDetails, position: Int ->
-            intent = Intent(this, ProjectTasksActivity::class.java)
-            intent.putExtra("project_title", listOfprojects[position].project_title)
-            startActivity(intent)
-        }
-        pRecyclerView!!.adapter = pAdapter
+            runOnUiThread {
+                //adding projects in list
+                pRecyclerView = findViewById(R.id.projectRecyclerView)
+                val pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                pRecyclerView!!.layoutManager = pLayoutManager
+                pAdapter = ProjectListAdapter(it.toMutableList() as java.util.ArrayList<Project>)
+                { itemDto: Project, position: Int ->
+                    intent = Intent(this, ProjectTasksActivity::class.java)
+                    intent.putExtra("project_title", listOfprojects[position].project_title)
+                    startActivity(intent)
+                }
+                pRecyclerView!!.adapter = pAdapter
+            }
+        }, {
 
-
+            Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
+        })
     }
 
     private fun getUserInfo(onLogedIn: (user : User) -> Unit , onLogedOut:() -> Unit) {
-
          database.getReference("users").child(uid).addListenerForSingleValueEvent(object:
              ValueEventListener {
               override fun onDataChange(dataSnapshot: DataSnapshot) {

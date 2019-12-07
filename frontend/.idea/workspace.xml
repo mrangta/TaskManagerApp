@@ -56,15 +56,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="638">
-              <caret line="55" column="5" selection-start-line="54" selection-start-column="11" selection-end-line="55" selection-end-column="5" />
+            <state relative-caret-position="135">
+              <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
               <folding>
-                <element signature="e#22#1191#0" expanded="true" />
-                <element signature="e#2088#2125#0" expanded="true" />
+                <element signature="e#21#1191#0" expanded="true" />
+                <element signature="e#2223#2260#0" expanded="true" />
+                <element signature="e#5441#5480#1" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/AllProjectsActivity.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-725">
+              <caret line="38" column="66" lean-forward="true" selection-start-line="38" selection-start-column="66" selection-end-line="38" selection-end-column="66" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/FavoritesActivity.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1635">
+              <caret line="121" selection-start-line="121" selection-end-line="121" />
             </state>
           </provider>
         </entry>
@@ -107,10 +126,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/User.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="88" column="29" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="29" />
+            <state relative-caret-position="115">
+              <caret line="111" column="27" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -120,7 +139,7 @@
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="225">
-              <caret line="253" lean-forward="true" selection-start-line="253" selection-end-line="259" selection-end-column="58" />
+              <caret line="253" selection-start-line="253" selection-end-line="259" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -149,24 +168,6 @@
                 <element signature="e#10860#10881#0" expanded="true" />
                 <element signature="e#10927#10948#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/RegisterActivity.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="69" lean-forward="true" selection-start-line="57" selection-start-column="8" selection-end-line="69" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/User.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="133" column="15" lean-forward="true" selection-start-line="133" selection-start-column="15" selection-end-line="133" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -228,7 +229,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/AllProjectsActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateTaskActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/FavoritesActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/MyTasksActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
@@ -248,8 +248,9 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/nav_header.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/RegisterActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_profile.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/EditProfileActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/FavoritesActivity.kt" />
       </list>
     </option>
   </component>
@@ -639,14 +640,14 @@
       <window_info id="Designer" order="6" />
       <window_info id="Resources Explorer" order="7" weight="0.32954547" />
       <window_info id="Capture Tool" order="8" />
-      <window_info anchor="bottom" id="Run" order="0" sideWeight="0.6098485" visible="true" weight="0.05930807" />
+      <window_info anchor="bottom" id="Run" order="0" sideWeight="0.6098485" weight="0.05930807" />
       <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.49925372" weight="0.32784185" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32827735" />
       <window_info anchor="bottom" id="Debug" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49850747" weight="0.32827735" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.3901515" side_tool="true" weight="0.37397036" />
       <window_info anchor="bottom" id="Version Control" order="6" weight="0.3288835" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.6818182" weight="0.43492585" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.6818182" visible="true" weight="0.34266886" />
       <window_info anchor="bottom" id="Android Profiler" order="8" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.6425041" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -659,13 +660,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="870">
-          <caret line="70" selection-start-line="70" selection-end-line="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/BootCompletedReceiver.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -677,13 +671,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4365">
           <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/AllProjectsActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -903,17 +890,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/User.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="133" column="15" lean-forward="true" selection-start-line="133" selection-start-column="15" selection-end-line="133" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/RegisterActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="236">
-          <caret line="69" lean-forward="true" selection-start-line="57" selection-start-column="8" selection-end-line="69" />
+          <caret line="69" selection-start-line="57" selection-start-column="8" selection-end-line="69" />
         </state>
       </provider>
     </entry>
@@ -928,7 +908,7 @@
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="253" lean-forward="true" selection-start-line="253" selection-end-line="259" selection-end-column="58" />
+          <caret line="253" selection-start-line="253" selection-end-line="259" selection-end-column="58" />
         </state>
       </provider>
     </entry>
@@ -987,14 +967,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/AllProjectsActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-725">
+          <caret line="38" column="66" lean-forward="true" selection-start-line="38" selection-start-column="66" selection-end-line="38" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/User.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="111" column="27" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="638">
-          <caret line="55" column="5" selection-start-line="54" selection-start-column="11" selection-end-line="55" selection-end-column="5" />
+        <state relative-caret-position="135">
+          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
           <folding>
-            <element signature="e#22#1191#0" expanded="true" />
-            <element signature="e#2088#2125#0" expanded="true" />
+            <element signature="e#21#1191#0" expanded="true" />
+            <element signature="e#2223#2260#0" expanded="true" />
+            <element signature="e#5441#5480#1" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/FavoritesActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1635">
+          <caret line="121" selection-start-line="121" selection-end-line="121" />
         </state>
       </provider>
     </entry>

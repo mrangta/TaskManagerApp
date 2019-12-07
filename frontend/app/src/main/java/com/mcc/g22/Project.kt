@@ -66,7 +66,7 @@ class Project {
             child("projects")
 
         fun createProject(name: String, isPrivate: Boolean, description: String,
-                          keywords: Array<String>, members: Array<User>,
+                          keywords: Array<String>, members: Array<String>,
                           onProjectCreated: (p: Project) -> Unit,
                           onFailure: () -> Unit,
                           deadline: Instant? = null,
@@ -87,7 +87,7 @@ class Project {
 
             val memsIds = mutableSetOf<String>()
             for (i in members) {
-                memsIds.add(i.uid)
+                memsIds.add(i)
             }
             p.membersIds = memsIds
 
@@ -185,7 +185,7 @@ class Project {
         }
     }
 
-    fun addMemebers(newMembers: Array<User>, onDone: () -> Unit, onFailure: () -> Unit) {
+    fun addMembers(newMembers: Array<User>, onDone: () -> Unit, onFailure: () -> Unit) {
         thread {
             try {
                 addMembers(newMembers)
@@ -210,6 +210,17 @@ class Project {
         newMembers.forEach { usersIds.add(it.uid) }
         ApiClient.api.addMemberToProject(projectId,
                                             InlineObject(userIds = usersIds.toTypedArray()))
+
+        membersIds = membersIds + usersIds
+    }
+
+    private fun addMembers(newMembers: Array<String>) {
+        if (newMembers.isEmpty()) return
+
+        val usersIds = mutableListOf<String>()
+        newMembers.forEach { usersIds.add(it) }
+        ApiClient.api.addMemberToProject(projectId,
+                InlineObject(userIds = usersIds.toTypedArray()))
 
         membersIds = membersIds + usersIds
     }

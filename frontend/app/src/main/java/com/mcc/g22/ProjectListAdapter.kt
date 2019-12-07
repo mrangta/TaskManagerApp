@@ -1,19 +1,14 @@
 package com.mcc.g22
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import java.util.ArrayList
+import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
-class ProjectListAdapter(private val mDataList: ArrayList<ProjectListDetails>, val clickListener: (ProjectListDetails, Int) -> Unit) : RecyclerView.Adapter<ProjectListAdapter.MyViewHolder>() {
-
-    private var mObjects : ArrayList<ProjectListDetails> = ArrayList<ProjectListDetails>()
-
-    init {
-        mObjects = mDataList
-    }
+class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickListener: (Project, Int) -> Unit) : RecyclerView.Adapter<ProjectListAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.projects_list, parent, false)
@@ -21,9 +16,23 @@ class ProjectListAdapter(private val mDataList: ArrayList<ProjectListDetails>, v
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        var item : ProjectListDetails = mDataList[position]
-        holder.ptitle.text = mDataList[position].project_title
-        holder.itemView.findViewById<View>(R.id.project_tasks).setOnClickListener { clickListener(item, position) }
+        val p = mDataList[position]
+        val ctx = holder.itemView.context
+        holder.ptitle.text = p.name
+        p.loadBadgeIntoImageView(ctx, holder.pbadge)
+        holder.lastModified.text = p.lastModificationDate.toString()
+
+        for ((i, memId) in p.membersIds.withIndex()) {
+            if (i == 0) {
+                User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr1)
+            } else if (i == 1) {
+                User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr2)
+            } else if (i == 2) {
+                User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr3)
+            } else break
+        }
+
+        holder.itemView.findViewById<View>(R.id.project_tasks).setOnClickListener { clickListener(p, position) }
     }
 
     override fun getItemCount(): Int {
@@ -31,10 +40,11 @@ class ProjectListAdapter(private val mDataList: ArrayList<ProjectListDetails>, v
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var ptitle: TextView
-
-        init {
-            ptitle = itemView.findViewById<View>(R.id.project_title) as TextView
-        }
+        internal var ptitle: TextView = itemView.findViewById<View>(R.id.project_title) as TextView
+        internal var pbadge: ImageView = itemView.findViewById(R.id.profile_picture)
+        internal var profileImgUsr1: ImageView = itemView.findViewById(R.id.member1)
+        internal var profileImgUsr2: ImageView = itemView.findViewById(R.id.member2)
+        internal var profileImgUsr3: ImageView = itemView.findViewById(R.id.member3)
+        internal var lastModified: TextView = itemView.findViewById(R.id.modified_date)
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,6 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
-    var listOfprojects: ArrayList<ProjectListDetails> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,22 +26,25 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        //adding projects in list
-        for (i in 0..6) {
-            val project = ProjectListDetails()
-            project.id = i
-            project.project_title = "Project Title $i"
-            listOfprojects!!.add(project)
-        }
-        pRecyclerView = findViewById(R.id.projectRecyclerView)
-        var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        pRecyclerView!!.layoutManager = pLayoutManager
-        pAdapter = ProjectListAdapter(listOfprojects){ itemDto: ProjectListDetails, position: Int ->
-            intent = Intent(this, ProjectTasksActivity::class.java)
-            intent.putExtra("project_title", listOfprojects[position].project_title)
-            startActivity(intent)
-        }
-        pRecyclerView!!.adapter = pAdapter
+        User.getRegisteredUser()!!.getUserFavorites({
+
+            runOnUiThread {
+                //adding projects in list
+                pRecyclerView = findViewById(R.id.projectRecyclerView)
+                val pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                pRecyclerView!!.layoutManager = pLayoutManager
+                pAdapter = ProjectListAdapter(it.toMutableList() as java.util.ArrayList<Project>)
+                { itemDto: Project, position: Int ->
+                    intent = Intent(this, ProjectTasksActivity::class.java)
+                    intent.putExtra("project_title", itemDto.name)
+                    startActivity(intent)
+                }
+                pRecyclerView!!.adapter = pAdapter
+            }
+        }, {
+
+            Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
+        })
     }
 
     fun toggleDrawer(view: View){
