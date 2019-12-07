@@ -35,6 +35,11 @@ class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 val pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 pRecyclerView!!.layoutManager = pLayoutManager
                 pAdapter = ProjectListAdapter(it.toMutableList() as ArrayList<Project>)
+                { itemDto: Project, position: Int ->
+                    intent = Intent(this, ProjectTasksActivity::class.java)
+                    intent.putExtra("project_title", itemDto.name)
+                    startActivity(intent)
+                }
                 pRecyclerView!!.adapter = pAdapter
             }
         }, {

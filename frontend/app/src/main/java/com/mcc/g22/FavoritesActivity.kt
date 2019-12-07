@@ -3,6 +3,7 @@ package com.mcc.g22
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.GravityCompat
@@ -35,7 +36,11 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         pRecyclerView = findViewById(R.id.projectRecyclerView)
         var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         pRecyclerView!!.layoutManager = pLayoutManager
-        pAdapter = ProjectListAdapter(listOfprojects)
+        pAdapter = ProjectListAdapter(listOfprojects){ itemDto: ProjectListDetails, position: Int ->
+            intent = Intent(this, ProjectTasksActivity::class.java)
+            intent.putExtra("project_title", listOfprojects[position].project_title)
+            startActivity(intent)
+        }
         pRecyclerView!!.adapter = pAdapter
     }
 

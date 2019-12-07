@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
-class ProjectListAdapter(private val mDataList: ArrayList<Project>) : RecyclerView.Adapter<ProjectListAdapter.MyViewHolder>() {
+class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickListener: (Project, Int) -> Unit) : RecyclerView.Adapter<ProjectListAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.projects_list, parent, false)
@@ -31,6 +31,8 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>) : RecyclerVi
                 User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr3)
             } else break
         }
+
+        holder.itemView.findViewById<View>(R.id.project_tasks).setOnClickListener { clickListener(p, position) }
     }
 
     override fun getItemCount(): Int {

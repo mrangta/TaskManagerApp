@@ -93,7 +93,6 @@
                 android:fontFamily="@font/montserrat_alternates"
                 android:gravity="center_horizontal"
                 android:paddingHorizontal="120dp"
-                android:text="Project Title"
                 android:textColor="@color/darkGrey"
                 android:textSize="@dimen/font_size_large"
                 android:textStyle="bold" />

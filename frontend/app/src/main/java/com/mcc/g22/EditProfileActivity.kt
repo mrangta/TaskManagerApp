@@ -1,55 +1,105 @@
 package com.mcc.g22
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.mcc.g22.utils.logout
 import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
 import kotlinx.android.synthetic.main.activity_edit_profile.nav_view
+
 
 class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private val user = FirebaseAuth.getInstance().currentUser
+    private var user = User.getRegisteredUser()
+    private var profilePhoto: Uri? = null
+    private val authUser = FirebaseAuth.getInstance().currentUser
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
-/*
-        edit_password_button.setOnClickListener {
 
-            checkCurrentPassword()
+        getUserInfo()
+
+        imageButton_profileSetting.setOnClickListener {
+
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 0)
+
+        }
+
+        confirm_new_password_editText.setOnFocusChangeListener { _, hasFocus ->
+            var newPassword = new_password_editText.text.toString()
+            var confirmPassword = confirm_new_password_editText.text.toString()
+
+            if (hasFocus) {
+                password_not_matched.text = ""
+                password_not_matched.visibility = View.GONE
+            }
+            if (!hasFocus) {
+                if(newPassword != confirmPassword){
+                    password_not_matched.text = resources.getString(R.string.password_not_match)
+                    password_not_matched.visibility = View.VISIBLE
+                }
+            }
         }
 
         update_password_button.setOnClickListener {
-            updatePassword()
+            checkCurrentPassword()
         }
-        */
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
+
+            profilePhoto = data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, profilePhoto)
+            profile_picture_profileSetting.setImageBitmap(bitmap)
+            user!!.setProfileImage(profilePhoto!! , {}, {})
+        }
+    }
+
+    private fun getUserInfo(){
+
+        username_profileSetting_textView.text = user!!.username
+        email_profileSetting_textView.text = user!!.email
+        user!!.showProfileImage(this, profile_picture_profileSetting)
+    }
     private fun updatePassword() {
 
         val password = new_password_editText.text.toString()
         val confirmPassword = confirm_new_password_editText.text.toString()
 
         if(password != confirmPassword){
-            confirm_new_password_editText.error = resources.getString(R.string.password_not_match)
             return
         }
-        if(user?.email != null) {
-            user.updatePassword(password)
+        if(authUser?.email != null) {
+            authUser.updatePassword(password)
                 .addOnCompleteListener{
+
+                    progressbar_update_password.visibility = View.GONE
+                    password_not_matched.text = ""
+                    password_not_matched.visibility = View.GONE
+
                     if(it.isSuccessful){
                         Toast.makeText(this , resources.getString(R.string.password_updated),Toast.LENGTH_SHORT).show()
                     }
@@ -68,13 +118,14 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             return
         }
 
-        if(user?.email != null){
-            val authCredential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
-            //TODO create a progressbar is better
-            user.reauthenticate(authCredential)
+        if(authUser != null){
+            val authCredential = EmailAuthProvider.getCredential(authUser!!.email!!, currentPassword)
+
+            progressbar_update_password.visibility = View.VISIBLE
+            authUser.reauthenticate(authCredential)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
-
+                        updatePassword()
                     }
                     if (it.exception is FirebaseAuthInvalidCredentialsException) {
                         current_password_editText.error =
@@ -84,8 +135,6 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 }
         }
     }
-
-
 
     fun toggleDrawer(view: View){
         if(drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -142,8 +191,21 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
 
     fun logOut() {
-        intent = Intent(this, ProjectTasksActivity::class.java)
-        startActivity(intent)
+
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("Confirm")
+        alert.setMessage(resources.getString(R.string.alertExit))
+
+        alert.setPositiveButton("YES") { dialog, yes ->
+            FirebaseAuth.getInstance().signOut()
+            logout()
+        }
+        alert.setNegativeButton("No") { dialog, no ->
+        }
+
+        val dialog: AlertDialog = alert.create()
+        dialog.show()
+
     }
 
     fun myTasks() {
