@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -21,26 +22,63 @@ import kotlinx.android.synthetic.main.activity_project_tasks.*
 class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
-    var array = arrayOf("Create backend for the project", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation")
+    private var ongoingTasks = mutableListOf<Task>()
+    private var completedTasks = mutableListOf<Task>()
+    private var pendingTasks = mutableListOf<Task>()
+
+    companion object {
+        var project: Project? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project_tasks)
 
+        if (project == null) {
+            finish()
+            return
+        }
+        var p = project as Project
+
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        val bundle: Bundle? = intent.extras
-        val string: String? = bundle?.getString("project_title")
+        User.getRegisteredUser()!!.getUsersTasks({
+            for (t in it) {
+                when (t.status) {
+                    Task.TaskStatus.ON_GOING -> {
+                        ongoingTasks.add(t)
+                    }
+                    Task.TaskStatus.PENDING -> {
+                        pendingTasks.add(t)
+                    }
+                    else -> completedTasks.add(t)
+                }
+            }
 
-        project_title_layout.text = string
+            val adapterOngoing = ArrayAdapter(this, R.layout.task,
+                    ongoingTasks)
+            val adapterPending = ArrayAdapter(this, R.layout.task,
+                    pendingTasks)
+            val adapterCompleted = ArrayAdapter(this, R.layout.task,
+                    completedTasks)
 
-        val adapter = ArrayAdapter(this,
-            R.layout.task, array)
+            runOnUiThread {
+                ongoingList.adapter = adapterOngoing
+                pendingList.adapter = adapterPending
+                completedList.adapter = adapterCompleted
+            }
+        }, {
 
-        ongoingList.setAdapter(adapter)
-        pendingList.setAdapter(adapter)
-        completedList.setAdapter(adapter)
+            Toast.makeText(this, "Error while loading tasks", Toast.LENGTH_LONG)
+                    .show()
+        })
+
+        create_task_button.setOnClickListener {
+
+            val i = Intent(this, CreateTaskActivity::class.java)
+            startActivity(i)
+        }
     }
 
     fun toggleDrawer(view: View){

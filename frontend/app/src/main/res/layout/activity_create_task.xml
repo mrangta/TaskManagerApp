@@ -172,7 +172,7 @@
             android:textSize="@dimen/font_size_small"
             android:paddingEnd="40dp"/>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/assigned_to"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -185,6 +185,8 @@
             android:paddingRight="@dimen/text_padding"
             android:textSize="@dimen/font_size_medium"
             android:fontFamily="@font/montserrat_alternates" />
+
+        
 
         <TextView
             android:id="@+id/due_date_label"

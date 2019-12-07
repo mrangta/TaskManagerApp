@@ -21,7 +21,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mcc.g22.utils.logout
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
+import kotlinx.android.synthetic.main.activity_dashboard.nav_view
 import kotlinx.android.synthetic.main.nav_header.*
+
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -40,9 +44,8 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        getUserInfo({
-            currentUser = it
-            username_menu_textView.text = currentUser.username
+        getUserInfo({ user ->
+            currentUser = user
 
             val name = currentUser.username
             welcome.text = (resources.getString(R.string.welcome) + "  " + name)
@@ -53,7 +56,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             currentUser.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
             currentUser.getUsersProjects({
-
                 runOnUiThread {
                     //adding projects in list
                     pRecyclerView = findViewById(R.id.projectRecyclerView)
@@ -66,12 +68,15 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                         startActivity(intent)
                     }
                     pRecyclerView!!.adapter = pAdapter
+
                 }
             }, {
-
+                Log.e("MCCC", "cannot fetch projects")
                 Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
             })
         },{ })
+
+
 
     }
 
@@ -82,6 +87,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 if(dataSnapshot.exists()){
                     val user = dataSnapshot.getValue(User::class.java)!!
                     currentUser = user
+                    currentUser.uid = uid
                     onLogedIn(user)
                 }
                 else onLogedOut()

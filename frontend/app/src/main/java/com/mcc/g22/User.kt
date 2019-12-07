@@ -175,9 +175,16 @@ class User(val username: String = "", var profileImage: String = "" , var email:
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val projects = mutableSetOf<Project>()
                         val projectsToDownload = dataSnapshot.childrenCount.toInt()
+                        if (projectsToDownload == 0) {
+                            onFavoritesReady(projects)
+                            return
+                        }
+                        Log.d("" , "${dataSnapshot.children}")
                         for (t in dataSnapshot.children) {
+                            Log.d("" , "tttt")
                             if (t.key == null) continue
                             val projectId = t.key as String
+                            Log.d("" , "project is$projectId")
                             Project.fromProjectId(projectId, {
                                 projects.add(it)
                                 if (projects.size == projectsToDownload) {

@@ -37,7 +37,7 @@ class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 pAdapter = ProjectListAdapter(it.toMutableList() as ArrayList<Project>)
                 { itemDto: Project, position: Int ->
                     intent = Intent(this, ProjectTasksActivity::class.java)
-                    intent.putExtra("project_title", itemDto.name)
+                    ProjectTasksActivity.project = itemDto
                     startActivity(intent)
                 }
                 pRecyclerView!!.adapter = pAdapter
