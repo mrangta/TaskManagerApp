@@ -6,29 +6,26 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListView
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_my_tasks.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_my_tasks.completedList
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
-import kotlinx.android.synthetic.main.activity_project_picture.*
+import kotlinx.android.synthetic.main.activity_my_tasks.ongoingList
+import kotlinx.android.synthetic.main.activity_my_tasks.pendingList
+import kotlinx.android.synthetic.main.activity_project_tasks.*
 
-class ProjectPictureActivity : AppCompatActivity(),
-    NavigationView.OnNavigationItemSelectedListener,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+class SingleTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private var customAdapter: CustomAdapter? = null
-    private var imageModelArrayList: ArrayList<ImageModel>? = null
-
-    var imageList = intArrayOf(R.drawable.controls, R.drawable.ic_home)
+    var array = arrayOf("Create backend for the project", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_project_picture)
+        setContentView(R.layout.activity_single_task)
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
@@ -38,24 +35,7 @@ class ProjectPictureActivity : AppCompatActivity(),
 
         project_title_layout.text = string
 
-        imageModelArrayList = populateList()
-        customAdapter = CustomAdapter(this, imageModelArrayList!!)
-        pictures_list!!.adapter = customAdapter
-    }
 
-    private fun populateList(): ArrayList<ImageModel> {
-
-        val list = ArrayList<ImageModel>()
-
-        var i = 0
-        while (i < imageList.size) {
-            val imageModel = ImageModel()
-            imageModel.setImage_drawables(imageList[i])
-            list.add(imageModel)
-            i++
-        }
-
-        return list
     }
 
     fun toggleDrawer(view: View){
