@@ -11,14 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df0ac145-bfd8-4440-a3c3-37bee1da979e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateTaskActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateTaskActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_task.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_task.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListAdapter.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -46,43 +39,9 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="603">
-              <caret line="48" column="9" selection-start-line="48" selection-start-column="9" selection-end-line="48" selection-end-column="9" />
-              <folding>
-                <element signature="e#22#815#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/EditProfileActivity.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="72" selection-start-line="72" selection-end-line="72" />
-              <folding>
-                <element signature="e#21#586#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_project_tasks.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="277" selection-start-line="277" selection-end-line="277" />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectTasksActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1530">
+            <state relative-caret-position="1479">
               <caret line="106" selection-start-line="106" selection-end-line="106" />
             </state>
           </provider>
@@ -91,17 +50,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_create_project.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="321" selection-start-line="321" selection-end-line="321" />
+            <state relative-caret-position="18">
+              <caret line="311" column="71" lean-forward="true" selection-start-line="311" selection-start-column="71" selection-end-line="311" selection-end-column="71" />
               <folding>
-                <element signature="e#14605#14623#0" expanded="true" />
-                <element signature="e#14735#14759#0" expanded="true" />
-                <element signature="e#15068#15087#0" expanded="true" />
-                <element signature="e#15355#15373#0" expanded="true" />
-                <element signature="e#15430#15448#0" expanded="true" />
-                <element signature="e#15672#15693#0" expanded="true" />
-                <element signature="e#15743#15764#0" expanded="true" />
-                <element signature="e#15810#15835#0" expanded="true" />
+                <element signature="e#13978#13996#0" expanded="true" />
+                <element signature="e#14108#14132#0" expanded="true" />
+                <element signature="e#14441#14460#0" expanded="true" />
+                <element signature="e#14728#14746#0" expanded="true" />
+                <element signature="e#14803#14821#0" expanded="true" />
+                <element signature="e#15045#15066#0" expanded="true" />
+                <element signature="e#15116#15137#0" expanded="true" />
+                <element signature="e#15183#15208#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -109,38 +68,42 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_project_files.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_all_projects.xml">
           <provider editor-type-id="text-editor">
-            <state relative-caret-position="-748">
-              <caret line="228" column="53" selection-start-line="228" selection-start-column="53" selection-end-line="228" selection-end-column="53" />
-              <folding>
-                <element signature="e#8354#8369#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1462">
+              <caret line="86" column="39" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
             </state>
           </provider>
           <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_create_task.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="218" column="63" lean-forward="true" selection-start-line="188" selection-start-column="8" selection-end-line="218" selection-end-column="63" />
-              <folding>
-                <element signature="e#8072#8091#0" expanded="true" />
-              </folding>
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/projects_list.xml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="3570">
+              <caret line="210" column="38" selection-start-line="210" selection-start-column="38" selection-end-line="210" selection-end-column="38" />
             </state>
           </provider>
-          <provider editor-type-id="android-designer2" />
+          <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/MyTasksActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="93" column="38" selection-start-line="93" selection-start-column="38" selection-end-line="93" selection-end-column="38" />
+            <state relative-caret-position="1187">
+              <caret line="82" column="22" selection-start-line="82" selection-start-column="22" selection-end-line="82" selection-end-column="22" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_my_tasks.xml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="437">
+              <caret line="135" column="36" selection-start-line="135" selection-start-column="36" selection-end-line="135" selection-end-column="36" />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -152,11 +115,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
+            <state relative-caret-position="1233">
               <caret line="94" column="5" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/AllProjectsActivity.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="42" column="9" selection-start-line="42" selection-start-column="9" selection-end-line="42" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListAdapter.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
             </state>
           </provider>
         </entry>
@@ -214,7 +195,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/image.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CustomAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListDetails.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_project_tasks.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/AllProjectsActivity.kt" />
@@ -230,8 +210,9 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateTaskActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_create_task.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_create_project.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_create_project.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListAdapter.kt" />
       </list>
     </option>
   </component>
@@ -502,7 +483,7 @@
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49850747" weight="0.32827735" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5735608" side_tool="true" weight="0.312026" />
       <window_info anchor="bottom" id="Version Control" order="6" weight="0.3288835" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.42643923" visible="true" weight="0.312026" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.42643923" visible="true" weight="0.31310943" />
       <window_info anchor="bottom" id="Android Profiler" order="8" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32936078" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -584,14 +565,6 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_all_projects.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="86" column="39" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_edit_profile.xml">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="1122">
@@ -614,13 +587,6 @@
           <folding>
             <element signature="e#21#148#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/MyTasksActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1205">
-          <caret line="82" column="22" selection-start-line="82" selection-start-column="22" selection-end-line="82" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -688,14 +654,6 @@
           <folding>
             <element signature="e#366#391#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_my_tasks.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="135" column="36" selection-start-line="135" selection-start-column="36" selection-end-line="135" selection-end-column="36" />
         </state>
       </provider>
       <provider editor-type-id="android-designer2" />
@@ -773,13 +731,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListAdapter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="25" column="61" selection-start-line="25" selection-start-column="61" selection-end-line="25" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListDetails.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -800,22 +751,6 @@
           <caret line="35" column="42" selection-start-line="35" selection-start-column="42" selection-end-line="35" selection-end-column="42" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/projects_list.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="3570">
-          <caret line="210" column="38" selection-start-line="210" selection-start-column="38" selection-end-line="210" selection-end-column="38" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_project_tasks.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="277" selection-start-line="277" selection-end-line="277" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -860,13 +795,6 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectTasksActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="106" selection-start-line="106" selection-end-line="106" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectIndividualTaskActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -881,13 +809,6 @@
           <folding>
             <element signature="e#21#586#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/AllProjectsActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="42" column="9" selection-start-line="42" selection-start-column="9" selection-end-line="42" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -920,23 +841,68 @@
       </provider>
       <provider editor-type-id="android-designer2" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1233">
+          <caret line="94" column="5" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_all_projects.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="1462">
+          <caret line="86" column="39" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_my_tasks.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="135" column="36" selection-start-line="135" selection-start-column="36" selection-end-line="135" selection-end-column="36" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_project_tasks.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="277" selection-start-line="277" selection-end-line="277" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectTasksActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1479">
+          <caret line="106" selection-start-line="106" selection-end-line="106" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_create_project.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="321" selection-start-line="321" selection-end-line="321" />
+        <state relative-caret-position="18">
+          <caret line="311" column="71" lean-forward="true" selection-start-line="311" selection-start-column="71" selection-end-line="311" selection-end-column="71" />
           <folding>
-            <element signature="e#14605#14623#0" expanded="true" />
-            <element signature="e#14735#14759#0" expanded="true" />
-            <element signature="e#15068#15087#0" expanded="true" />
-            <element signature="e#15355#15373#0" expanded="true" />
-            <element signature="e#15430#15448#0" expanded="true" />
-            <element signature="e#15672#15693#0" expanded="true" />
-            <element signature="e#15743#15764#0" expanded="true" />
-            <element signature="e#15810#15835#0" expanded="true" />
+            <element signature="e#13978#13996#0" expanded="true" />
+            <element signature="e#14108#14132#0" expanded="true" />
+            <element signature="e#14441#14460#0" expanded="true" />
+            <element signature="e#14728#14746#0" expanded="true" />
+            <element signature="e#14803#14821#0" expanded="true" />
+            <element signature="e#15045#15066#0" expanded="true" />
+            <element signature="e#15116#15137#0" expanded="true" />
+            <element signature="e#15183#15208#0" expanded="true" />
           </folding>
         </state>
       </provider>
       <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/MyTasksActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1187">
+          <caret line="82" column="22" selection-start-line="82" selection-start-column="22" selection-end-line="82" selection-end-column="22" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateTaskActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -945,10 +911,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/CreateProjectActivity.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/projects_list.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="3570">
+          <caret line="210" column="38" selection-start-line="210" selection-start-column="38" selection-end-line="210" selection-end-column="38" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/ProjectListAdapter.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
-          <caret line="94" column="5" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
+        <state relative-caret-position="340">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/AllProjectsActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="42" column="9" selection-start-line="42" selection-start-column="9" selection-end-line="42" selection-end-column="9" />
         </state>
       </provider>
     </entry>
