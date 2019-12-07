@@ -78,8 +78,7 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
 
     fun logOut() {
-        intent = Intent(this, ProjectTasksActivity::class.java)
-        startActivity(intent)
+
     }
 
     fun myTasks() {
