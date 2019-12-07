@@ -2,10 +2,10 @@ package com.mcc.g22
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
@@ -145,11 +145,19 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 membersToAdd.add( usernameToUid[m]!! )
             }
 
+            val progress = ProgressDialog(this)
+            progress.setMessage(getString(R.string.creating_a_project))
+            progress.setCancelable(false)
+            progress.show()
+
             Project.createProject(title, isPrivate, description,
                     keywords.toTypedArray(),
                     membersToAdd.toTypedArray(), {
 
-                runOnUiThread { allProjects() }
+                runOnUiThread {
+                    progress.hide()
+                    allProjects()
+                }
             }, {
 
                 runOnUiThread {

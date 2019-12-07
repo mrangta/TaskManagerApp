@@ -89,6 +89,8 @@ class Project {
             for (i in members) {
                 memsIds.add(i)
             }
+            val adminUid = User.getRegisteredUser()!!.uid
+            if (!memsIds.contains(adminUid)) memsIds.add(adminUid)
             p.membersIds = memsIds
 
             thread {
