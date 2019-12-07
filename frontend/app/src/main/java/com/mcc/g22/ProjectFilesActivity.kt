@@ -30,6 +30,11 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        val bundle: Bundle? = intent.extras
+        val string: String? = bundle?.getString("project_title")
+
+        project_title_layout.text = string
+
         imageModelArrayList = populateList()
         customAdapter = CustomAdapter(this, imageModelArrayList!!)
         today_list!!.adapter = customAdapter
@@ -132,16 +137,19 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
     fun tasksTab(view: View) {
         intent = Intent(this, ProjectTasksActivity::class.java)
+        intent.putExtra("project_title", project_title_layout.text.toString())
         startActivity(intent)
     }
 
     fun picturesTab(view: View) {
         intent = Intent(this, ProjectPictureActivity::class.java)
+        intent.putExtra("project_title", project_title_layout.text.toString())
         startActivity(intent)
     }
 
     fun filesTab(view: View) {
         intent = Intent(this, ProjectFilesActivity::class.java)
+        intent.putExtra("project_title", project_title_layout.text.toString())
         startActivity(intent)
     }
 }

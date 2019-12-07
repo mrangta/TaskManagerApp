@@ -10,6 +10,13 @@ import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_my_tasks.*
+import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_my_tasks.completedList
+import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
+import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
+import kotlinx.android.synthetic.main.activity_my_tasks.ongoingList
+import kotlinx.android.synthetic.main.activity_my_tasks.pendingList
+import kotlinx.android.synthetic.main.activity_project_tasks.*
 
 class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -22,6 +29,11 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
+
+        val bundle: Bundle? = intent.extras
+        val string: String? = bundle?.getString("project_title")
+
+        project_title_layout.text = string
 
         val adapter = ArrayAdapter(this,
             R.layout.task, array)
@@ -110,16 +122,19 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
     fun tasksTab(view: View) {
         intent = Intent(this, ProjectTasksActivity::class.java)
+        intent.putExtra("project_title", project_title_layout.text.toString())
         startActivity(intent)
     }
 
     fun picturesTab(view: View) {
         intent = Intent(this, ProjectPictureActivity::class.java)
+        intent.putExtra("project_title", project_title_layout.text.toString())
         startActivity(intent)
     }
 
     fun filesTab(view: View) {
         intent = Intent(this, ProjectFilesActivity::class.java)
+        intent.putExtra("project_title", project_title_layout.text.toString())
         startActivity(intent)
     }
 }

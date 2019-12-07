@@ -4,6 +4,7 @@ package com.mcc.g22
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.GravityCompat.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -12,6 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
+import kotlinx.android.synthetic.main.activity_dashboard.nav_view
+import kotlinx.android.synthetic.main.activity_project_tasks.*
 
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -37,7 +42,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         pRecyclerView = findViewById(R.id.projectRecyclerView)
         var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         pRecyclerView!!.layoutManager = pLayoutManager
-        pAdapter = ProjectListAdapter(listOfprojects)
+        pAdapter = ProjectListAdapter(listOfprojects){ itemDto: ProjectListDetails, position: Int ->
+            intent = Intent(this, ProjectTasksActivity::class.java)
+            intent.putExtra("project_title", listOfprojects[position].project_title)
+            startActivity(intent)
+        }
         pRecyclerView!!.adapter = pAdapter
 
 
