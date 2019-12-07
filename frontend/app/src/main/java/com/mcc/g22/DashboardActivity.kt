@@ -31,7 +31,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private var uid = FirebaseAuth.getInstance().currentUser!!.uid
     private val database = FirebaseDatabase.getInstance()
-    private lateinit var currentUser :User
+    private  lateinit var currentUser :User
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
@@ -43,12 +43,15 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        getUserInfo({
+        currentUser = User.getRegisteredUser()!!
+       /* getUserInfo({
             currentUser = it
             welcome.text = (resources.getString(R.string.welcome) + "  " + currentUser!!.username)
             currentUser.showProfileImage(this , profile_picture_dashboard)
             username_menu_textView.text = currentUser.username
         },{ })
+*/
+        getUserInfo()
 
         //adding items in list
 
@@ -71,23 +74,14 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     }
 
-    private fun getUserInfo(onLogedIn: (user : User) -> Unit , onLogedOut:() -> Unit) {
+    private fun getUserInfo() {
 
+        var username = currentUser!!.username
+        username_menu_textView.text = ("" + username)
+        welcome.text = (resources.getString(R.string.welcome) + "  " + username)
+        Log.d("" , "USERNAME IS ${resources.getString(R.string.welcome) + "  " + username}")
 
-        database.getReference("users").child(uid).addListenerForSingleValueEvent(object: ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
-                    val user = dataSnapshot.getValue(User::class.java)!!
-                    currentUser = user
-                   // Log.d("" ,"HEYYYYYYY ${currentUser.username}")
-                    onLogedIn(user)
-                  }
-                else onLogedOut()
-            }
-            override fun onCancelled(error: DatabaseError) {
-                onLogedOut()
-            }
-        })
+        currentUser!!.showProfileImage(this , profile_picture_dashboard)
 
     }
 

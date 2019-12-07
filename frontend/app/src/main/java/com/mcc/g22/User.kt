@@ -39,8 +39,6 @@ class User(val username: String = "", var profileImage: String = "" , email :Str
                     NotificationsService.stopNotificationService(ctx)
                 }
             }
-
-
         }
 
         /**
