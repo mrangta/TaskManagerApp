@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.GravityCompat.*
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
@@ -48,11 +49,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
            // Log.d("" , "USERNAME IN UP IS $name")
             welcome.text = (resources.getString(R.string.welcome) + "  " + name)
 
-          //  Log.d("" , "USERNAME IN UP IS $name")
-            username_menu_textView.text = name
+            Log.d("" , "USERNAME IN UP IS $name")
+            nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = name
 
             currentUser.showProfileImage(this , profile_picture_dashboard)
-            currentUser.showProfileImage(this , profile_picture_menu_imageView)
+            currentUser.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
          },{ })
 
 
