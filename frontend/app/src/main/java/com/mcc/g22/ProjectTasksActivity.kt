@@ -43,7 +43,7 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        editText.setText(p.description)
+        desc_content.text = p.description
         p.loadBadgeIntoImageView(this, profile_picture)
         modified_date.text = p.lastModificationDate.toString()
 
