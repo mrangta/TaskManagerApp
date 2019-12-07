@@ -14,8 +14,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.lang.Exception
 import java.util.*
 
-class User(val username: String = "", var profileImage: String = "" , email :String = "") {
-
+class User(val username: String = "", var profileImage: String = "" , var email: String = "") {
 
     var uid: String = ""
         private set
@@ -31,9 +30,26 @@ class User(val username: String = "", var profileImage: String = "" , email :Str
             FirebaseAuth.getInstance().addAuthStateListener {
                 val authUser = it.currentUser
                 try {
-                    currentUser = User(authUser!!.displayName!!, authUser.photoUrl!!.toString(),  authUser.email!! )
-                    currentUser!!.uid = authUser.uid
-                    NotificationsService.startNotificationService(ctx)
+                    val uid = authUser!!.uid
+                    database.child(uid).addListenerForSingleValueEvent(object: ValueEventListener{
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                val user = dataSnapshot.getValue(User::class.java)!!
+                                currentUser = user
+                                currentUser!!.email = authUser.email ?: ""
+                                currentUser!!.uid = uid
+                                NotificationsService.startNotificationService(ctx)
+                            }
+                            else {
+                                currentUser = null
+                                NotificationsService.stopNotificationService(ctx)
+                            }
+                        }
+                        override fun onCancelled(error: DatabaseError) {
+                            currentUser = null
+                            NotificationsService.stopNotificationService(ctx)
+                        }
+                    })
                 } catch (e: Exception) {
                     currentUser = null
                     NotificationsService.stopNotificationService(ctx)
@@ -47,20 +63,6 @@ class User(val username: String = "", var profileImage: String = "" , email :Str
         fun getRegisteredUser():User?{
 
             return currentUser
-           /* val uid = FirebaseAuth.getInstance().currentUser!!.uid
-            database.child(uid).addListenerForSingleValueEvent(object: ValueEventListener{
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        val user = dataSnapshot.getValue(User::class.java)!!
-                        currentUser = user
-                        onLogedIn(user)
-                    }
-                    else onLogedOut()
-                }
-                override fun onCancelled(error: DatabaseError) {
-                        onLogedOut
-                }
-            })*/
         }
 
         fun resolveDisplayName(userId: String, onResolved: (displayName: String) -> Unit,
