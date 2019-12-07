@@ -1,22 +1,28 @@
 package com.mcc.g22
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
+import android.widget.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_create_project.*
 import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.android.synthetic.main.activity_create_task.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_create_task.drawer_layout
+import kotlinx.android.synthetic.main.activity_create_task.due_date
+import kotlinx.android.synthetic.main.activity_create_task.nav_view
+import kotlinx.android.synthetic.main.activity_create_task.pick_date
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.util.*
 
 class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -30,6 +36,11 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     private val cal = Calendar.getInstance()
 
+    companion object {
+        var task: Task? = null
+        private const val GALLERY_REQUEST_CODE = 14
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_task)
@@ -38,6 +49,8 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
         addMembers = findViewById(R.id.assigned_to)
+        membersAdapter = ArrayAdapter(this, R.layout.keyword, membersArrayList)
+        members_list_create_task.adapter = membersAdapter
 
         task_status.setOnClickListener {
             val popupMenu: PopupMenu = PopupMenu(this, task_status)
@@ -56,6 +69,11 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             popupMenu.show()
         }
 
+        if (task == null) {
+            task_status.visibility = View.INVISIBLE
+            task_status_label.visibility = View.INVISIBLE
+        }
+
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, monthOfYear)
@@ -72,7 +90,6 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     cal.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-        addMembers = findViewById(R.id.add_members_complete_text_view)
         val members = mutableListOf<String>()
         var adapter: ArrayAdapter<String> = ArrayAdapter(this,
                 android.R.layout.select_dialog_item,
@@ -84,8 +101,10 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             User.searchForUsers(addMembers.text.toString(), {
                 members.clear()
                 for (m in it) {
-                    members.add(m.second)
-                    usernameToUid[m.second] = m.first
+                    if (ProjectTasksActivity.project!!.membersIds.contains(m.first)) {
+                        members.add(m.second)
+                        usernameToUid[m.second] = m.first
+                    }
                 }
                 runOnUiThread {
                     adapter = ArrayAdapter(this,
@@ -105,9 +124,78 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
 
         create_task.setOnClickListener {
-            val desc = findViewById<EditText>(R.id.task_description)
-            val deadline = cal.toInstant()
-            val members = null
+            val desc = findViewById<EditText>(R.id.task_description).text.toString()
+            var deadline: Instant? = null
+            if (due_date.text.toString().isNotEmpty())
+                deadline = cal.toInstant()
+            else {
+                Toast.makeText(this, "Deadline must be defined", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            val membersToAdd = mutableSetOf<String>()
+            for (m in membersArrayList) {
+                membersToAdd.add( usernameToUid[m]!! )
+            }
+
+            val progress = ProgressDialog(this)
+            progress.setMessage(getString(R.string.creating_a_task))
+            progress.setCancelable(false)
+            progress.show()
+
+            val t = Task.createTask(ProjectTasksActivity.project!!.projectId,
+                    desc, deadline, membersToAdd)
+
+            if (task_status.visibility != View.INVISIBLE) {
+                when (task_status.text) {
+                    "Ongoing" -> {
+                        t.makeTaskOnGoing()
+                    }
+                    "Pending" -> {
+                        t.makeTaskPending()
+                    }
+                    "Completed" -> {
+                        t.makeTaskCompleted()
+                    }
+                }
+            }
+
+            t.commitChanges({
+
+                progress.hide()
+                finish()
+            }, {
+                Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
+            })
+
+        }
+
+        findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            val mimeTypes = arrayOf("image/jpeg", "image/jpg")
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+
+            startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data == null) return
+        if (resultCode == Activity.RESULT_OK) when (requestCode) {
+            GALLERY_REQUEST_CODE -> {
+                try {
+                    Task.createTask(this, ProjectTasksActivity.project!!.projectId,
+                            data.data!!, {
+
+                        runOnUiThread { task_description.setText(it.description) }
+                    }, {
+                        Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
+                    })
+                } catch (e: Exception) {
+
+                }
+            }
         }
     }
 
@@ -187,5 +275,10 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     fun allProjects() {
         intent = Intent(this, AllProjectsActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        task = null
     }
 }

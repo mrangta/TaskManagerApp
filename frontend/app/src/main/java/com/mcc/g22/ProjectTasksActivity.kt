@@ -38,46 +38,46 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
             finish()
             return
         }
-        var p = project as Project
+        val p = project as Project
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        User.getRegisteredUser()!!.getUsersTasks({
-            for (t in it) {
-                when (t.status) {
+        editText.setText(p.description)
+        p.loadBadgeIntoImageView(this, profile_picture)
+        modified_date.text = p.lastModificationDate.toString()
+
+        val adapterOngoing = ArrayAdapter(this, R.layout.task,
+                ongoingTasks)
+        val adapterPending = ArrayAdapter(this, R.layout.task,
+                pendingTasks)
+        val adapterCompleted = ArrayAdapter(this, R.layout.task,
+                completedTasks)
+
+        ongoingList.adapter = adapterOngoing
+        pendingList.adapter = adapterPending
+        completedList.adapter = adapterCompleted
+
+        for (t in p.tasksIds) {
+            Task.getTaskFromDatabase(t, {
+                when (it.status) {
                     Task.TaskStatus.ON_GOING -> {
-                        ongoingTasks.add(t)
+                        ongoingTasks.add(it)
+                        runOnUiThread { adapterOngoing.notifyDataSetChanged() }
                     }
                     Task.TaskStatus.PENDING -> {
-                        pendingTasks.add(t)
+                        pendingTasks.add(it)
+                        runOnUiThread { adapterPending.notifyDataSetChanged() }
                     }
-                    else -> completedTasks.add(t)
+                    else -> {
+                        completedTasks.add(it)
+                        runOnUiThread { adapterCompleted.notifyDataSetChanged() }
+                    }
                 }
-            }
-
-            val adapterOngoing = ArrayAdapter(this, R.layout.task,
-                    ongoingTasks)
-            val adapterPending = ArrayAdapter(this, R.layout.task,
-                    pendingTasks)
-            val adapterCompleted = ArrayAdapter(this, R.layout.task,
-                    completedTasks)
-
-            runOnUiThread {
-                ongoingList.adapter = adapterOngoing
-                pendingList.adapter = adapterPending
-                completedList.adapter = adapterCompleted
-            }
-        }, {
-
-            Toast.makeText(this, "Error while loading tasks", Toast.LENGTH_LONG)
-                    .show()
-        })
-
-        create_task_button.setOnClickListener {
-
-            val i = Intent(this, CreateTaskActivity::class.java)
-            startActivity(i)
+            }, {
+                Toast.makeText(this, "Error while loading task", Toast.LENGTH_LONG)
+                        .show()
+            })
         }
     }
 

@@ -135,6 +135,7 @@ class Task {
                 t.status = TaskStatus.ON_GOING
             }
             t.taskHasBeenCreated = true
+            t.usersHaveBeenAssigned = true
             return t
         }
 
