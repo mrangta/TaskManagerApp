@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import java.util.ArrayList
 
 class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -18,7 +20,6 @@ class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
-    var listOfprojects: ArrayList<ProjectListDetails> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,18 +27,20 @@ class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        //adding projects in list
-        for (i in 0..6) {
-            val project = ProjectListDetails()
-            project.id = i
-            project.project_title = "Project Title $i"
-            listOfprojects!!.add(project)
-        }
-        pRecyclerView = findViewById(R.id.projectRecyclerView)
-        var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        pRecyclerView!!.layoutManager = pLayoutManager
-        pAdapter = ProjectListAdapter(listOfprojects)
-        pRecyclerView!!.adapter = pAdapter
+        User.getRegisteredUser()!!.getUsersProjects({
+
+            runOnUiThread {
+                //adding projects in list
+                pRecyclerView = findViewById(R.id.projectRecyclerView)
+                val pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                pRecyclerView!!.layoutManager = pLayoutManager
+                pAdapter = ProjectListAdapter(it.toMutableList() as ArrayList<Project>)
+                pRecyclerView!!.adapter = pAdapter
+            }
+        }, {
+
+            Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
+        })
     }
 
     fun toggleDrawer(view: View){
