@@ -40,9 +40,7 @@ class ProjectPictureActivity : AppCompatActivity(),
 
         imageModelArrayList = populateList()
         customAdapter = CustomAdapter(this, imageModelArrayList!!)
-        today_list!!.adapter = customAdapter
-        yesterday_list!!.adapter = customAdapter
-        older_list!!.adapter = customAdapter
+        pictures_list!!.adapter = customAdapter
     }
 
     private fun populateList(): ArrayList<ImageModel> {

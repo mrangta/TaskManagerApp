@@ -171,14 +171,18 @@
 
         <LinearLayout
             android:id="@+id/tabs"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/tabs_border"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/description_layout">
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView7"
@@ -193,6 +197,13 @@
                     android:textAllCaps="true"
                     android:textColor="@color/darkGrey"
                     android:textSize="@dimen/font_size_medium" />
+
+            <View
+                android:layout_width="140dp"
+                android:layout_height="2dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/darkGrey" />
+        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -224,7 +235,11 @@
                     android:background="@color/accentBlue" />
             </LinearLayout>
 
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:orientation="vertical">
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="140dp"
@@ -238,6 +253,13 @@
                 android:textAllCaps="true"
                 android:textColor="@color/darkGrey"
                 android:textSize="@dimen/font_size_medium" />
+
+            <View
+                android:layout_width="140dp"
+                android:layout_height="2dp"
+                android:layout_marginStart="15dp"
+                android:background="@color/darkGrey" />
+        </LinearLayout>
 
         </LinearLayout>
 
@@ -307,60 +329,11 @@
                     android:layout_marginVertical="5dp"
                     android:background="@color/lightGrey" />
 
-                <TextView
-                    android:id="@+id/today_label"
+                <GridView
+                    android:id="@+id/pictures_list"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/montserrat_alternates"
-                    android:text="@string/today"
-                    android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/font_size_extra_small"
-                    android:textStyle="bold" />
-
-                <ListView
-                    android:id="@+id/today_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:scrollbars="vertical"
-                    android:textColor="@color/lightGrey" />
-
-                <TextView
-                    android:id="@+id/yesterday_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/montserrat_alternates"
-                    android:text="@string/yesterday"
-                    android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/font_size_extra_small"
-                    android:textStyle="bold" />
-
-                <ListView
-                    android:id="@+id/yesterday_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:textColor="@color/lightGrey" />
-
-                <TextView
-                    android:id="@+id/older_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/montserrat_alternates"
-                    android:text="@string/older"
-                    android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/font_size_extra_small"
-                    android:textStyle="bold" />
-
-                <ListView
-                    android:id="@+id/older_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:textColor="@color/lightGrey" />
+                    android:layout_height="400dp"
+                    android:numColumns="3" />
 
             </LinearLayout>
 
