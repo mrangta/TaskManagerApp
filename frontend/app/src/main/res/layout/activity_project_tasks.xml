@@ -13,53 +13,6 @@
         android:layout_height="match_parent"
         tools:context=".ProjectTasksActivity">
 
-
-        <LinearLayout
-            android:id="@+id/tabs"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="140dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.33"
-                android:clickable="true"
-                android:onClick="tasksTab"
-                android:text="@string/tasks"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="140dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.33"
-                android:clickable="true"
-                android:onClick="picturesTab"
-                android:text="@string/pictures"
-                android:textAlignment="center"
-                android:textAllCaps="true" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="140dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.33"
-                android:clickable="true"
-                android:onClick="filesTab"
-                android:text="@string/files"
-                android:textAlignment="center"
-                android:textAllCaps="true" />
-
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/header_layout"
             android:layout_width="match_parent"
@@ -92,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_alternates"
                 android:gravity="center_horizontal"
-                android:paddingHorizontal="120dp"
+                android:paddingHorizontal="100dp"
                 android:textColor="@color/darkGrey"
                 android:textSize="@dimen/font_size_large"
                 android:textStyle="bold" />
@@ -102,66 +55,189 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/description_layout"
             android:layout_width="0dp"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.026"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header_layout">
 
-            <ImageView
-                android:id="@+id/profile_picture"
-                android:layout_width="90dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:contentDescription="@string/project_badge"
-                android:paddingRight="10dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_project"></ImageView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_pic"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                android:elevation="12dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="40dp">
+
+                <ImageView
+                    android:id="@+id/profile_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:contentDescription="@string/profile_pic"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_project"></ImageView>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabs">
+
+
+                <FrameLayout
+                    android:layout_width="4dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/accentBlue" />
+
+
+                <LinearLayout
+                    android:id="@+id/desc_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="5dp">
+
+                    <TextView
+                        android:id="@+id/project_desc_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/project_description"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_small"/>
+
+                    <TextView
+                        android:id="@+id/desc_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/sample_description"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_small" />
+
+                    <LinearLayout
+                        android:id="@+id/modified_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/desc_layout"
+                        android:gravity="end"
+                        android:paddingVertical="5dp">
+
+                        <TextView
+                            android:id="@+id/last_modified_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_alternates"
+                            android:text="@string/last_modified"
+                            android:textColor="@color/lightGrey"
+                            android:textSize="@dimen/font_size_small" />
+
+                        <TextView
+                            android:id="@+id/modified_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_alternates"
+                            android:text="@string/_22_11_2019"
+                            android:textColor="@color/darkGrey"
+                            android:textSize="@dimen/font_size_small"
+                            android:paddingHorizontal="5dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/tabs"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/tabs_border"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description_layout">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/project_description" />
-
-                <EditText
-                    android:id="@+id/editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="67dp"
-                    android:ems="10"
-                    android:gravity="start|top"
-                    android:inputType="textMultiLine"
-                    android:text="@string/sample_description" />
-
-                <TextView
-                    android:id="@+id/last_modified_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_alternates"
-                    android:text="@string/last_modified"
-                    android:textColor="@color/lightGrey"
-                    android:textSize="@dimen/font_size_small" />
-
-                <TextView
-                    android:id="@+id/modified_date"
-                    android:layout_width="match_parent"
+                    android:id="@+id/textView7"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="0.33"
+                    android:clickable="true"
                     android:fontFamily="@font/montserrat_alternates"
-                    android:text="@string/_22_11_2019"
-                    android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/font_size_medium" />
+                    android:onClick="tasksTab"
+                    android:text="@string/tasks"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/accentBlue"
+                    android:textSize="@dimen/font_size_medium"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="140dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="15dp"
+                    android:background="@color/accentBlue" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.33"
+                android:clickable="true"
+                android:fontFamily="@font/montserrat_alternates"
+                android:onClick="picturesTab"
+                android:text="@string/pictures"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/darkGrey"
+                android:textSize="@dimen/font_size_medium" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.33"
+                android:clickable="true"
+                android:fontFamily="@font/montserrat_alternates"
+                android:onClick="filesTab"
+                android:text="@string/files"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/darkGrey"
+                android:textSize="@dimen/font_size_medium" />
+
         </LinearLayout>
+
+
+
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -169,7 +245,8 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabs">
+            app:layout_constraintTop_toBottomOf="@+id/tabs"
+            android:layout_marginBottom="110dp">
 
 
             <FrameLayout
@@ -189,12 +266,12 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/my_tasks_label"
-                        android:layout_width="180dp"
+                        android:layout_width="220dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_alternates"
                         android:text="@string/all_tasks"
@@ -203,17 +280,21 @@
 
                     <TextView
                         android:id="@+id/create_task_label"
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/create_task" />
+                        android:text="@string/create_task"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:textColor="@color/lightGrey"
+                        android:textSize="@dimen/font_size_small" />
 
                     <ImageButton
                         android:id="@+id/create_task_button"
-                        android:layout_width="107dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:onClick="createTask"
-                        app:srcCompat="@drawable/ic_add" />
+                        app:srcCompat="@drawable/ic_plus"
+                        android:background="@drawable/transparent_background"  />
                 </LinearLayout>
 
                 <View
@@ -226,8 +307,8 @@
                     android:id="@+id/on_going_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
                     android:fontFamily="@font/montserrat_alternates"
                     android:text="@string/ongoing"
                     android:textColor="@color/darkGrey"
@@ -237,15 +318,15 @@
                 <ListView
                     android:id="@+id/ongoingList"
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                    android:layout_height="60dp"
                     android:textColor="@color/lightGrey" />
 
                 <TextView
-                    android:id="@+id/yesterday_label"
+                    android:id="@+id/pending_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
                     android:fontFamily="@font/montserrat_alternates"
                     android:text="@string/pending"
                     android:textColor="@color/darkGrey"
@@ -255,15 +336,15 @@
                 <ListView
                     android:id="@+id/pendingList"
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                    android:layout_height="60dp"
                     android:textColor="@color/lightGrey" />
 
                 <TextView
                     android:id="@+id/completed_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
                     android:fontFamily="@font/montserrat_alternates"
                     android:text="@string/completed"
                     android:textColor="@color/darkGrey"
@@ -273,7 +354,7 @@
                 <ListView
                     android:id="@+id/completedList"
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                    android:layout_height="60dp"
                     android:textColor="@color/lightGrey" />
 
             </LinearLayout>

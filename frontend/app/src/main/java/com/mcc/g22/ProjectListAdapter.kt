@@ -25,6 +25,7 @@ class ProjectListAdapter(private val mDataList: ArrayList<ProjectListDetails>, v
         holder.ptitle.text = mDataList[position].project_title
         holder.itemView.findViewById<View>(R.id.project_tasks).setOnClickListener { clickListener(item, position) }
         holder.itemView.findViewById<View>(R.id.project_title).setOnClickListener { clickListener(item, position) }
+        holder.itemView.findViewById<View>(R.id.profile_picture).setOnClickListener { clickListener(item, position) }
     }
 
     override fun getItemCount(): Int {
