@@ -10,6 +10,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
@@ -75,10 +76,15 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, profilePhoto)
             profile_picture_profileSetting.setImageBitmap(bitmap)
             user!!.setProfileImage(profilePhoto!! , {}, {})
+            user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
         }
     }
 
     private fun getUserInfo(){
+
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
         username_profileSetting_textView.text = user!!.username
         email_profileSetting_textView.text = user!!.email
