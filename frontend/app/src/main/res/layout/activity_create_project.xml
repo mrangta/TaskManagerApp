@@ -240,15 +240,12 @@
                             android:textSize="@dimen/font_size_medium"
                             android:fontFamily="@font/montserrat_alternates" />
 
-                        <ListView
+                        <GridView
                             android:id="@+id/keyword_list"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:scrollbars="vertical"
-                            android:textSize="@dimen/font_size_extra_small"
-                            android:fontFamily="@font/montserrat_alternates"
-                            android:layout_marginBottom="@dimen/field_top"
-                            android:textColor="@color/mediumGrey"/>
+                            android:layout_height="match_parent"
+                            android:numColumns="5"/>
+
 
                         <TextView
                             android:id="@+id/project_type_label"
