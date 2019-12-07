@@ -8,11 +8,11 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_my_tasks.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
-import kotlinx.android.synthetic.main.activity_project_picture.*
+import kotlinx.android.synthetic.main.activity_project_files.*
+import kotlinx.android.synthetic.main.activity_project_picture.project_title_layout
 
 class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -20,8 +20,8 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     private var customAdapter: CustomAdapter? = null
     private var imageModelArrayList: ArrayList<ImageModel>? = null
 
-    var imageList = intArrayOf(R.drawable.ic_tasks, R.drawable.ic_tasks)
-    var myImageNameList = arrayOf("test.pdf", "another.pdf")
+    var imageList = intArrayOf(R.drawable.ic_tasks, R.drawable.ic_tasks, R.drawable.ic_tasks, R.drawable.ic_tasks, R.drawable.ic_tasks)
+    var myImageNameList = arrayOf("test.pdf", "another.pdf", "third.pdf", "4th.pdf", "pdf.pdf")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +37,7 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         imageModelArrayList = populateList()
         customAdapter = CustomAdapter(this, imageModelArrayList!!)
-        today_list!!.adapter = customAdapter
-        yesterday_list!!.adapter = customAdapter
-        older_list!!.adapter = customAdapter
+        files_list!!.adapter = customAdapter
     }
 
     private fun populateList(): ArrayList<ImageModel> {

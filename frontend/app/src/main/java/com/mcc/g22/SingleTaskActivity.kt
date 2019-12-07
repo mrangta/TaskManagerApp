@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -19,66 +18,24 @@ import kotlinx.android.synthetic.main.activity_my_tasks.ongoingList
 import kotlinx.android.synthetic.main.activity_my_tasks.pendingList
 import kotlinx.android.synthetic.main.activity_project_tasks.*
 
-class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+class SingleTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private var ongoingTasks = mutableListOf<Task>()
-    private var completedTasks = mutableListOf<Task>()
-    private var pendingTasks = mutableListOf<Task>()
-
-    companion object {
-        var project: Project? = null
-    }
+    var array = arrayOf("Create backend for the project", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation", "Write documentation")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_project_tasks)
-
-        if (project == null) {
-            finish()
-            return
-        }
-        val p = project as Project
+        setContentView(R.layout.activity_single_task)
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        desc_content.text = p.description
-        p.loadBadgeIntoImageView(this, profile_picture)
-        modified_date.text = p.lastModificationDate.toString()
+        val bundle: Bundle? = intent.extras
+        val string: String? = bundle?.getString("project_title")
 
-        val adapterOngoing = ArrayAdapter(this, R.layout.task,
-                ongoingTasks)
-        val adapterPending = ArrayAdapter(this, R.layout.task,
-                pendingTasks)
-        val adapterCompleted = ArrayAdapter(this, R.layout.task,
-                completedTasks)
+        project_title_layout.text = string
 
-        ongoingList.adapter = adapterOngoing
-        pendingList.adapter = adapterPending
-        completedList.adapter = adapterCompleted
 
-        for (t in p.tasksIds) {
-            Task.getTaskFromDatabase(t, {
-                when (it.status) {
-                    Task.TaskStatus.ON_GOING -> {
-                        ongoingTasks.add(it)
-                        runOnUiThread { adapterOngoing.notifyDataSetChanged() }
-                    }
-                    Task.TaskStatus.PENDING -> {
-                        pendingTasks.add(it)
-                        runOnUiThread { adapterPending.notifyDataSetChanged() }
-                    }
-                    else -> {
-                        completedTasks.add(it)
-                        runOnUiThread { adapterCompleted.notifyDataSetChanged() }
-                    }
-                }
-            }, {
-                Toast.makeText(this, "Error while loading task", Toast.LENGTH_LONG)
-                        .show()
-            })
-        }
     }
 
     fun toggleDrawer(view: View){

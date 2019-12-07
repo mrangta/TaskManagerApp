@@ -20,7 +20,11 @@ class NotificationsService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         // Get name of the user to watch
-        val userToWatch = User.getRegisteredUser()!!
+        val userToWatch = User.getRegisteredUser()
+        if (userToWatch == null) {
+            stopSelf()
+            return START_STICKY
+        }
         val usernameToWatch = userToWatch.uid
 
         // Get reference to the database

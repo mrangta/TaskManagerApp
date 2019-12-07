@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/drawer_layout"
-    tools:context=".ProjectTasksActivity"
+    tools:context=".SingleTaskActivity"
     tools:openDrawer="start">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ProjectTasksActivity">
+        tools:context=".SingleTaskActivity">
 
         <LinearLayout
             android:id="@+id/header_layout"
@@ -169,7 +169,7 @@
 
         <LinearLayout
             android:id="@+id/tabs"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/tabs_border"
@@ -212,7 +212,7 @@
                 android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/pictures_label"
                 android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.33"
@@ -223,13 +223,16 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/darkGrey"
-                android:textSize="@dimen/font_size_medium" />
+                android:textSize="@dimen/font_size_medium"
+                android:focusable="true" />
+
             <View
                 android:layout_width="140dp"
                 android:layout_height="2dp"
                 android:layout_marginStart="15dp"
                 android:background="@color/darkGrey" />
         </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -237,7 +240,7 @@
                 android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/files_label"
                 android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.33"
@@ -248,7 +251,9 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/darkGrey"
-                android:textSize="@dimen/font_size_medium" />
+                android:textSize="@dimen/font_size_medium"
+                android:focusable="true" />
+
         <View
             android:layout_width="140dp"
             android:layout_height="2dp"
@@ -293,31 +298,13 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/my_tasks_label"
+                        android:id="@+id/task_title_label"
                         android:layout_width="220dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_alternates"
-                        android:text="@string/all_tasks"
+                        android:text="@string/task_title_label"
                         android:textColor="@color/darkGrey"
                         android:textSize="@dimen/font_size_large" />
-
-                    <TextView
-                        android:id="@+id/create_task_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/create_task"
-                        android:fontFamily="@font/montserrat_alternates"
-                        android:textColor="@color/lightGrey"
-                        android:textSize="@dimen/font_size_small" />
-
-                    <ImageButton
-                        android:id="@+id/create_task_button"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_weight="1"
-                        android:onClick="createTask"
-                        app:srcCompat="@drawable/ic_plus"
-                        android:background="@drawable/transparent_background"  />
                 </LinearLayout>
 
                 <View
@@ -326,59 +313,173 @@
                     android:layout_marginVertical="5dp"
                     android:background="@color/lightGrey" />
 
-                <TextView
-                    android:id="@+id/on_going_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="2dp"
-                    android:fontFamily="@font/montserrat_alternates"
-                    android:text="@string/ongoing"
-                    android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/font_size_extra_small"
-                    android:textStyle="bold" />
-
-                <ListView
-                    android:id="@+id/ongoingList"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:textColor="@color/lightGrey" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/task_desc_label"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/task__description"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_small"/>
+
+                    <TextView
+                        android:id="@+id/create_date_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/creation_date"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_small"/>
+                    <TextView
+                        android:id="@+id/create_date_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/_22_11_2019"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_small"
+                        android:paddingHorizontal="5dp"/>
+
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabs">
+
+                    <LinearLayout
+                        android:id="@+id/task_desc_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp">
+
+
+                        <TextView
+                            android:id="@+id/task_desc_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_alternates"
+                            android:text="@string/sample_description"
+                            android:textColor="@color/darkGrey"
+                            android:textSize="@dimen/font_size_small" />
+
+                        <LinearLayout
+                            android:id="@+id/due_date_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/desc_layout"
+                            android:gravity="end"
+                            android:paddingVertical="5dp">
+
+                            <TextView
+                                android:id="@+id/due_date_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_alternates"
+                                android:text="@string/due__date"
+                                android:textColor="@color/lightGrey"
+                                android:textSize="@dimen/font_size_small" />
+
+                            <TextView
+                                android:id="@+id/due_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_alternates"
+                                android:text="@string/_22_11_2019"
+                                android:textColor="@color/darkGrey"
+                                android:textSize="@dimen/font_size_small"
+                                android:paddingHorizontal="5dp"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:id="@+id/pending_label"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/assigned_to_label"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="2dp"
                     android:fontFamily="@font/montserrat_alternates"
-                    android:text="@string/pending"
+                    android:text="@string/assigned_to"
                     android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/font_size_extra_small"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/font_size_small"
+                    android:paddingHorizontal="5dp"/>
 
-                <ListView
-                    android:id="@+id/pendingList"
+                <LinearLayout
+                    android:id="@+id/member_image_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:textColor="@color/lightGrey" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="5dp">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:elevation="12dp"
+                        android:id="@+id/member1_pic"
+                        app:cardCornerRadius="40dp"
+                        android:innerRadius="0dp"
+                        android:shape="ring"
+                        android:thicknessRatio="1.9" >
+
+                        <ImageView
+                            android:layout_height="35dp"
+                            android:layout_width="match_parent"
+                            android:id="@+id/member1"
+                            android:contentDescription="@string/member1"
+                            app:srcCompat="@drawable/ic_user"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:scaleType="centerCrop">
+                        </ImageView>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/member_name"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/john_doe"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_medium"
+                        android:paddingHorizontal="5dp"
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/completed_label"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/status_label"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="2dp"
                     android:fontFamily="@font/montserrat_alternates"
-                    android:text="@string/completed"
+                    android:text="@string/tasks__status"
                     android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/font_size_extra_small"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/font_size_small"
+                    android:paddingTop="10dp"/>
 
-                <ListView
-                    android:id="@+id/completedList"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:textColor="@color/lightGrey" />
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_alternates"
+                    android:text="@string/completed_"
+                    android:textColor="@color/mediumGrey"
+                    android:textSize="@dimen/font_size_medium"
+                    android:layout_marginStart="5dp"/>
+
+
+
 
             </LinearLayout>
 

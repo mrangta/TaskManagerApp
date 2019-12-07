@@ -45,9 +45,11 @@
         <activity android:name=".ProjectPictureActivity" />
         <activity android:name=".ProjectTasksActivity" />
         <activity android:name=".FavoritesActivity" />
-        <activity android:name=".CreateProjectActivity" />
+        <activity android:name=".CreateProjectActivity"
+                    android:noHistory="true"/>
         <activity android:name=".CreateTaskActivity" />
         <activity android:name=".MyTasksActivity" />
+        <activity android:name=".SingleTaskActivity" />
         <activity android:name=".DashboardActivity" />
         <activity android:name=".LoginActivity">
 

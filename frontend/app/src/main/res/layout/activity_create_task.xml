@@ -186,7 +186,16 @@
             android:textSize="@dimen/font_size_medium"
             android:fontFamily="@font/montserrat_alternates" />
 
-        
+        <GridView
+            android:id="@+id/members_list_create_task"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/font_size_extra_small"
+            android:fontFamily="@font/montserrat_alternates"
+            android:layout_marginBottom="@dimen/field_top"
+            android:textColor="@color/mediumGrey"
+            android:numColumns="3"/>
 
         <TextView
             android:id="@+id/due_date_label"
