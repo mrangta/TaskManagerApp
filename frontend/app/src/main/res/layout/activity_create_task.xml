@@ -186,7 +186,7 @@
             android:textSize="@dimen/font_size_medium"
             android:fontFamily="@font/montserrat_alternates" />
 
-        <ListView
+        <GridView
             android:id="@+id/members_list_create_task"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -194,7 +194,8 @@
             android:textSize="@dimen/font_size_extra_small"
             android:fontFamily="@font/montserrat_alternates"
             android:layout_marginBottom="@dimen/field_top"
-            android:textColor="@color/mediumGrey"/>
+            android:textColor="@color/mediumGrey"
+            android:numColumns="3"/>
 
         <TextView
             android:id="@+id/due_date_label"
@@ -206,12 +207,6 @@
             android:textColor="@color/mediumGrey"
             android:textSize="@dimen/font_size_small"
             android:paddingEnd="40dp"/>
-
-        <Button
-            android:id="@+id/pick_date"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:text="@string/pick_date" />
 
         <Button
             android:id="@+id/pick_date"

@@ -328,7 +328,7 @@
                             android:textSize="@dimen/font_size_medium"
                             android:completionThreshold="3"/>
 
-                        <ListView
+                        <GridView
                             android:id="@+id/members_list_create_project"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
@@ -336,7 +336,8 @@
                             android:textSize="@dimen/font_size_extra_small"
                             android:fontFamily="@font/montserrat_alternates"
                             android:layout_marginBottom="@dimen/field_top"
-                            android:textColor="@color/mediumGrey"/>
+                            android:textColor="@color/mediumGrey"
+                            android:numColumns="3"/>
 
                         <Button
                             android:id="@+id/create_project"

@@ -155,10 +155,14 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
             t.commitChanges({
 
-                progress.hide()
-                finish()
+                runOnUiThread {
+                    progress.hide()
+                    finish()
+                }
             }, {
-                Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
+                runOnUiThread {
+                    Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
+                }
             })
 
         }
