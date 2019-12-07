@@ -91,5 +91,6 @@
     <string name="yesterday">Yesterday:</string>
     <string name="older">Older:</string>
     <string name="upload_file">Upload Files</string>
+    <string name="pick_date">Pick Date</string>
 
 </resources>

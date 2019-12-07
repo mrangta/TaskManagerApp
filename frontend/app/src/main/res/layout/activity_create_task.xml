@@ -198,6 +198,12 @@
             android:paddingEnd="40dp"/>
 
 
+        <Button
+            android:id="@+id/pick_date"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:text="@string/pick_date" />
+
         <EditText
             android:id="@+id/due_date"
             android:layout_width="match_parent"
