@@ -76,7 +76,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                             pAdapter = ProjectListAdapter(it.toMutableList() as java.util.ArrayList<Project>)
                             { itemDto: Project, position: Int ->
                                 intent = Intent(this, ProjectTasksActivity::class.java)
-                                intent.putExtra("project_title", listOfprojects[position].project_title)
+                                ProjectTasksActivity.project = itemDto
                                 startActivity(intent)
                             }
                             pRecyclerView!!.adapter = pAdapter

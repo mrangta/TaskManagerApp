@@ -373,4 +373,8 @@ class Task {
             },
             projectId = projectId)
     }
+
+    override fun toString(): String {
+        return description
+    }
 }

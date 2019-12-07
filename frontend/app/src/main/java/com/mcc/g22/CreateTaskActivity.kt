@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_create_task.*
@@ -18,6 +22,12 @@ import java.util.*
 class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private lateinit var addMembers: AutoCompleteTextView
+    private var usernameToUid = HashMap<String, String>()
+
+    private var membersArrayList = ArrayList<String>()
+    private lateinit var membersAdapter: ArrayAdapter<String>
+
     private val cal = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +36,8 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
+
+        addMembers = findViewById(R.id.assigned_to)
 
         task_status.setOnClickListener {
             val popupMenu: PopupMenu = PopupMenu(this, task_status)
@@ -58,6 +70,44 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     cal.get(Calendar.YEAR),
                     cal.get(Calendar.MONTH),
                     cal.get(Calendar.DAY_OF_MONTH)).show()
+        }
+
+        addMembers = findViewById(R.id.add_members_complete_text_view)
+        val members = mutableListOf<String>()
+        var adapter: ArrayAdapter<String> = ArrayAdapter(this,
+                android.R.layout.select_dialog_item,
+                members)
+        adapter.setNotifyOnChange(true)
+        addMembers.setAdapter(adapter)
+        addMembers.threshold = 3
+        addMembers.addTextChangedListener {
+            User.searchForUsers(addMembers.text.toString(), {
+                members.clear()
+                for (m in it) {
+                    members.add(m.second)
+                    usernameToUid[m.second] = m.first
+                }
+                runOnUiThread {
+                    adapter = ArrayAdapter(this,
+                            android.R.layout.select_dialog_item,
+                            members)
+                    addMembers.setAdapter(adapter)
+                    adapter.notifyDataSetChanged()
+                    addMembers.showDropDown()
+                }
+            }, {
+
+            })
+        }
+        addMembers.setOnItemClickListener { parent, view, position, id ->
+            membersArrayList.add( members[position] )
+            membersAdapter.notifyDataSetChanged()
+        }
+
+        create_task.setOnClickListener {
+            val desc = findViewById<EditText>(R.id.task_description)
+            val deadline = cal.toInstant()
+            val members = null
         }
     }
 
