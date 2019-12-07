@@ -17,7 +17,7 @@ import java.util.*
 class User(val username: String = "", var profileImage: String = "" , var email: String = "") {
 
     var uid: String = ""
-        private set
+        internal set
 
     companion object {
         private val storage: FirebaseStorage = FirebaseStorage.getInstance()

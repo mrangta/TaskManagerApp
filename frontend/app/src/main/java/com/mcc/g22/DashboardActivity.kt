@@ -53,8 +53,8 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        getUserInfo({
-            currentUser = it
+        getUserInfo({ user ->
+            currentUser = user
             username_menu_textView.text = currentUser.username
 
             val name = currentUser.username
@@ -68,7 +68,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             currentUser.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
             currentUser.getUsersProjects({
-
                 runOnUiThread {
                             //adding projects in list
                             pRecyclerView = findViewById(R.id.projectRecyclerView)
@@ -83,7 +82,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                             pRecyclerView!!.adapter = pAdapter
                         }
                 }, {
-
+                    Log.e("MCCC", "cannot fetch projects")
                     Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
                 })
          },{ })
@@ -97,6 +96,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                   if(dataSnapshot.exists()){
                       val user = dataSnapshot.getValue(User::class.java)!!
                       currentUser = user
+                      currentUser.uid = uid
                       onLogedIn(user)
                     }
                   else onLogedOut()
