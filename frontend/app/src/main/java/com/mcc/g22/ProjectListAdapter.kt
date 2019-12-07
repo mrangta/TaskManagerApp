@@ -7,7 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import java.util.ArrayList
 
-class ProjectListAdapter(private val mDataList: ArrayList<ProjectListDetails>) : RecyclerView.Adapter<ProjectListAdapter.MyViewHolder>() {
+class ProjectListAdapter(private val mDataList: ArrayList<ProjectListDetails>, val clickListener: (ProjectListDetails, Int) -> Unit) : RecyclerView.Adapter<ProjectListAdapter.MyViewHolder>() {
+
+    private var mObjects : ArrayList<ProjectListDetails> = ArrayList<ProjectListDetails>()
+
+    init {
+        mObjects = mDataList
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.projects_list, parent, false)
@@ -15,7 +21,9 @@ class ProjectListAdapter(private val mDataList: ArrayList<ProjectListDetails>) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        var item : ProjectListDetails = mDataList[position]
         holder.ptitle.text = mDataList[position].project_title
+        holder.itemView.findViewById<View>(R.id.project_tasks).setOnClickListener { clickListener(item, position) }
     }
 
     override fun getItemCount(): Int {

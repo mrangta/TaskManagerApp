@@ -1,13 +1,11 @@
 package com.mcc.g22
 
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.view.GravityCompat.*
-import kotlinx.android.synthetic.main.activity_dashboard.*
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +18,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mcc.g22.utils.logout
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
 import kotlinx.android.synthetic.main.activity_dashboard.nav_view
-import kotlinx.android.synthetic.main.activity_edit_profile.*
 import kotlinx.android.synthetic.main.nav_header.*
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -31,7 +29,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private var uid = FirebaseAuth.getInstance().currentUser!!.uid
     private val database = FirebaseDatabase.getInstance()
-    private  lateinit var currentUser :User
+    private lateinit var currentUser :User
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
@@ -43,19 +41,20 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
-        currentUser = User.getRegisteredUser()!!
-       /* getUserInfo({
+        getUserInfo({
             currentUser = it
-            welcome.text = (resources.getString(R.string.welcome) + "  " + currentUser!!.username)
+
+            val name = currentUser.username
+           // Log.d("" , "USERNAME IN UP IS $name")
+            welcome.text = (resources.getString(R.string.welcome) + "  " + name)
+
+          //  Log.d("" , "USERNAME IN UP IS $name")
+            username_menu_textView.text = name
+
             currentUser.showProfileImage(this , profile_picture_dashboard)
-            username_menu_textView.text = currentUser.username
-        },{ })
-*/
-        getUserInfo()
+            currentUser.showProfileImage(this , profile_picture_menu_imageView)
+         },{ })
 
-        //adding items in list
-
-        //adding projects in list
 
         for (i in 0..1) {
             val project = ProjectListDetails()
@@ -63,28 +62,36 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             project.project_title = "Project Title $i"
             listOfprojects!!.add(project)
         }
-
-
         pRecyclerView = findViewById(R.id.projectRecyclerView)
         var pLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         pRecyclerView!!.layoutManager = pLayoutManager
-        pAdapter = ProjectListAdapter(listOfprojects)
+        pAdapter = ProjectListAdapter(listOfprojects){ itemDto: ProjectListDetails, position: Int ->
+            intent = Intent(this, ProjectTasksActivity::class.java)
+            intent.putExtra("project_title", listOfprojects[position].project_title)
+            startActivity(intent)
+        }
         pRecyclerView!!.adapter = pAdapter
 
 
     }
 
-    private fun getUserInfo() {
+    private fun getUserInfo(onLogedIn: (user : User) -> Unit , onLogedOut:() -> Unit) {
 
-        var username = currentUser!!.username
-        username_menu_textView.text = ("" + username)
-        welcome.text = (resources.getString(R.string.welcome) + "  " + username)
-        Log.d("" , "USERNAME IS ${resources.getString(R.string.welcome) + "  " + username}")
-
-        currentUser!!.showProfileImage(this , profile_picture_dashboard)
-
+         database.getReference("users").child(uid).addListenerForSingleValueEvent(object:
+             ValueEventListener {
+              override fun onDataChange(dataSnapshot: DataSnapshot) {
+                  if(dataSnapshot.exists()){
+                      val user = dataSnapshot.getValue(User::class.java)!!
+                      currentUser = user
+                      onLogedIn(user)
+                    }
+                  else onLogedOut()
+              }
+              override fun onCancelled(error: DatabaseError) {
+                  onLogedOut()
+              }
+          })
     }
-
 
     fun toggleDrawer(view: View){
         if(drawer_layout.isDrawerOpen(START)) {
@@ -131,19 +138,19 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     fun logOut() {
 
-            val alert = AlertDialog.Builder(this)
-            alert.setTitle("Confirm")
-            alert.setMessage(resources.getString(R.string.alertExit))
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("Confirm")
+        alert.setMessage(resources.getString(R.string.alertExit))
 
-            alert.setPositiveButton("YES") { dialog, yes ->
-                FirebaseAuth.getInstance().signOut()
-                logout()
-            }
-            alert.setNegativeButton("No") { dialog, no ->
-            }
+        alert.setPositiveButton("YES") { dialog, yes ->
+            FirebaseAuth.getInstance().signOut()
+            logout()
+        }
+        alert.setNegativeButton("No") { dialog, no ->
+        }
 
-            val dialog: AlertDialog = alert.create()
-            dialog.show()
+        val dialog: AlertDialog = alert.create()
+        dialog.show()
     }
 
 

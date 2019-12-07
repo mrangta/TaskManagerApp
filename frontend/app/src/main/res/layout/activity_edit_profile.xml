@@ -84,7 +84,7 @@
                         app:cardCornerRadius="80dp">
 
                         <ImageView
-                            android:id="@+id/profile_picture"
+                            android:id="@+id/profile_picture_profileSetting"
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
                             android:layout_alignParentTop="true"
@@ -96,7 +96,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <ImageButton
-                        android:id="@+id/imageButton"
+                        android:id="@+id/imageButton_profileSetting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -117,27 +117,27 @@
                     android:paddingHorizontal="10dp">
 
                     <TextView
-                        android:id="@+id/username"
+                        android:id="@+id/username_profileSetting_textView"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginBottom="@dimen/field_top"
                         android:background="@drawable/view_text"
                         android:paddingLeft="@dimen/text_padding"
                         android:paddingRight="@dimen/text_padding"
-                        android:text="John doe"
+                        android:text=""
                         android:textColor="@color/lightGrey"
                         android:textSize="@dimen/font_size_medium"
                         android:paddingVertical="10dp"/>
 
                     <TextView
-                        android:id="@+id/emailaddress"
+                        android:id="@+id/email_profileSetting_textView"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginBottom="@dimen/field_top"
                         android:background="@drawable/view_text"
                         android:paddingLeft="@dimen/text_padding"
                         android:paddingRight="@dimen/text_padding"
-                        android:text="johndoe@gmail.com"
+                        android:text=""
                         android:textColor="@color/lightGrey"
                         android:textSize="@dimen/font_size_medium"
                         android:layout_marginTop="@dimen/field_top"
@@ -166,6 +166,17 @@
                         android:paddingRight="@dimen/text_padding"
                         android:textSize="@dimen/font_size_medium"
                         android:textColor="@color/mediumGrey"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/password_wrong_error"
+                        android:visibility="gone"
+                        android:textColor="@color/redError"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:textSize="@dimen/font_size_small"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"/>
 
                     <EditText
                         android:id="@+id/new_password_editText"
@@ -196,9 +207,20 @@
                         android:textColor="@color/mediumGrey"
                         android:textSize="@dimen/font_size_medium"/>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/password_not_matched"
+                        android:visibility="gone"
+                        android:textColor="@color/redError"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:textSize="@dimen/font_size_small"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"/>
+
 
                     <Button
-                        android:id="@+id/updatePassword"
+                        android:id="@+id/update_password_button"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginBottom="@dimen/field_top"
@@ -207,6 +229,14 @@
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/font_size_medium"/>
+
+
+                    <ProgressBar
+                        android:id="@+id/progressbar_update_password"
+                        android:visibility="gone"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
             </LinearLayout>

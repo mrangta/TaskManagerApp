@@ -181,12 +181,17 @@ class RegisterActivity : AppCompatActivity() {
         val username = displayName_register_editText.text.toString()
         val email = email_register_editText.text.toString()
         Log.d("" , "EMAIL IS $email")
-        val newUser = User(username , profilePhotoUrl!!, email)
+
+        var profilePhoto = ""
+        if (profilePhotoUrl != null){
+            profilePhoto = profilePhotoUrl
+        }
+        val newUser = User(username , profilePhoto, email)
 
         val refUser = database.child(uid)
         refUser.setValue(newUser)
             .addOnCompleteListener{
-                Toast.makeText(this,"user added to database completely", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this,"user added to database completely", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener{
                 Toast.makeText(this,"Failed to add user to database${it.message}", Toast.LENGTH_SHORT).show()

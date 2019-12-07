@@ -40,7 +40,7 @@
             app:cardCornerRadius="60dp">
 
             <ImageView
-                android:id="@+id/profile_picture"
+                android:id="@+id/profile_picture_menu_imageView"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_alignParentTop="true"
@@ -56,7 +56,7 @@
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/montserrat_alternates"
             android:paddingTop="8dp"
-            android:text="@string/username"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_large"
             android:textStyle="bold" />
