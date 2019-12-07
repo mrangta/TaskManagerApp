@@ -19,7 +19,6 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
-    var listOfprojects: ArrayList<ProjectListDetails> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
