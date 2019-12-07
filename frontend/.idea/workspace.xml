@@ -59,8 +59,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="44" column="21" selection-start-line="44" selection-start-column="21" selection-end-line="44" selection-end-column="21" />
+            <state relative-caret-position="638">
+              <caret line="55" column="5" selection-start-line="54" selection-start-column="11" selection-end-line="55" selection-end-column="5" />
               <folding>
                 <element signature="e#22#1191#0" expanded="true" />
                 <element signature="e#2088#2125#0" expanded="true" />
@@ -95,8 +95,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/EditProfileActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1091">
-              <caret line="90" lean-forward="true" selection-start-line="90" selection-end-line="90" />
+            <state relative-caret-position="413">
+              <caret line="78" column="40" selection-start-line="78" selection-start-column="40" selection-end-line="78" selection-end-column="40" />
               <folding>
                 <element signature="e#21#781#0" expanded="true" />
                 <element signature="e#2024#2072#0" expanded="true" />
@@ -248,8 +248,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/nav_header.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/RegisterActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_edit_profile.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/EditProfileActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mcc/g22/EditProfileActivity.kt" />
       </list>
     </option>
   </component>
@@ -639,7 +639,7 @@
       <window_info id="Designer" order="6" />
       <window_info id="Resources Explorer" order="7" weight="0.32954547" />
       <window_info id="Capture Tool" order="8" />
-      <window_info anchor="bottom" id="Run" order="0" sideWeight="0.6098485" weight="0.42339373" />
+      <window_info anchor="bottom" id="Run" order="0" sideWeight="0.6098485" visible="true" weight="0.05930807" />
       <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.49925372" weight="0.32784185" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32827735" />
       <window_info anchor="bottom" id="Debug" order="3" />
@@ -977,8 +977,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/EditProfileActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1091">
-          <caret line="90" lean-forward="true" selection-start-line="90" selection-end-line="90" />
+        <state relative-caret-position="413">
+          <caret line="78" column="40" selection-start-line="78" selection-start-column="40" selection-end-line="78" selection-end-column="40" />
           <folding>
             <element signature="e#21#781#0" expanded="true" />
             <element signature="e#2024#2072#0" expanded="true" />
@@ -989,8 +989,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mcc/g22/DashboardActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="44" column="21" selection-start-line="44" selection-start-column="21" selection-end-line="44" selection-end-column="21" />
+        <state relative-caret-position="638">
+          <caret line="55" column="5" selection-start-line="54" selection-start-column="11" selection-end-line="55" selection-end-column="5" />
           <folding>
             <element signature="e#22#1191#0" expanded="true" />
             <element signature="e#2088#2125#0" expanded="true" />
