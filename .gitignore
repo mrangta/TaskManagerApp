@@ -13,6 +13,7 @@ firebase-a.json
 /.idea/assetWizardSettings.xml
 
 /backend/.idea
+/frontend/.idea
 backend/firebase-admin-sdk-key.json
 
 .DS_Store
