@@ -103,6 +103,12 @@ class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
     }
 
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {
             R.id.nav_profile -> {

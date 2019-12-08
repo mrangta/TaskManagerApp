@@ -18,6 +18,10 @@ import kotlinx.android.synthetic.main.activity_create_task.*
 import java.text.SimpleDateFormat
 import java.time.Instant
 import com.mcc.g22.utils.logOut
+import kotlinx.android.synthetic.main.activity_create_task.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_create_task.drawer_layout
+import kotlinx.android.synthetic.main.activity_create_task.nav_view
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.util.*
 
 class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -223,6 +227,13 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             drawer_layout.openDrawer(GravityCompat.START)
         }
     }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
+    }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {

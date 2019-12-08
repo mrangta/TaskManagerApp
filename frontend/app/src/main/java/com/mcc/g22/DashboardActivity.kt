@@ -158,6 +158,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             drawer_layout.openDrawer(START)
         }
     }
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(START))
+            drawer_layout.closeDrawer(START)
+        else super.onBackPressed()
+    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {

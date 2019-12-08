@@ -53,10 +53,15 @@ class ProjectPictureActivity : AppCompatActivity(),
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+
         showUserInfoInMenu()
 
         val p = ProjectTasksActivity.project as Project
         project_title_layout.text = p.name
+
+        desc_content.text = p.description
+        p.loadBadgeIntoImageView(this, profile_picture)
+        modified_date.text = p.lastModificationDate.toString()
 
         imageSettings = User.getRegisteredUser()!!.getImageSizeAsEnum()
 
@@ -270,6 +275,12 @@ class ProjectPictureActivity : AppCompatActivity(),
         else {
             drawer_layout.openDrawer(GravityCompat.START)
         }
+    }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

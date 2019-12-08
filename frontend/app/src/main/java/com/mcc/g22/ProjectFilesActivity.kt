@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import kotlinx.android.synthetic.main.activity_project_files.*
 import com.mcc.g22.utils.logOut
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_project_picture.project_title_layout
 
 
@@ -49,6 +50,11 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         val p = ProjectTasksActivity.project as Project
 
         project_title_layout.text = p.name
+
+
+        desc_content.text = p.description
+        p.loadBadgeIntoImageView(this, profile_picture)
+        modified_date.text = p.lastModificationDate.toString()
 
         p.attachmentsManager.listAllAttachments({ attachments ->
 
@@ -162,6 +168,13 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
             drawer_layout.openDrawer(GravityCompat.START)
         }
     }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
+    }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {
