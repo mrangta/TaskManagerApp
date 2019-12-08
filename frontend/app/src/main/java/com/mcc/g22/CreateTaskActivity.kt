@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -14,6 +15,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.mcc.g22.User.Companion.resolveDisplayName
 import kotlinx.android.synthetic.main.activity_create_task.*
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -67,6 +69,23 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         if (task == null) {
             task_status.visibility = View.INVISIBLE
             task_status_label.visibility = View.INVISIBLE
+        } else {
+            create_new_task.text = "Edit Existing Task"
+            add_task.text = "Edit Task"
+            task_title.setText(task!!.name)
+            task_description.setText(task!!.description)
+            membersArrayList = arrayListOf()
+            for (user in task!!.getAssignedUsers()) {
+                resolveDisplayName(user, {
+                    membersArrayList.add(it)
+                    membersAdapter.add(it)
+                }, {
+                    runOnUiThread { Toast.makeText(this, "Error in retrieving assigned users", Toast.LENGTH_LONG).show() }
+                })
+            }
+            due_date.setText(task!!.deadline.toString())
+            task_status.text = task!!.status.stringValue
+            create_task.text = "Edit Task"
         }
 
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->

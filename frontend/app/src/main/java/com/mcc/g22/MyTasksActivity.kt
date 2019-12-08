@@ -50,8 +50,23 @@ class MyTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
             runOnUiThread {
                 ongoingList.adapter = adapterOngoing
+                ongoingList.setOnItemClickListener { parent, view, position, id ->
+                    intent = Intent(this, CreateTaskActivity::class.java)
+                    CreateTaskActivity.task = ongoingTasks[position]
+                    startActivity(intent)
+                }
                 pendingList.adapter = adapterPending
+                pendingList.setOnItemClickListener { parent, view, position, id ->
+                    intent = Intent(this, CreateTaskActivity::class.java)
+                    CreateTaskActivity.task = pendingTasks[position]
+                    startActivity(intent)
+                }
                 completedList.adapter = adapterCompleted
+                completedList.setOnItemClickListener { parent, view, position, id ->
+                    intent = Intent(this, CreateTaskActivity::class.java)
+                    CreateTaskActivity.task = completedTasks[position]
+                    startActivity(intent)
+                }
             }
         }, {
 

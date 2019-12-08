@@ -25,7 +25,11 @@ import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
 import kotlinx.android.synthetic.main.activity_dashboard.nav_view
 import java.time.Instant
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoField
+import java.util.*
 
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -82,10 +86,17 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 var ongoingCounter = 0
                 var completedCounter = 0
                 val now = Instant.now()
+                val zdt: ZonedDateTime = ZonedDateTime.ofInstant(now, ZoneId.systemDefault())
+                val cal1: Calendar = GregorianCalendar.from(zdt)
 
                 for (t in it) {
-                    if ((t.deadline.get(ChronoField.DAY_OF_YEAR) == now.get(ChronoField.DAY_OF_YEAR))
-                        && (t.deadline.get(ChronoField.YEAR) == now.get(ChronoField.YEAR))) {
+
+                    val zdtTask: ZonedDateTime = ZonedDateTime.ofInstant(t.deadline, ZoneOffset.UTC)
+                    val cal2: Calendar = GregorianCalendar.from(zdtTask)
+
+                    if (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                        cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                        cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)) {
 
                         ++dueTask
                     }
