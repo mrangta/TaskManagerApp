@@ -1,7 +1,5 @@
 firebase-a.json
 
-
-
 *.iml
 .gradle
 /local.properties
@@ -16,10 +14,12 @@ firebase-a.json
 /frontend/.idea
 /backend/local.properties
 /frontend/local.properties
+/frontend/app/google-service*.json
 backend/firebase-admin-sdk-key.json
 
+
 .DS_Store
-/build
+/frontend/app/build
 /captures
 .externalNativeBuild
 .cxx
