@@ -109,32 +109,6 @@
             android:layout_marginVertical="5dp"
             android:background="@color/lightGrey" />
 
-        <TextView
-            android:id="@+id/task_title_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/montserrat_alternates"
-            android:text="@string/task_title"
-            android:textColor="@color/mediumGrey"
-            android:textSize="@dimen/font_size_small"
-            android:paddingEnd="40dp"/>
-
-
-
-        <EditText
-            android:id="@+id/task_title"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="@dimen/field_top"
-            android:layout_marginBottom="@dimen/field_top"
-            android:autofillHints=""
-            android:background="@drawable/edit_text"
-            android:inputType="text"
-            android:paddingLeft="@dimen/text_padding"
-            android:paddingRight="@dimen/text_padding"
-            android:textSize="@dimen/font_size_medium"
-            android:fontFamily="@font/montserrat_alternates"/>
 
         <TextView
             android:id="@+id/task_description_label"
