@@ -23,7 +23,7 @@
     <string name="generation_finished_text">Successfully generated project report</string>
     <string name="generation_cancelled_title">Generating report has been cancelled</string>
     <string name="error">Error</string>
-    <string name="error_in_generating_report">Error while fetching data. Check Internet connection</string>
+    <string name="error_in_generating_report">Error while fetching data. Project has no tasks or check Internet connection</string>
     <string name="ok">OK</string>
     <string name="intro">Hassle free,</string>
     <string name="intro1">flexible and efficient</string>

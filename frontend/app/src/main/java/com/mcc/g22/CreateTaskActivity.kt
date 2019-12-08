@@ -110,6 +110,8 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDateInView()
             task?.changeDeadline(cal.toInstant())
+            task?.cancelReminder(this)
+            task?.setReminder(this, 86400000)
         }
 
         pick_date!!.setOnClickListener {
@@ -193,15 +195,14 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     runOnUiThread { Toast.makeText(this, "Error: cannot fetch project information",
                         Toast.LENGTH_LONG).show() }
                 })
-            } else {
-                if (ProjectTasksActivity.project!!.isPrivate ||
-                    !(ProjectTasksActivity.project!!.isUserAdmin(User.getRegisteredUser()!!))
-                ) {
-                    addMembers.visibility = View.GONE
-                    members_list_create_task.visibility = View.GONE
-                    assigned_to_label.visibility = View.GONE
-                }
             }
+        }
+        if (ProjectTasksActivity.project!!.isPrivate ||
+            !(ProjectTasksActivity.project!!.isUserAdmin(User.getRegisteredUser()!!))
+        ) {
+            addMembers.visibility = View.GONE
+            members_list_create_task.visibility = View.GONE
+            assigned_to_label.visibility = View.GONE
         }
     }
 
@@ -290,11 +291,12 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         task?.commitChanges({
 
             runOnUiThread {
-                progress.hide()
+                progress.dismiss()
                 finish()
             }
         }, {
             runOnUiThread {
+                progress.dismiss()
                 Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
             }
         })
