@@ -36,6 +36,7 @@ class ProjectPictureActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var photoURI: Uri
+    private lateinit var imageSettings: AttachmentsManager.ImageSize
     private var currentPhotoPath: String = ""
     private var customAdapter: CustomAdapter? = null
     private var imageModelArrayList = mutableListOf<ImageModel>()
@@ -54,6 +55,8 @@ class ProjectPictureActivity : AppCompatActivity(),
 
         val p = ProjectTasksActivity.project as Project
         project_title_layout.text = p.name
+
+        imageSettings = User.getRegisteredUser()!!.getImageSizeAsEnum()
 
         p.attachmentsManager.listAllAttachments({ attachments ->
 
@@ -248,7 +251,7 @@ class ProjectPictureActivity : AppCompatActivity(),
                 progress.hide()
                 Toast.makeText(this, "Error occurred", Toast.LENGTH_LONG).show()
             }
-        }, fileName = f)
+        }, fileName = f, imageSize = imageSettings)
     }
 
     fun toggleDrawer(view: View){

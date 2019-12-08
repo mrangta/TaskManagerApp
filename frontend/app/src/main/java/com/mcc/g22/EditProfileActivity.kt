@@ -69,15 +69,15 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     fun onRadioButtonClicked(view: View) {
-        var checked = view as RadioButton
+        val checked = view as RadioButton
         if (low_res == checked) {
-
+            user!!.setImageResolutionToLow()
         }
         if (high_res == checked) {
-
+            user!!.setImageResolutionToHigh()
         }
         if (full_res == checked) {
-
+            user!!.setImageResolutionToFull()
         }
     }
 
@@ -102,6 +102,25 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         username_profileSetting_textView.text = user!!.username
         email_profileSetting_textView.text = user!!.email
         user!!.showProfileImage(this, profile_picture_profileSetting)
+
+        when (user!!.getImageSizeAsEnum()) {
+            AttachmentsManager.ImageSize.LOW -> {
+                low_res.isChecked = true
+                high_res.isChecked = false
+                full_res.isChecked = false
+            }
+            AttachmentsManager.ImageSize.HIGH -> {
+                low_res.isChecked = false
+                high_res.isChecked = true
+                full_res.isChecked = false
+            }
+            AttachmentsManager.ImageSize.FULL -> {
+                low_res.isChecked = false
+                high_res.isChecked = false
+                full_res.isChecked = true
+            }
+        }
+
     }
     private fun updatePassword() {
 
@@ -162,6 +181,11 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         else {
             drawer_layout.openDrawer(GravityCompat.START)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        user!!.saveCurrentImageSize()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
