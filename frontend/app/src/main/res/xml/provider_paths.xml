@@ -3,4 +3,5 @@
     <external-path name="external_files" path="."/>
     <cache-path name="cache" path="." />
     <external-cache-path name="external_cache" path="." />
+    <external-path name="my_images" path="Android/data/com.example.package.name/files/Pictures" />
 </paths>

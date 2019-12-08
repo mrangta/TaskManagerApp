@@ -4,16 +4,20 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.EditText
 import com.mcc.g22.utils.logOut
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
@@ -23,17 +27,23 @@ import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import kotlinx.android.synthetic.main.activity_project_picture.*
+import java.io.File
+import java.io.IOException
+import java.time.Instant
 
 
 class ProjectPictureActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private lateinit var photoURI: Uri
+    private var currentPhotoPath: String = ""
     private var customAdapter: CustomAdapter? = null
     private var imageModelArrayList = mutableListOf<ImageModel>()
 
     companion object {
         private const val FILE_SELECT_CODE = 2020
+        private const val REQUEST_IMAGE_CAPTURE = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,59 +85,83 @@ class ProjectPictureActivity : AppCompatActivity(),
         })
 
         upload_pic_button.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/jpeg"
-            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(R.string.pick_picture_source)
+                .setItems(R.array.picture_sources_array
+                ) { dialog, which ->
+                    if (which == 0) {
+                        dispatchChoosePictureIntent()
+                    } else {
+                        dispatchTakePictureIntent()
+                    }
+                }
+            builder.create().show()
+        }
+    }
 
-            try {
-                startActivityForResult(
-                    Intent.createChooser(intent, "Select a File to Upload"),
-                    FILE_SELECT_CODE)
-            } catch (ex: ActivityNotFoundException) { // Potentially direct the user to the Market with a Dialog
-                Toast.makeText(
-                    this, "Please install a File Manager.",
-                    Toast.LENGTH_SHORT
-                ).show()
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager)?.also {
+
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Type name of picture")
+                val filenameEditText = EditText(this)
+                filenameEditText.setText(Instant.now().toString())
+                builder.setView(filenameEditText)
+                builder.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
+                    val photoFile: File? = try {
+                        createImageFile(filenameEditText.text.toString())
+                    } catch (ex: IOException) {
+                        Toast.makeText(this, "Error while trying to create a temporary file",
+                            Toast.LENGTH_LONG).show()
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        photoURI = FileProvider.getUriForFile(
+                            this, this.packageName + ".fileprovider", it)
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
+                }
+                builder.setNegativeButton("Cancel") { dialogInterface: DialogInterface, i: Int ->
+
+                }
+                builder.create().show()
             }
+        }
+    }
+
+    private fun dispatchChoosePictureIntent() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/jpeg"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+
+        try {
+            startActivityForResult(
+                Intent.createChooser(intent, "Select a File to Upload"),
+                FILE_SELECT_CODE)
+        } catch (ex: ActivityNotFoundException) { // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(
+                this, "Please install a File Manager.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data == null) return
+        if (resultCode != Activity.RESULT_OK) return
         when (requestCode) {
-            FILE_SELECT_CODE -> if (resultCode == Activity.RESULT_OK) { // Get the Uri of the selected file
+            FILE_SELECT_CODE -> { // Get the Uri of the selected file
                 val uri: Uri? = data.data
                 if (uri != null) {
-
-                    val progress = ProgressDialog(this)
-                    progress.setMessage(getString(R.string.uploading_file))
-                    progress.setCancelable(false)
-                    progress.show()
-
-                    val f = resolveFilename(uri)
-                    ProjectTasksActivity.project!!.attachmentsManager.uploadFile(this, uri, {
-                        runOnUiThread {
-                            progress.hide()
-                            Toast.makeText(this, "File uploaded", Toast.LENGTH_LONG).show()
-
-                            val imageModel = ImageModel()
-                            imageModel.setNames(uri.lastPathSegment!!.substringAfterLast('/'))
-                            imageModel.storagePath = "/${ProjectTasksActivity.project!!.projectId}/${f}"
-                            imageModelArrayList.add(imageModel)
-
-                            customAdapter = CustomAdapter(this,
-                                imageModelArrayList as java.util.ArrayList<ImageModel>
-                            )
-                            pictures_list!!.adapter = customAdapter
-                        }
-                    }, {
-                        runOnUiThread {
-                            progress.hide()
-                            Toast.makeText(this, "Error occurred", Toast.LENGTH_LONG).show()
-                        }
-                    }, fileName = f)
+                    uploadPicture(uri)
                 }
+            }
+            REQUEST_IMAGE_CAPTURE -> {
+                uploadPicture(photoURI)
             }
         }
     }
@@ -179,12 +213,53 @@ class ProjectPictureActivity : AppCompatActivity(),
         return ""
     }
 
-
     private fun showUserInfoInMenu(){
 
         var user = User.getRegisteredUser()
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
         user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+}
+
+    @Throws(IOException::class)
+    private fun createImageFile(filename: String): File {
+        // Create an image file name
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val f = File(storageDir, "$filename.jpg").apply {
+            currentPhotoPath = absolutePath
+        }
+        f.createNewFile()
+        return f
+    }
+
+    private fun uploadPicture(uri: Uri) {
+        val progress = ProgressDialog(this)
+        progress.setMessage(getString(R.string.uploading_file))
+        progress.setCancelable(false)
+        progress.show()
+
+        val f = resolveFilename(uri)
+        ProjectTasksActivity.project!!.attachmentsManager.uploadFile(this, uri, {
+            runOnUiThread {
+                progress.hide()
+                Toast.makeText(this, "File uploaded", Toast.LENGTH_LONG).show()
+
+                val imageModel = ImageModel()
+                imageModel.setNames(uri.lastPathSegment!!.substringAfterLast('/'))
+                imageModel.storagePath = "/${ProjectTasksActivity.project!!.projectId}/${f}"
+                imageModelArrayList.add(imageModel)
+
+                customAdapter = CustomAdapter(this,
+                    imageModelArrayList as java.util.ArrayList<ImageModel>
+                )
+                pictures_list!!.adapter = customAdapter
+            }
+        }, {
+            runOnUiThread {
+                progress.hide()
+                Toast.makeText(this, "Error occurred", Toast.LENGTH_LONG).show()
+            }
+        }, fileName = f)
+
 
     }
 
