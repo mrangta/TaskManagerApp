@@ -27,7 +27,7 @@ backend_docker_build_release:
 
 buildAndroid:
     image: javiersantos/android-ci:28.0.3
-    stage: build
+    stage: buildAndroid
     before_script:
         - cd frontend
         - export GRADLE_USER_HOME=`pwd`/.gradle
