@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -42,6 +43,8 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
+
+        showUserInfoInMenu()
 
         val p = ProjectTasksActivity.project as Project
 
@@ -140,6 +143,16 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         return list
     }
+
+
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
+    }
+
 
     fun toggleDrawer(view: View){
         if(drawer_layout.isDrawerOpen(GravityCompat.START)) {

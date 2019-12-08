@@ -43,6 +43,7 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 0)
+            user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
         }
 
@@ -75,16 +76,21 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, profilePhoto)
             profile_picture_profileSetting.setImageBitmap(bitmap)
             user!!.setProfileImage(profilePhoto!! , {}, {})
-            user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+          //  user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
         }
     }
 
-    private fun getUserInfo(){
+    private fun showUserInfoInMenu(){
 
+        var user = User.getRegisteredUser()
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
         user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+    }
 
+    private fun getUserInfo(){
+
+        showUserInfoInMenu()
         username_profileSetting_textView.text = user!!.username
         email_profileSetting_textView.text = user!!.email
         user!!.showProfileImage(this, profile_picture_profileSetting)
@@ -146,7 +152,9 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             drawer_layout.closeDrawer(GravityCompat.START)
         }
         else {
+            user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
             drawer_layout.openDrawer(GravityCompat.START)
+
         }
     }
 

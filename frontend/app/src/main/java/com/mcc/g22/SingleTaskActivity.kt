@@ -5,13 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_my_tasks.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
-import kotlinx.android.synthetic.main.activity_my_tasks.completedList
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import com.mcc.g22.utils.logOut
@@ -29,11 +27,21 @@ class SingleTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        showUserInfoInMenu()
+
         val bundle: Bundle? = intent.extras
         val string: String? = bundle?.getString("project_title")
 
         project_title_layout.text = string
 
+
+    }
+
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
     }
 

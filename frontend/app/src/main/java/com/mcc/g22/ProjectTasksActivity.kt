@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,6 +39,9 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
             finish()
             return
         }
+
+        showUserInfoInMenu()
+
         val p = project as Project
 
         nav_view.setNavigationItemSelectedListener(this)
@@ -79,6 +83,15 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                         .show()
             })
         }
+    }
+
+
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
     }
 
     fun toggleDrawer(view: View){
