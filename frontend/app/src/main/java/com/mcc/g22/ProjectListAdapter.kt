@@ -1,5 +1,7 @@
 package com.mcc.g22
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,15 +9,23 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
+import kotlin.concurrent.thread
 
 class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickListener: (Project, Int) -> Unit) : RecyclerView.Adapter<ProjectListAdapter.MyViewHolder>() {
 
     private val user = User.getRegisteredUser()
     private val database = FirebaseDatabase.getInstance()
+
+    companion object {
+        private val refresher = Handler(Looper.getMainLooper())
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.projects_list, parent, false)
@@ -29,7 +39,6 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickLis
         holder.ptitle.text = p.name
         p.loadBadgeIntoImageView(ctx, holder.pbadge)
         holder.lastModified.text = p.lastModificationDate.toString()
-
 
         for ((i, memId) in p.membersIds.withIndex()) {
             if (i == 0) {
@@ -68,8 +77,7 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickLis
         },{})
 
         favIcon.setOnClickListener{
-            Log.d("", "CLOCKED ${user!!.uid}")
-            user!!.getUserFavorites({
+            user.getUserFavorites({
 
                 var isProjectFav = false
                 for (pr in it) {
@@ -78,32 +86,44 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickLis
                         break
                     }
                 }
-                Log.d("" ,"this is $p")
                 if (isProjectFav) {
-                    //project.remove(p)
                     database.getReference("users").child(user!!.uid).child("favorites").child(p.projectId).removeValue()
                     favIcon.setImageResource(R.drawable.ic_fav_clicked)
                 }
                 else {
-                    //project.add(p)
                     database.getReference("users").child(user!!.uid).child("favorites").child(p.projectId).setValue(true)
                     favIcon.setImageResource(R.drawable.ic_fav)
 
                 }
-                //.setValue(project)
 
             }, {Log.d("" , "FAILED")})
         }
 
         holder.itemView.findViewById<ImageButton>(R.id.trash_projectList).setOnClickListener {
-            p.delete({
-                mDataList.removeAt(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, itemCount)
-                notifyDataSetChanged()
-            }, {
+            val alert = AlertDialog.Builder(holder.itemView.context)
+            alert.setTitle("Confirm")
+            alert.setMessage(R.string.are_you_sure_to_delete)
 
-            })
+            alert.setPositiveButton("YES") { dialog, yes ->
+                p.delete({
+                    refresher.post {
+                        mDataList.removeAt(position)
+                        notifyItemRemoved(position)
+                        notifyItemRangeChanged(position, itemCount)
+                        notifyDataSetChanged()
+                    }
+                }, {
+                    refresher.post {
+                        Toast.makeText(holder.itemView.context, "Error while deleting project",
+                            Toast.LENGTH_LONG).show()
+                    }
+                })
+            }
+            alert.setNegativeButton("No") { dialog, no ->
+            }
+
+            val dialog: AlertDialog = alert.create()
+            dialog.show()
         }
 
         holder.itemView.findViewById<View>(R.id.project_tasks).setOnClickListener { clickListener(p, position) }

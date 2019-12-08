@@ -56,6 +56,7 @@ class Task {
     private var taskHasBeenCreated: Boolean = false
     private var usersHaveBeenAssigned: Boolean = false
     private var descriptionHasChanged: Boolean = false
+    private var deadlineHasChanged: Boolean = false
 
     companion object {
 
@@ -329,6 +330,11 @@ class Task {
         descriptionHasChanged = true
     }
 
+    fun changeDeadline(newDeadline: Instant) {
+        deadline = newDeadline
+        deadlineHasChanged = true
+    }
+
     /**
      * Update the task in the backend using API.
      * This function is blocking so do not call it in the UI thread
@@ -355,6 +361,10 @@ class Task {
         if (descriptionHasChanged) {
             FirebaseDatabase.getInstance().reference.child("tasks")
                 .child(taskId).child("description").setValue(description)
+        }
+        if (deadlineHasChanged) {
+            FirebaseDatabase.getInstance().reference.child("tasks")
+                .child(taskId).child("deadline").setValue(deadline.toString())
         }
         if (usersHaveBeenAssigned) {
             ApiClient.api.assignUsersToTask(taskId, InlineObject2(userIds = assignedUsersIds.toTypedArray()))

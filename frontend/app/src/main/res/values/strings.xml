@@ -152,4 +152,6 @@
     <string name="due__date">Due date:</string>
     <string name="uploading_file">Uploading file...</string>
     <string name="pick_picture_source">Choose one option</string>
+    <string name="editing_a_task">Editing task...</string>
+    <string name="are_you_sure_to_delete">Are you sure, sir?</string>
 </resources>
