@@ -11,9 +11,14 @@ backend_docker_build_release:
     stage: releaseDocker
     image: docker:19.03.1
     services:
-      - docker:dind
+        - name: docker:dind
+          entrypoint: ["env", "-u", "DOCKER_HOST"]
+          command: ["dockerd-entrypoint.sh"]
     variables:
-        DOCKER_DRIVER: overlay
+        DOCKER_HOST: tcp://docker:2375/
+        DOCKER_DRIVER: overlay2
+        # See https://github.com/docker-library/docker/pull/166
+        DOCKER_TLS_CERTDIR: ""
     before_script:
         - cd backend
         - apk update && apk upgrade && apk add --update alpine-sdk && apk add --no-cache make
