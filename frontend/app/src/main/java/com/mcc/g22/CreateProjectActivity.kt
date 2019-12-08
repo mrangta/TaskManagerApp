@@ -65,10 +65,23 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             popupMenu.menuInflater.inflate(R.menu.project_type, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.personal ->
+                    R.id.personal -> {
                         project_type.text = "Personal"
-                    R.id.group ->
+
+                        project_add_members_label.visibility = View.GONE
+                        add_members_complete_text_view.visibility = View.GONE
+                        members_list_create_project.visibility = View.GONE
+
+                        membersArrayList.clear()
+                        membersAdapter.clear()
+                    }
+                    R.id.group -> {
                         project_type.text = "Group"
+
+                        project_add_members_label.visibility = View.VISIBLE
+                        add_members_complete_text_view.visibility = View.VISIBLE
+                        members_list_create_project.visibility = View.VISIBLE
+                    }
                 }
                 true
             })
@@ -151,6 +164,7 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             for (m in membersArrayList) {
                 membersToAdd.add( usernameToUid[m]!! )
             }
+            membersToAdd.add(User.getRegisteredUser()!!.uid)
 
             val progress = ProgressDialog(this)
             progress.setMessage(getString(R.string.creating_a_project))
