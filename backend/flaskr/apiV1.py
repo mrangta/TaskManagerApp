@@ -11,9 +11,6 @@ cred = credentials.Certificate('/app/firebase-admin-sdk-key.json')
 # Initialize the app with a custom auth variable, limiting the server's access
 firebase_admin.initialize_app(cred, {
     'databaseURL': os.environ.get('DB_URL'),
-    'databaseAuthVariableOverride': {
-        'uid': 'mcc-g22-backend'
-    }
 })
 
 
