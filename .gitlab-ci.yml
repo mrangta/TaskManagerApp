@@ -20,7 +20,7 @@ backend_docker_build_release:
         # See https://github.com/docker-library/docker/pull/166
         DOCKER_TLS_CERTDIR: ""
     before_script:
-        - cd backend
+        - cd frontend
         - apk update && apk upgrade && apk add --update alpine-sdk && apk add --no-cache make
         - "echo $GCLOUD_SERVICE_ACCOUNT | base64 -d > ${HOME}/gcloud-service-key.json"
         - "docker login -u _json_key --password-stdin https://eu.gcr.io < ${HOME}/gcloud-service-key.json"
