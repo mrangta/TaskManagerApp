@@ -144,6 +144,43 @@
                         android:paddingVertical="10dp"/>
 
                     <TextView
+                        android:id="@+id/img_res_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="Image Resolution"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_small" />
+
+                    <RadioGroup
+                        android:id="@+id/img_res_buttons"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/low_res"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Low" />
+
+                        <RadioButton
+                            android:id="@+id/high_res"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="High" />
+
+                        <RadioButton
+                            android:id="@+id/full_res"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Full (original)" />
+                    </RadioGroup>
+
+                    <TextView
                         android:id="@+id/change_pwd_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

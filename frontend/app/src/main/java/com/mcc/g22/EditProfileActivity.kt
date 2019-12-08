@@ -10,6 +10,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
+import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import com.mcc.g22.utils.logOut
@@ -64,6 +65,19 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         update_password_button.setOnClickListener {
             checkCurrentPassword()
+        }
+    }
+
+    fun onRadioButtonClicked(view: View) {
+        var checked = view as RadioButton
+        if (low_res == checked) {
+
+        }
+        if (high_res == checked) {
+
+        }
+        if (full_res == checked) {
+
         }
     }
 
