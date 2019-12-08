@@ -80,6 +80,7 @@ class AttachmentsManager(private var projectId: String) {
     private fun resizeBitmap(bitmap: Bitmap, imageSize: ImageSize): Bitmap {
         when (imageSize) {
             LOW -> {
+                Log.e("MCCC", "$LOW_WIDTH_RESOLUTION, $LOW_HEIGHT_RESOLUTION, ${bitmap.width}, ${bitmap.height}")
                 val targetSize = calculateSize(bitmap.width, bitmap.height,
                     LOW_WIDTH_RESOLUTION, LOW_HEIGHT_RESOLUTION)
                 return Bitmap.createScaledBitmap(bitmap,
@@ -120,15 +121,13 @@ class AttachmentsManager(private var projectId: String) {
 
         return if (keepRatio) {
 
-            val ratio = currentWidth / currentHeight
-            val wRatio = currentWidth / targetMaxWidth
-            val hRatio = currentHeight / targetMaxHeight
-            if (wRatio < hRatio) {
+            val ratio = currentWidth.toFloat() / currentHeight.toFloat()
+            if (currentHeight > currentWidth) {
                 val h = min(targetMaxHeight, currentHeight)
-                Pair(h * ratio, h)
+                Pair((h * ratio).toInt(), h)
             } else {
                 val w = min(targetMaxWidth, currentWidth)
-                Pair(w, w / ratio)
+                Pair(w, (w / ratio).toInt())
             }
         } else {
             Pair(targetMaxWidth, targetMaxHeight)
@@ -279,10 +278,9 @@ class AttachmentsManager(private var projectId: String) {
             )
         }
 
-        if (isFileImage(dstFile!!.name))
+        if (isFileImage(dstFile!!.name)) {
             nameOfFileToDownload = getFilenameOfImageInSize(fileName, imageSize)
-
-        Log.e("MCCC", nameOfFileToDownload)
+        }
 
         val f = storage.reference.child("$projectId/$nameOfFileToDownload")
         f.getFile(dstFile).addOnSuccessListener {

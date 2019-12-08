@@ -11,27 +11,40 @@
 */
 package com.mcc.g22.apiclient.apis
 
-import com.mcc.g22.apiclient.models.Error
-import com.mcc.g22.apiclient.models.IdObject
-import com.mcc.g22.apiclient.models.InlineObject
-import com.mcc.g22.apiclient.models.InlineObject1
-import com.mcc.g22.apiclient.models.InlineObject2
-import com.mcc.g22.apiclient.models.Project
-import com.mcc.g22.apiclient.models.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.mcc.g22.apiclient.infrastructure.*
+import com.mcc.g22.apiclient.models.*
+import okhttp3.Interceptor
+import okhttp3.Response
 
-import com.mcc.g22.apiclient.infrastructure.ApiClient
-import com.mcc.g22.apiclient.infrastructure.ClientException
-import com.mcc.g22.apiclient.infrastructure.ClientError
-import com.mcc.g22.apiclient.infrastructure.ServerException
-import com.mcc.g22.apiclient.infrastructure.ServerError
-import com.mcc.g22.apiclient.infrastructure.MultiValueMap
-import com.mcc.g22.apiclient.infrastructure.RequestConfig
-import com.mcc.g22.apiclient.infrastructure.RequestMethod
-import com.mcc.g22.apiclient.infrastructure.ResponseType
-import com.mcc.g22.apiclient.infrastructure.Success
-import com.mcc.g22.apiclient.infrastructure.toMultiValue
 
 class DefaultApi(basePath: kotlin.String = "https://mcc-fall-2019-g22.appspot.com/v1") : ApiClient(basePath) {
+
+    companion object {
+        private var tokenAsString: String = ""
+    }
+
+    init {
+        FirebaseAuth.getInstance().addAuthStateListener { firebaseAuth ->
+            val token = firebaseAuth.currentUser?.getIdToken(true)
+            token?.addOnCompleteListener {
+                tokenAsString = it.result?.token ?: ""
+            }
+        }
+    }
+
+    class AuthHeader: Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = chain.request()
+
+            val builder = request.newBuilder()
+            builder.header("Authorization", "Bearer $tokenAsString")
+
+            val req = builder.build()
+
+            return chain.proceed(req)
+        }
+    }
 
     /**
     * Assign users to project

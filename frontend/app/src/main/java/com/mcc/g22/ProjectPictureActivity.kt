@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
@@ -37,7 +38,6 @@ class ProjectPictureActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var photoURI: Uri
-    private lateinit var imageSettings: AttachmentsManager.ImageSize
     private var currentPhotoPath: String = ""
     private var customAdapter: CustomAdapter? = null
     private var imageModelArrayList = mutableListOf<ImageModel>()
@@ -63,8 +63,6 @@ class ProjectPictureActivity : AppCompatActivity(),
         desc_content.text = p.description
         p.loadBadgeIntoImageView(this, profile_picture)
         modified_date.text = p.lastModificationDate.toString()
-
-        imageSettings = User.getRegisteredUser()!!.getImageSizeAsEnum()
 
         p.attachmentsManager.listAllAttachments({ attachments ->
 
@@ -200,7 +198,7 @@ class ProjectPictureActivity : AppCompatActivity(),
                     onTapAction = contentIntent)
             }, {
                 runOnUiThread { Toast.makeText(this, "Error while downloading the file", Toast.LENGTH_LONG).show() }
-            })
+            }, imageSize = User.getRegisteredUser()!!.getImageSizeAsEnum())
         }
     }
 
@@ -266,7 +264,7 @@ class ProjectPictureActivity : AppCompatActivity(),
                 progress.dismiss()
                 Toast.makeText(this, "Error occurred", Toast.LENGTH_LONG).show()
             }
-        }, fileName = f, imageSize = imageSettings)
+        }, fileName = f, imageSize = User.getRegisteredUser()!!.getImageSizeAsEnum())
     }
 
     fun toggleDrawer(view: View){
