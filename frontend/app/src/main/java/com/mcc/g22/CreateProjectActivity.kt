@@ -154,7 +154,11 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             val progress = ProgressDialog(this)
             progress.setMessage(getString(R.string.creating_a_project))
             progress.setCancelable(false)
-            progress.show()
+
+            runOnUiThread{
+
+                progress.show()
+            }
 
             Project.createProject(title, isPrivate, description,
                     keywords.toTypedArray(),
@@ -215,6 +219,14 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             drawer_layout.openDrawer(GravityCompat.START)
         }
     }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
+    }
+
+
     private fun showUserInfoInMenu(){
 
         var user = User.getRegisteredUser()

@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.mcc.g22.DashboardActivity
 import com.mcc.g22.LoginActivity
 import com.mcc.g22.R
+
 /*
 * Start HomeActivity after login
 * flags are set for not backing again to login activity

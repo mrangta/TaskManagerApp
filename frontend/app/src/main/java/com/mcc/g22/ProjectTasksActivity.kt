@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.mcc.g22.utils.logOut
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.completedList
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
@@ -101,6 +102,12 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         else {
             drawer_layout.openDrawer(GravityCompat.START)
         }
+    }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

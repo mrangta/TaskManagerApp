@@ -1,9 +1,7 @@
 package com.mcc.g22
 
 import android.content.Intent
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -151,6 +149,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         else {
             drawer_layout.openDrawer(START)
         }
+    }
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(START))
+            drawer_layout.closeDrawer(START)
+        else super.onBackPressed()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
