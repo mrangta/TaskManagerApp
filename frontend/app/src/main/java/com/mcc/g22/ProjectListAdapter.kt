@@ -107,6 +107,8 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickLis
         }
 
         holder.itemView.findViewById<View>(R.id.project_tasks).setOnClickListener { clickListener(p, position) }
+        holder.itemView.findViewById<View>(R.id.project_title).setOnClickListener { clickListener(p, position) }
+        holder.itemView.findViewById<View>(R.id.profile_picture).setOnClickListener { clickListener(p, position) }
     }
 
     override fun getItemCount(): Int {

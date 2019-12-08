@@ -93,7 +93,7 @@ class User(val username: String = "", var profileImage: String = "" , var email:
         fun resolveDisplayName(userId: String, onResolved: (displayName: String) -> Unit,
                                onFailure: () -> Unit) {
 
-            database.child(userId).child("displayName").ref
+            database.child(userId).child("username").ref
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(databaseError: DatabaseError) {
                         onFailure()

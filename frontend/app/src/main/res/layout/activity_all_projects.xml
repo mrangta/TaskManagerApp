@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/header_layout">
 
         <EditText
-            android:id="@+id/search_prjct"
+            android:id="@+id/search_project"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:autofillHints=""
