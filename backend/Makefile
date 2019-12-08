@@ -81,4 +81,6 @@ validate-endpoints: ## Validate openapi.yml for endpoints deployment
 
 deploy-endpoints: ## deploy openapi.yml to Google Cloud Endpoints
 	gcloud endpoints services deploy openapi.yml
-	
+
+install-firebase-extension:
+	firebase ext:install --params=conf/.env.firebase_extension_config storage-resize-images --project=mcc-fall-2019-g22
