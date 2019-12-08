@@ -67,7 +67,7 @@ class AttachmentsManager(private var projectId: String) {
      */
     private fun getFilenameOfImageInSize(basicFilename: String, size: ImageSize): String {
         return if (size == FULL) basicFilename
-        else basicFilename.substringBeforeLast('.') + size.toString() + "." +
+        else basicFilename.substringBeforeLast('.') + size.size + "." +
                 basicFilename.substringAfterLast('.')
     }
 

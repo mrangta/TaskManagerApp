@@ -13,9 +13,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import android.widget.EditText
-import com.mcc.g22.utils.logOut
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,9 +22,8 @@ import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_dashboard.*
+import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
-import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import kotlinx.android.synthetic.main.activity_project_picture.*
 import java.io.File
@@ -38,6 +36,7 @@ class ProjectPictureActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var photoURI: Uri
+    private lateinit var imageSettings: AttachmentsManager.ImageSize
     private var currentPhotoPath: String = ""
     private var customAdapter: CustomAdapter? = null
     private var imageModelArrayList = mutableListOf<ImageModel>()
@@ -58,6 +57,8 @@ class ProjectPictureActivity : AppCompatActivity(),
 
         val p = ProjectTasksActivity.project as Project
         project_title_layout.text = p.name
+
+        imageSettings = User.getRegisteredUser()!!.getImageSizeAsEnum()
 
         p.attachmentsManager.listAllAttachments({ attachments ->
 
@@ -259,9 +260,7 @@ class ProjectPictureActivity : AppCompatActivity(),
                 progress.hide()
                 Toast.makeText(this, "Error occurred", Toast.LENGTH_LONG).show()
             }
-        }, fileName = f)
-
-
+        }, fileName = f, imageSize = imageSettings)
     }
 
     fun toggleDrawer(view: View){
