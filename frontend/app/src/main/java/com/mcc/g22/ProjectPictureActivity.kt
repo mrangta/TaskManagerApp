@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.mcc.g22.reportgenerator.ReportPreviewActivity
 import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
@@ -247,7 +248,7 @@ class ProjectPictureActivity : AppCompatActivity(),
         val f = resolveFilename(uri)
         ProjectTasksActivity.project!!.attachmentsManager.uploadFile(this, uri, {
             runOnUiThread {
-                progress.hide()
+                progress.dismiss()
                 Toast.makeText(this, "File uploaded", Toast.LENGTH_LONG).show()
 
                 val imageModel = ImageModel()
@@ -262,7 +263,7 @@ class ProjectPictureActivity : AppCompatActivity(),
             }
         }, {
             runOnUiThread {
-                progress.hide()
+                progress.dismiss()
                 Toast.makeText(this, "Error occurred", Toast.LENGTH_LONG).show()
             }
         }, fileName = f, imageSize = imageSettings)
@@ -363,5 +364,9 @@ class ProjectPictureActivity : AppCompatActivity(),
         intent = Intent(this, ProjectFilesActivity::class.java)
         intent.putExtra("project_title", project_title_layout.text.toString())
         startActivity(intent)
+    }
+
+    fun generateReport(view: View) {
+        ReportPreviewActivity.startShowingPreview(this, ProjectTasksActivity.project as Project)
     }
 }

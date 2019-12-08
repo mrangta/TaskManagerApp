@@ -80,7 +80,6 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         } else {
             create_new_task.text = "Edit Existing Task"
             add_task.text = "Edit Task"
-            task_title.setText(task!!.name)
             task_description.setText(task!!.description)
             membersArrayList = arrayListOf()
 
@@ -223,14 +222,14 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         t.commitChanges({
 
             runOnUiThread {
-                progress.hide()
+                progress.dismiss()
                 finish()
             }
         }, {
             runOnUiThread {
                 Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
-            }
-        })
+                progress.dismiss()
+            }})
     }
 
     private fun editTaskListener() {

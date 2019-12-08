@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.mcc.g22.reportgenerator.ReportPreviewActivity
 import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
@@ -206,5 +207,9 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         intent = Intent(this, ProjectFilesActivity::class.java)
         intent.putExtra("project_title", project_title_layout.text.toString())
         startActivity(intent)
+    }
+
+    fun generateReport(view: View) {
+        ReportPreviewActivity.startShowingPreview(this, ProjectTasksActivity.project as Project)
     }
 }

@@ -168,6 +168,7 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             }, {
 
                 runOnUiThread {
+                    progress.dismiss()
                     Toast.makeText(this,
                         "Error while creating a project", Toast.LENGTH_LONG).show()
                 }
