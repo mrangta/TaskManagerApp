@@ -204,9 +204,9 @@ class User(val username: String = "", var profileImage: String = "" , var email:
                             onFavoritesReady(projects)
                             return
                         }
-                        Log.d("" , "${dataSnapshot.children}")
+
                         for (t in dataSnapshot.children) {
-                            Log.d("" , "tttt")
+
                             if (t.key == null) continue
                             val projectId = t.key as String
                             Log.d("" , "project is$projectId")

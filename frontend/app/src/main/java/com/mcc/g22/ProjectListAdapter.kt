@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
@@ -29,21 +30,22 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickLis
         p.loadBadgeIntoImageView(ctx, holder.pbadge)
         holder.lastModified.text = p.lastModificationDate.toString()
 
+
         for ((i, memId) in p.membersIds.withIndex()) {
             if (i == 0) {
 
+                holder.itemView.findViewById<CardView>(R.id.member1_pic).visibility = View.VISIBLE
                 User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr1)
 
             } else if (i == 1) {
 
-                if(memId != null)
+                    holder.itemView.findViewById<CardView>(R.id.member2_pic).visibility = View.VISIBLE
                     User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr2)
-                else holder.profileImgUsr2.visibility = View.GONE
 
             } else if (i == 2) {
-                if(memId != null)
-                     User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr3)
-                else holder.profileImgUsr3.visibility = View.GONE
+
+                    holder.itemView.findViewById<CardView>(R.id.member3_pic).visibility = View.VISIBLE
+                    User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr3)
             } else break
         }
 
