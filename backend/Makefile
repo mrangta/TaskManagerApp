@@ -40,6 +40,7 @@ run: ## Run container on port configured in `config.env`
 
 up: build run ## Run container on port configured in `config.env` (Alias to run)
 
+
 stop: ## Stop and remove a running container
 	docker stop $(APP_NAME); docker rm $(APP_NAME)
 
@@ -84,3 +85,13 @@ deploy-endpoints: ## deploy openapi.yml to Google Cloud Endpoints
 
 install-firebase-extension:
 	firebase ext:install --params=conf/.env.firebase_extension_config storage-resize-images --project=mcc-fall-2019-g22
+
+gcloud-setup:
+	gcloud config set project $(PROJECT_ID)
+
+full-deploy:
+	make gcloud-setup
+	make install-firebase-extension
+	make release
+	make deploy
+	make deploy-endpoints
