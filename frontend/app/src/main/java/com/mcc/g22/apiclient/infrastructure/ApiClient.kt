@@ -1,5 +1,6 @@
 package com.mcc.g22.apiclient.infrastructure
 
+import com.mcc.g22.apiclient.apis.DefaultApi
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -29,7 +30,7 @@ open class ApiClient(val baseUrl: String) {
 
         @JvmStatic
         val client: OkHttpClient by lazy {
-            builder.build()
+            builder.addInterceptor(DefaultApi.AuthHeader()).build()
         }
 
         @JvmStatic
