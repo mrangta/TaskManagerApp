@@ -11,13 +11,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
-<<<<<<< HEAD
 import com.mcc.g22.utils.logOut
-=======
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
->>>>>>> 08ce4988144eac598bafd966120473f068371415
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
