@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.google.firebase.storage.FirebaseStorage
 import java.util.ArrayList
 
 class CustomAdapter(private val context: Context, private val imageModelArrayList: ArrayList<ImageModel>) : BaseAdapter() {
@@ -51,8 +53,15 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
             holder = convertView.tag as ViewHolder
         }
 
-        holder.tvname!!.setText(imageModelArrayList[position].getNames())
-        holder.iv!!.setImageResource(imageModelArrayList[position].getImage_drawables())
+        holder.tvname!!.text = imageModelArrayList[position].getNames()
+        if (imageModelArrayList[position].storagePath != null) {
+            Glide.with(context).load(
+                FirebaseStorage.getInstance().reference.child(imageModelArrayList[position].storagePath!!)
+            ).into(holder.iv!!)
+        }
+        else if (imageModelArrayList[position].image_drawable != 0) {
+            holder.iv!!.setImageResource(imageModelArrayList[position].getImage_drawables())
+        }
 
         return convertView!!
     }

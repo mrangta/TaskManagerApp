@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -65,7 +66,8 @@ class AttachmentsManager(private var projectId: String) {
      * @return filename of the image in the given size
      */
     private fun getFilenameOfImageInSize(basicFilename: String, size: ImageSize): String {
-        return basicFilename.substringBeforeLast('.') + size.toString() +
+        return if (size == FULL) basicFilename
+        else basicFilename.substringBeforeLast('.') + size.toString() + "." +
                 basicFilename.substringAfterLast('.')
     }
 
@@ -163,7 +165,7 @@ class AttachmentsManager(private var projectId: String) {
         fileName: String = "", imageSize: ImageSize = FULL
     ) {
         var requestedSize = imageSize
-        var filenameInStorage: String = uri.lastPathSegment.toString()
+        var filenameInStorage: String = uri.lastPathSegment!!.substringAfterLast('/')
         if (fileName != "") filenameInStorage = fileName
 
         // Every file which is not an image has FULL requested size
@@ -273,11 +275,14 @@ class AttachmentsManager(private var projectId: String) {
         if (dstFile == null) {
             dstFile = File.createTempFile(
                 fileName.substringBeforeLast('.'),
-                fileName.substringAfterLast('.')
+                "." + fileName.substringAfterLast('.')
             )
         }
+
         if (isFileImage(dstFile!!.name))
             nameOfFileToDownload = getFilenameOfImageInSize(fileName, imageSize)
+
+        Log.e("MCCC", nameOfFileToDownload)
 
         val f = storage.reference.child("$projectId/$nameOfFileToDownload")
         f.getFile(dstFile).addOnSuccessListener {
