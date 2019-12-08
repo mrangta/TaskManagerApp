@@ -117,6 +117,7 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         addMembers.setOnItemClickListener { parent, view, position, id ->
             membersArrayList.add( members[position] )
             membersAdapter.notifyDataSetChanged()
+            addMembers.setText("")
         }
 
         create_task.setOnClickListener {

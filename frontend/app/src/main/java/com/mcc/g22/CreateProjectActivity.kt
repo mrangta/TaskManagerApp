@@ -134,6 +134,7 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         addMembers.setOnItemClickListener { parent, view, position, id ->
             membersArrayList.add( members[position] )
             membersAdapter.notifyDataSetChanged()
+            addMembers.setText("")
         }
 
         findViewById<Button>(R.id.create_project).setOnClickListener {
@@ -215,11 +216,11 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             drawer_layout.openDrawer(GravityCompat.START)
         }
     }
-    private fun showUserInfoInMenu(){
+    private fun showUserInfoInMenu() {
 
-        var user = User.getRegisteredUser()
+        val user = User.getRegisteredUser()
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
-        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+        user.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
     }
 
