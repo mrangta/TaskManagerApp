@@ -90,18 +90,31 @@ def projects():
 def project_with_id(project_id):
 
     project_ref = db.reference('/projects').child(project_id)
-    task_ids = project_ref.child('tasks').get().keys()
-    users_in_project = project_ref.child('members').get().keys()
+    tasks_value = project_ref.child('tasks').get()
+    task_ids = []
+    if tasks_value is not None:
+        task_ids = tasks_value.keys()
+
+    users_in_task_value = project_ref.child('members').get()
+    users_in_project = []
+    if users_in_task_value is not None:
+        users_in_project = users_in_task_value.keys()
+
     for task_id in task_ids:
         task_ref = db.reference('/tasks').child(task_id)
-        users_with_task = task_ref.child('users').get().keys()
+        users_with_task_value = task_ref.child('users').get()
+        users_with_task = []
+        if users_with_task_value is not None:
+            users_with_task = users_with_task_value.keys()
         for user_id in users_with_task:
             user_task_ref = db.reference('/users').child(user_id).child('tasks').child(task_id)
             delete_resource(user_task_ref)
         delete_resource(task_ref)
+
     for user_id in users_in_project:
         user_project_ref = db.reference('/users').child(user_id).child('projects').child(project_id)
         delete_resource(user_project_ref)
+
     delete_resource(project_ref)
     return jsonify_no_content()
 
