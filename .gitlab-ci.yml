@@ -31,14 +31,22 @@ backend_docker_build_release:
           - backend/**/*
 
 buildAndroid:
-    image: javiersantos/android-ci:28.0.3
-    stage: buildAndroid
+    stage: releaseDocker
+    image: docker:19.03.1
+    services:
+        - name: docker:dind
+          entrypoint: ["env", "-u", "DOCKER_HOST"]
+          command: ["dockerd-entrypoint.sh"]
+    variables:
+        DOCKER_HOST: tcp://docker:2375/
+        DOCKER_DRIVER: overlay2
+        # See https://github.com/docker-library/docker/pull/166
+        DOCKER_TLS_CERTDIR: ""
     before_script:
-        - cd frontend
-        - export GRADLE_USER_HOME=`pwd`/.gradle
-        - chmod +x ./gradlew
+        - cd backend
+        - apk update && apk upgrade && apk add --update alpine-sdk && apk add --no-cache make
     script:
-        - ./gradlew assembleDebug
+        - make build-app
     artifacts:
         paths:
             - app/build/outputs/apk/
