@@ -51,6 +51,11 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         project_title_layout.text = p.name
 
+
+        desc_content.text = p.description
+        p.loadBadgeIntoImageView(this, profile_picture)
+        modified_date.text = p.lastModificationDate.toString()
+
         p.attachmentsManager.listAllAttachments({ attachments ->
 
             for (d in attachments) {
