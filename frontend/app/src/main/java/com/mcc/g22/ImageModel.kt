@@ -5,6 +5,9 @@ class ImageModel {
     var name: String? = null
     var image_drawable: Int = 0
 
+    // TODO Uri of imege to show
+    // TODO storage reference of image to show
+
     fun getNames(): String {
         return name.toString()
     }

@@ -51,7 +51,7 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
             holder = convertView.tag as ViewHolder
         }
 
-        holder.tvname!!.setText(imageModelArrayList[position].getNames())
+        holder.tvname!!.text = imageModelArrayList[position].getNames()
         holder.iv!!.setImageResource(imageModelArrayList[position].getImage_drawables())
 
         return convertView!!

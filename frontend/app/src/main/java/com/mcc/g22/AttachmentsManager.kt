@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -163,7 +164,7 @@ class AttachmentsManager(private var projectId: String) {
         fileName: String = "", imageSize: ImageSize = FULL
     ) {
         var requestedSize = imageSize
-        var filenameInStorage: String = uri.lastPathSegment.toString()
+        var filenameInStorage: String = uri.lastPathSegment!!.substringAfterLast('/')
         if (fileName != "") filenameInStorage = fileName
 
         // Every file which is not an image has FULL requested size
@@ -268,14 +269,19 @@ class AttachmentsManager(private var projectId: String) {
         fileName: String, onFileDownloaded: (downloadedFile: File) -> Unit,
         onFailure: () -> Unit, localFile: File? = null, imageSize: ImageSize = FULL
     ) {
+        Log.e("MCCC", fileName)
+        Log.e("MCCC", fileName.substringBeforeLast('.'))
+        Log.e("MCCC", fileName.substringAfterLast('.'))
         var nameOfFileToDownload = fileName
         var dstFile = localFile
         if (dstFile == null) {
             dstFile = File.createTempFile(
                 fileName.substringBeforeLast('.'),
-                fileName.substringAfterLast('.')
+                "." + fileName.substringAfterLast('.')
             )
         }
+        Log.e("MCCC", dstFile!!.absolutePath)
+
         if (isFileImage(dstFile!!.name))
             nameOfFileToDownload = getFilenameOfImageInSize(fileName, imageSize)
 
