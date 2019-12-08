@@ -71,19 +71,26 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             popupMenu.show()
         }
 
+        addMembers = findViewById(R.id.assigned_to)
         if (task == null) {
             task_status.visibility = View.INVISIBLE
             task_status_label.visibility = View.INVISIBLE
+            membersAdapter = ArrayAdapter(this, R.layout.keyword, membersArrayList)
+            members_list_create_task.adapter = membersAdapter
         } else {
             create_new_task.text = "Edit Existing Task"
             add_task.text = "Edit Task"
             task_title.setText(task!!.name)
             task_description.setText(task!!.description)
             membersArrayList = arrayListOf()
+
+            membersAdapter = ArrayAdapter(this, R.layout.keyword, membersArrayList)
+            members_list_create_task.adapter = membersAdapter
+
             for (user in task!!.getAssignedUsers()) {
                 resolveDisplayName(user, {
                     membersArrayList.add(it)
-                    membersAdapter.add(it)
+                    membersAdapter.notifyDataSetChanged()
                 }, {
                     runOnUiThread { Toast.makeText(this, "Error in retrieving assigned users", Toast.LENGTH_LONG).show() }
                 })
@@ -102,9 +109,6 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             }
             create_task.text = "Edit Task"
         }
-        addMembers = findViewById(R.id.assigned_to)
-        membersAdapter = ArrayAdapter(this, R.layout.keyword, membersArrayList)
-        members_list_create_task.adapter = membersAdapter
 
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
@@ -255,8 +259,8 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val newUsers = arrayListOf<String>()
         val assignedUsers = task!!.getAssignedUsers()
         for (m in membersArrayList) {
-            val uid = usernameToUid[m]!!
-            if (!(assignedUsers.contains(uid))) {
+            val uid = usernameToUid[m]
+            if ((uid != null) && !(assignedUsers.contains(uid))) {
                 newUsers.add(uid)
             }
         }
