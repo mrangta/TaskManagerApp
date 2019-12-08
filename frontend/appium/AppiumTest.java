@@ -26,7 +26,7 @@ public class AutomationTest_g22 {
 		dc.setCapability( "platformVersion", "8.0" );
 		
 		dc.setCapability( "appPackage", "com.mcc.g22" );
-		dc.setCapability( "appActivity", ".HomeActivity" );
+		dc.setCapability( "appActivity", "com.mcc.g22.LoginActivity" );
 		
 		dc.setCapability( "noReset", "true" );
 				
