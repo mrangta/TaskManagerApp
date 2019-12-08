@@ -1,32 +1,42 @@
-backend_docker_build:
-    stage: build
+stages:
+    - buildAndroid
+    - releaseDocker
+    
+cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+     - .gradle/
+
+backend_docker_build_release:
+    stage: releaseDocker
     image: docker:19.03.1
     services:
       - docker:dind
     variables:
         DOCKER_DRIVER: overlay
     before_script:
-        - "cd backend"
-        - "cat /etc/*-release"
-    script: 
-        - "make build-nc"
-    only:
-        changes:
-          - backend/**/*
-backend_docker_publish:
-    stage: deploy
-    image: docker:19.03.1
-    services:
-      - docker:dind
-    variables:
-        DOCKER_DRIVER: overlay
-    before_script:
-        - "cd backend"
+        - cd backend
+        - apk update && apk upgrade && apk add --update alpine-sdk && apk add --no-cache make
         - "echo $GCLOUD_SERVICE_ACCOUNT | base64 -d > ${HOME}/gcloud-service-key.json"
         - "docker login -u _json_key --password-stdin https://eu.gcr.io < ${HOME}/gcloud-service-key.json"
     script: 
-        - echo $TEST
-        - "make publish"
+        - "make release"
     only:
         changes:
           - backend/**/*
+
+buildAndroid:
+    image: javiersantos/android-ci:28.0.3
+    stage: build
+    before_script:
+        - cd frontend
+        - export GRADLE_USER_HOME=`pwd`/.gradle
+        - chmod +x ./gradlew
+    script:
+        - ./gradlew assembleDebug
+    artifacts:
+        paths:
+            - app/build/outputs/apk/
+    only:
+        changes:
+          - frontend/**/*
