@@ -14,7 +14,7 @@ import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import com.mcc.g22.utils.logOut
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +23,6 @@ import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
-import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import kotlinx.android.synthetic.main.activity_project_picture.*
 import java.io.File
@@ -52,6 +51,8 @@ class ProjectPictureActivity : AppCompatActivity(),
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
+
+        showUserInfoInMenu()
 
         val p = ProjectTasksActivity.project as Project
         project_title_layout.text = p.name
@@ -212,6 +213,13 @@ class ProjectPictureActivity : AppCompatActivity(),
         }
         return ""
     }
+
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+}
 
     @Throws(IOException::class)
     private fun createImageFile(filename: String): File {

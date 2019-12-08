@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import com.mcc.g22.utils.logOut
 import android.widget.Toast
 import androidx.core.view.GravityCompat
@@ -27,6 +28,7 @@ class MyTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
+        showUserInfoInMenu()
 
         User.getRegisteredUser()!!.getUsersTasks({
             for (t in it) {
@@ -67,6 +69,14 @@ class MyTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         else {
             drawer_layout.openDrawer(GravityCompat.START)
         }
+    }
+
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,7 @@ class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        showUserInfoInMenu()
         User.getRegisteredUser()!!.getUsersProjects({
 
             runOnUiThread {
@@ -86,6 +88,15 @@ class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
         return true
     }
+
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
+    }
+
 
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)

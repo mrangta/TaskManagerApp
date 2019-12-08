@@ -43,6 +43,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        //logOut()
         getUserInfo({ user ->
             currentUser = user
 
@@ -191,24 +192,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
     }
-
-    /*fun logOut() {
-
-        val alert = AlertDialog.Builder(this)
-        alert.setTitle("Confirm")
-        alert.setMessage(resources.getString(R.string.alertExit))
-
-        alert.setPositiveButton("YES") { dialog, yes ->
-            FirebaseAuth.getInstance().signOut()
-            logout()
-        }
-        alert.setNegativeButton("No") { dialog, no ->
-        }
-
-        val dialog: AlertDialog = alert.create()
-        dialog.show()
-    }*/
-
 
     fun returnHome() {
         intent = Intent(this, DashboardActivity::class.java)
