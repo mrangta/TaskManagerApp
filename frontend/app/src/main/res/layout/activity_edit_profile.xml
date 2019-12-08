@@ -163,21 +163,24 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Low" />
+                            android:text="Low"
+                            android:onClick="onRadioButtonClicked"/>
 
                         <RadioButton
                             android:id="@+id/high_res"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="High" />
+                            android:text="High"
+                            android:onClick="onRadioButtonClicked"/>
 
                         <RadioButton
                             android:id="@+id/full_res"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Full (original)" />
+                            android:text="Full (original)"
+                            android:onClick="onRadioButtonClicked"/>
                     </RadioGroup>
 
                     <TextView
