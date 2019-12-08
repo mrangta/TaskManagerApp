@@ -4,9 +4,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -17,14 +15,10 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.mcc.g22.User.Companion.resolveDisplayName
+import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_create_task.*
 import java.text.SimpleDateFormat
 import java.time.Instant
-import com.mcc.g22.utils.logOut
-import kotlinx.android.synthetic.main.activity_create_task.bottom_nav_view
-import kotlinx.android.synthetic.main.activity_create_task.drawer_layout
-import kotlinx.android.synthetic.main.activity_create_task.nav_view
-import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.*
@@ -72,6 +66,14 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
 
         addMembers = findViewById(R.id.assigned_to)
+
+        if (ProjectTasksActivity.project!!.isPrivate ||
+            !(ProjectTasksActivity.project!!.isUserAdmin( User.getRegisteredUser()!! ))) {
+            addMembers.visibility = View.GONE
+            members_list_create_task.visibility = View.GONE
+            assigned_to_label.visibility = View.GONE
+        }
+
         if (task == null) {
             task_status.visibility = View.INVISIBLE
             task_status_label.visibility = View.INVISIBLE
