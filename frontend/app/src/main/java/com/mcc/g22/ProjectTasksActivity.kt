@@ -44,6 +44,7 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         showUserInfoInMenu()
 
         val p = project as Project
+        project_title_layout.text = p.name
 
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
