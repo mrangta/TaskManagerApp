@@ -155,18 +155,14 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             val progress = ProgressDialog(this)
             progress.setMessage(getString(R.string.creating_a_project))
             progress.setCancelable(false)
-
-            runOnUiThread{
-
-                progress.show()
-            }
+            progress.show()
 
             Project.createProject(title, isPrivate, description,
                     keywords.toTypedArray(),
                     membersToAdd.toTypedArray(), {
 
                 runOnUiThread {
-                    progress.hide()
+                    progress.dismiss()
                     allProjects()
                 }
             }, {
