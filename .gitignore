@@ -14,6 +14,8 @@ firebase-a.json
 
 /backend/.idea
 /frontend/.idea
+/backend/local.properties
+/frontend/local.properties
 backend/firebase-admin-sdk-key.json
 
 .DS_Store
