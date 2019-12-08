@@ -1,12 +1,12 @@
 package com.mcc.g22
 
+import android.net.Uri
+
 class ImageModel {
 
     var name: String? = null
     var image_drawable: Int = 0
-
-    // TODO Uri of imege to show
-    // TODO storage reference of image to show
+    var storagePath: String? = null
 
     fun getNames(): String {
         return name.toString()

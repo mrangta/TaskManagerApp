@@ -36,7 +36,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     private var pRecyclerView: RecyclerView? = null
     private var pAdapter: RecyclerView.Adapter<*>? = null
-    var listOfprojects: ArrayList<ProjectListDetails> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,13 +70,9 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
                 }
             }, {
-                Log.e("MCCC", "cannot fetch projects")
                 Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
             })
         },{ })
-
-
-
     }
 
     private fun getUserInfo(onLogedIn: (user : User) -> Unit , onLogedOut:() -> Unit) {

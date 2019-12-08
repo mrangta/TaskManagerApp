@@ -55,6 +55,7 @@ class ProjectPictureActivity : AppCompatActivity(),
                 if (d.substringAfterLast('.') == "jpg") {
                     val imageModel = ImageModel()
                     imageModel.setNames(d)
+                    imageModel.storagePath = "/${p.projectId}/$d"
                     imageModelArrayList.add(imageModel)
                 }
             }
@@ -112,6 +113,7 @@ class ProjectPictureActivity : AppCompatActivity(),
 
                             val imageModel = ImageModel()
                             imageModel.setNames(uri.lastPathSegment!!.substringAfterLast('/'))
+                            imageModel.storagePath = "/${ProjectTasksActivity.project!!.projectId}/${imageModel.name}"
                             imageModelArrayList.add(imageModel)
 
                             customAdapter = CustomAdapter(this,
