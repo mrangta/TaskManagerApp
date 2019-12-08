@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import kotlinx.android.synthetic.main.activity_project_picture.*
