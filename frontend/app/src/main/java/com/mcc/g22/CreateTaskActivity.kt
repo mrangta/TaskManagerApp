@@ -67,13 +67,6 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         addMembers = findViewById(R.id.assigned_to)
 
-        if (ProjectTasksActivity.project!!.isPrivate ||
-            !(ProjectTasksActivity.project!!.isUserAdmin( User.getRegisteredUser()!! ))) {
-            addMembers.visibility = View.GONE
-            members_list_create_task.visibility = View.GONE
-            assigned_to_label.visibility = View.GONE
-        }
-
         if (task == null) {
             task_status.visibility = View.INVISIBLE
             task_status_label.visibility = View.INVISIBLE
@@ -182,6 +175,33 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             }
 
             findViewById<ImageButton>(R.id.imageButton).visibility = View.INVISIBLE
+        }
+
+        if (task != null) {
+            if (ProjectTasksActivity.project == null) {
+                Project.fromProjectId(task!!.projectId, {
+                    runOnUiThread {
+                        if (it.isPrivate ||
+                            !(it.isUserAdmin(User.getRegisteredUser()!!))
+                        ) {
+                            addMembers.visibility = View.GONE
+                            members_list_create_task.visibility = View.GONE
+                            assigned_to_label.visibility = View.GONE
+                        }
+                    }
+                }, {
+                    runOnUiThread { Toast.makeText(this, "Error: cannot fetch project information",
+                        Toast.LENGTH_LONG).show() }
+                })
+            } else {
+                if (ProjectTasksActivity.project!!.isPrivate ||
+                    !(ProjectTasksActivity.project!!.isUserAdmin(User.getRegisteredUser()!!))
+                ) {
+                    addMembers.visibility = View.GONE
+                    members_list_create_task.visibility = View.GONE
+                    assigned_to_label.visibility = View.GONE
+                }
+            }
         }
     }
 
