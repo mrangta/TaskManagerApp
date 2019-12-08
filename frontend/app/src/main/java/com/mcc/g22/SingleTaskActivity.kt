@@ -14,8 +14,7 @@ import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.completedList
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
-import kotlinx.android.synthetic.main.activity_my_tasks.ongoingList
-import kotlinx.android.synthetic.main.activity_my_tasks.pendingList
+import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_project_tasks.*
 
 class SingleTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -79,10 +78,6 @@ class SingleTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-    fun logOut() {
-
     }
 
     fun returnHome() {

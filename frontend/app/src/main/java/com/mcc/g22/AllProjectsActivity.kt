@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import com.mcc.g22.utils.logOut
 import java.util.ArrayList
 
 class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -91,9 +92,6 @@ class AllProjectsActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         startActivity(intent)
     }
 
-    fun logOut() {
-
-    }
 
     fun returnHome() {
         intent = Intent(this, DashboardActivity::class.java)

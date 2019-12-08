@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Patterns
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import com.google.firebase.auth.FirebaseAuth
 import com.mcc.g22.DashboardActivity
 import com.mcc.g22.LoginActivity
 import com.mcc.g22.HomeActivity
@@ -22,6 +24,23 @@ fun Context.login(){
     startActivity(intent)
 }
 
+fun Context.logOut(){
+
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("Confirm")
+        alert.setMessage(resources.getString(R.string.alertExit))
+
+        alert.setPositiveButton("YES") { dialog, yes ->
+            FirebaseAuth.getInstance().signOut()
+            logout()
+        }
+        alert.setNegativeButton("No") { dialog, no ->
+        }
+
+        val dialog: AlertDialog = alert.create()
+        dialog.show()
+
+}
 
 fun Context.logout() {
     val intent = Intent(this, LoginActivity::class.java).apply {

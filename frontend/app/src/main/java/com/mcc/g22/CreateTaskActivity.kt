@@ -17,6 +17,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_create_task.*
 import java.text.SimpleDateFormat
 import java.time.Instant
+import com.mcc.g22.utils.logOut
 import java.util.*
 
 class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -244,10 +245,6 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-    fun logOut() {
-
     }
 
     fun returnHome() {

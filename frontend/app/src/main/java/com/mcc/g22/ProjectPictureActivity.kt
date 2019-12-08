@@ -5,13 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListView
+import com.mcc.g22.utils.logOut
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_my_tasks.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
@@ -99,10 +96,6 @@ class ProjectPictureActivity : AppCompatActivity(),
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-    fun logOut() {
-
     }
 
     fun returnHome() {

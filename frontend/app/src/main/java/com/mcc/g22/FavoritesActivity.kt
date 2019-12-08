@@ -3,7 +3,7 @@ package com.mcc.g22
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import com.mcc.g22.utils.logOut
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -88,10 +88,6 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-    fun logOut() {
-
     }
 
     fun returnHome() {
