@@ -9,16 +9,13 @@ help: ## This help.
 .DEFAULT_GOAL := help
 
 
-# DOCKER TASKS
-# Build the container
-build: ## Build the building container
-	docker build -t androidbuilder .
-
 build-app: ## Run container on port configured in `config.env`
+	docker build -t androidbuilder .
 	mkdir -p app/build/outputs/apk
 	docker run -i -t --rm --name="androidbuilder" \
 		--mount type=bind,source=$(shell pwd)/app/build/outputs/apk,target=/application/app/build/outputs/apk/ \
 		androidbuilder ./gradlew assembleDebug
+
 
 container-bash: ## Run container on port configured in `config.env`
 	mkdir -p app/build/outputs/apk
