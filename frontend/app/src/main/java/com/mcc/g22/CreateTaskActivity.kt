@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -24,6 +25,8 @@ import kotlinx.android.synthetic.main.activity_create_task.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_create_task.drawer_layout
 import kotlinx.android.synthetic.main.activity_create_task.nav_view
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.*
 
 class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -50,9 +53,6 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
         showUserInfoInMenu()
-        addMembers = findViewById(R.id.assigned_to)
-        membersAdapter = ArrayAdapter(this, R.layout.keyword, membersArrayList)
-        members_list_create_task.adapter = membersAdapter
 
         task_status.setOnClickListener {
             val popupMenu: PopupMenu = PopupMenu(this, task_status)
@@ -88,16 +88,30 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     runOnUiThread { Toast.makeText(this, "Error in retrieving assigned users", Toast.LENGTH_LONG).show() }
                 })
             }
-            due_date.setText(task!!.deadline.toString())
-            task_status.text = task!!.status.stringValue
+
+            val zdtTask: ZonedDateTime = ZonedDateTime.ofInstant(task!!.deadline, ZoneOffset.UTC)
+            val calendar = GregorianCalendar.from(zdtTask)
+            cal.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+            updateDateInView()
+
+            task_status.text = when (task!!.status) {
+                Task.TaskStatus.PENDING -> "Pending"
+                Task.TaskStatus.ON_GOING -> "Ongoing"
+                Task.TaskStatus.COMPLETED -> "Completed"
+            }
             create_task.text = "Edit Task"
         }
+        addMembers = findViewById(R.id.assigned_to)
+        membersAdapter = ArrayAdapter(this, R.layout.keyword, membersArrayList)
+        members_list_create_task.adapter = membersAdapter
 
         val dateSetListener = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, monthOfYear)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDateInView()
+            task?.changeDeadline(cal.toInstant())
         }
 
         pick_date!!.setOnClickListener {
@@ -143,64 +157,122 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             addMembers.setText("")
         }
 
-        create_task.setOnClickListener {
-            val desc = findViewById<EditText>(R.id.task_description).text.toString()
-            var deadline: Instant? = null
-            if (due_date.text.toString().isNotEmpty())
-                deadline = cal.toInstant()
-            else {
-                Toast.makeText(this, "Deadline must be defined", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
-            val membersToAdd = mutableSetOf<String>()
-            for (m in membersArrayList) {
-                membersToAdd.add( usernameToUid[m]!! )
+        if (task == null) {
+
+            create_task.setOnClickListener {
+                createTaskListener()
             }
 
-            val progress = ProgressDialog(this)
-            progress.setMessage(getString(R.string.creating_a_task))
-            progress.setCancelable(false)
-            progress.show()
+            findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*"
+                val mimeTypes = arrayOf("image/jpeg", "image/jpg")
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
 
-            val t = Task.createTask(ProjectTasksActivity.project!!.projectId,
-                    desc, deadline, membersToAdd)
-
-            if (task_status.visibility != View.INVISIBLE) {
-                when (task_status.text) {
-                    "Ongoing" -> {
-                        t.makeTaskOnGoing()
-                    }
-                    "Pending" -> {
-                        t.makeTaskPending()
-                    }
-                    "Completed" -> {
-                        t.makeTaskCompleted()
-                    }
-                }
+                startActivityForResult(intent, GALLERY_REQUEST_CODE)
+            }
+        } else {
+            create_task.setOnClickListener {
+                editTaskListener()
             }
 
-            t.commitChanges({
+            findViewById<ImageButton>(R.id.imageButton).visibility = View.INVISIBLE
+        }
+    }
 
-                runOnUiThread {
-                    progress.hide()
-                    finish()
-                }
-            }, {
-                runOnUiThread {
-                    Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
-                }
-            })
-
+    private fun createTaskListener() {
+        val desc = findViewById<EditText>(R.id.task_description).text.toString()
+        val deadline: Instant?
+        if (due_date.text.toString().isNotEmpty())
+            deadline = cal.toInstant()
+        else {
+            Toast.makeText(this, "Deadline must be defined", Toast.LENGTH_LONG).show()
+            return
+        }
+        val membersToAdd = mutableSetOf<String>()
+        for (m in membersArrayList) {
+            membersToAdd.add( usernameToUid[m]!! )
         }
 
-        findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            val mimeTypes = arrayOf("image/jpeg", "image/jpg")
-            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        val progress = ProgressDialog(this)
+        progress.setMessage(getString(R.string.creating_a_task))
+        progress.setCancelable(false)
+        progress.show()
 
-            startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        val t = Task.createTask(ProjectTasksActivity.project!!.projectId,
+            desc, deadline, membersToAdd)
+
+        if (task_status.visibility != View.INVISIBLE) {
+            when (task_status.text) {
+                "Ongoing" -> {
+                    t.makeTaskOnGoing()
+                }
+                "Pending" -> {
+                    t.makeTaskPending()
+                }
+                "Completed" -> {
+                    t.makeTaskCompleted()
+                }
+            }
         }
+
+        t.commitChanges({
+
+            runOnUiThread {
+                progress.hide()
+                finish()
+            }
+        }, {
+            runOnUiThread {
+                Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun editTaskListener() {
+
+        when (task_status.text) {
+            "Ongoing" -> {
+                if (task?.status != Task.TaskStatus.ON_GOING) task?.makeTaskOnGoing()
+            }
+            "Pending" -> {
+                if (task?.status != Task.TaskStatus.PENDING) task?.makeTaskPending()
+            }
+            "Completed" -> {
+                if (task?.status != Task.TaskStatus.COMPLETED) task?.makeTaskCompleted()
+            }
+        }
+
+        if (task?.description != task_description.text.toString()) {
+            task?.changeTaskDescription(task_description.text.toString())
+        }
+
+        val progress = ProgressDialog(this)
+        progress.setMessage(getString(R.string.editing_a_task))
+        progress.setCancelable(false)
+        progress.show()
+
+        val newUsers = arrayListOf<String>()
+        val assignedUsers = task!!.getAssignedUsers()
+        for (m in membersArrayList) {
+            val uid = usernameToUid[m]!!
+            if (!(assignedUsers.contains(uid))) {
+                newUsers.add(uid)
+            }
+        }
+        task?.assignUsers(newUsers.toTypedArray())
+
+        task?.commitChanges({
+
+            runOnUiThread {
+                progress.hide()
+                finish()
+            }
+        }, {
+            runOnUiThread {
+                Toast.makeText(this, "Error while creating a task", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
