@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_my_tasks.*
+import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.completedList
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
@@ -122,10 +122,6 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-    fun logOut() {
-
     }
 
     fun returnHome() {

@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.ListView
+import com.mcc.g22.utils.logOut
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -101,10 +101,6 @@ class MyTasksActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-    fun logOut() {
-
     }
 
     fun returnHome() {

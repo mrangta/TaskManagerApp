@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import com.mcc.g22.utils.logOut
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import kotlinx.android.synthetic.main.activity_project_picture.*
 import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
 import java.time.Instant
 
 
@@ -292,10 +292,6 @@ class ProjectPictureActivity : AppCompatActivity(),
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-    fun logOut() {
-
     }
 
     fun returnHome() {

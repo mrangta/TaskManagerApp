@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat.START
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,12 +19,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.mcc.g22.utils.logout
+import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
 import kotlinx.android.synthetic.main.activity_dashboard.nav_view
-import kotlinx.android.synthetic.main.nav_header.*
 import java.time.Instant
 import java.time.temporal.ChronoField
 
@@ -188,7 +186,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         startActivity(intent)
     }
 
-    fun logOut() {
+    /*fun logOut() {
 
         val alert = AlertDialog.Builder(this)
         alert.setTitle("Confirm")
@@ -203,7 +201,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         val dialog: AlertDialog = alert.create()
         dialog.show()
-    }
+    }*/
 
 
     fun returnHome() {

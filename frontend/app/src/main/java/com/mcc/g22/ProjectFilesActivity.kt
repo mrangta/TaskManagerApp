@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import kotlinx.android.synthetic.main.activity_project_files.*
+import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_project_picture.project_title_layout
 
 
@@ -210,10 +211,6 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-    fun logOut() {
-
     }
 
     fun returnHome() {

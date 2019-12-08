@@ -19,6 +19,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_create_project.*
 import java.text.SimpleDateFormat
 import java.time.Instant
+import com.mcc.g22.utils.logOut
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -242,11 +243,6 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     fun showProfile() {
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
-    }
-
-
-    fun logOut() {
-
     }
 
     fun returnHome() {

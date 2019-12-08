@@ -12,13 +12,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import com.mcc.g22.utils.logOut
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.mcc.g22.utils.logout
 import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
 import kotlinx.android.synthetic.main.activity_edit_profile.nav_view
 
@@ -195,24 +194,6 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         startActivity(intent)
     }
 
-
-    fun logOut() {
-
-        val alert = AlertDialog.Builder(this)
-        alert.setTitle("Confirm")
-        alert.setMessage(resources.getString(R.string.alertExit))
-
-        alert.setPositiveButton("YES") { dialog, yes ->
-            FirebaseAuth.getInstance().signOut()
-            logout()
-        }
-        alert.setNegativeButton("No") { dialog, no ->
-        }
-
-        val dialog: AlertDialog = alert.create()
-        dialog.show()
-
-    }
 
     fun myTasks() {
         intent = Intent(this, MyTasksActivity::class.java)
