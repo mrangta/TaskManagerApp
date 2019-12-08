@@ -31,11 +31,19 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickLis
 
         for ((i, memId) in p.membersIds.withIndex()) {
             if (i == 0) {
+
                 User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr1)
+
             } else if (i == 1) {
-                User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr2)
+
+                if(memId != null)
+                    User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr2)
+                else holder.profileImgUsr2.visibility = View.GONE
+
             } else if (i == 2) {
-                User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr3)
+                if(memId != null)
+                     User.showProfileImageOfUserWithId(memId, ctx, holder.profileImgUsr3)
+                else holder.profileImgUsr3.visibility = View.GONE
             } else break
         }
 

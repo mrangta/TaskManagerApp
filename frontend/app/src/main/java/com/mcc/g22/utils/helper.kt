@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.mcc.g22.DashboardActivity
 import com.mcc.g22.LoginActivity
-import com.mcc.g22.HomeActivity
 import com.mcc.g22.R
 
 /*

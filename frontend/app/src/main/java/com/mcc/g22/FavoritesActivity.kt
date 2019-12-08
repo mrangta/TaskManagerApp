@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.mcc.g22.utils.logOut
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
+import kotlinx.android.synthetic.main.activity_dashboard.nav_view
+import kotlinx.android.synthetic.main.activity_my_tasks.*
 
 class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +31,7 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        showUserInfoInMenu()
         User.getRegisteredUser()!!.getUserFavorites({
 
             runOnUiThread {
@@ -54,6 +60,20 @@ class FavoritesActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         else {
             drawer_layout.openDrawer(GravityCompat.START)
         }
+    }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
+    }
+
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -14,7 +14,7 @@ import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import com.mcc.g22.utils.logOut
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,8 +22,8 @@ import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
-import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
 import kotlinx.android.synthetic.main.activity_project_picture.*
 import java.io.File
@@ -36,6 +36,7 @@ class ProjectPictureActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var photoURI: Uri
+    private lateinit var imageSettings: AttachmentsManager.ImageSize
     private var currentPhotoPath: String = ""
     private var customAdapter: CustomAdapter? = null
     private var imageModelArrayList = mutableListOf<ImageModel>()
@@ -52,8 +53,17 @@ class ProjectPictureActivity : AppCompatActivity(),
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+
+        showUserInfoInMenu()
+
         val p = ProjectTasksActivity.project as Project
         project_title_layout.text = p.name
+
+        desc_content.text = p.description
+        p.loadBadgeIntoImageView(this, profile_picture)
+        modified_date.text = p.lastModificationDate.toString()
+
+        imageSettings = User.getRegisteredUser()!!.getImageSizeAsEnum()
 
         p.attachmentsManager.listAllAttachments({ attachments ->
 
@@ -210,6 +220,13 @@ class ProjectPictureActivity : AppCompatActivity(),
         return ""
     }
 
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+}
+
     @Throws(IOException::class)
     private fun createImageFile(filename: String): File {
         // Create an image file name
@@ -248,7 +265,7 @@ class ProjectPictureActivity : AppCompatActivity(),
                 progress.hide()
                 Toast.makeText(this, "Error occurred", Toast.LENGTH_LONG).show()
             }
-        }, fileName = f)
+        }, fileName = f, imageSize = imageSettings)
     }
 
     fun toggleDrawer(view: View){
@@ -258,6 +275,12 @@ class ProjectPictureActivity : AppCompatActivity(),
         else {
             drawer_layout.openDrawer(GravityCompat.START)
         }
+    }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

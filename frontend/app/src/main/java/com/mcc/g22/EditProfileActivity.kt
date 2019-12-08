@@ -44,6 +44,7 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 0)
+            user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
         }
 
@@ -69,15 +70,15 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     fun onRadioButtonClicked(view: View) {
-        var checked = view as RadioButton
+        val checked = view as RadioButton
         if (low_res == checked) {
-
+            user!!.setImageResolutionToLow()
         }
         if (high_res == checked) {
-
+            user!!.setImageResolutionToHigh()
         }
         if (full_res == checked) {
-
+            user!!.setImageResolutionToFull()
         }
     }
 
@@ -89,19 +90,43 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, profilePhoto)
             profile_picture_profileSetting.setImageBitmap(bitmap)
             user!!.setProfileImage(profilePhoto!! , {}, {})
-            user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+          //  user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
 
         }
     }
 
-    private fun getUserInfo(){
+    private fun showUserInfoInMenu(){
 
+        var user = User.getRegisteredUser()
         nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
         user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+    }
 
+    private fun getUserInfo(){
+
+        showUserInfoInMenu()
         username_profileSetting_textView.text = user!!.username
         email_profileSetting_textView.text = user!!.email
         user!!.showProfileImage(this, profile_picture_profileSetting)
+
+        when (user!!.getImageSizeAsEnum()) {
+            AttachmentsManager.ImageSize.LOW -> {
+                low_res.isChecked = true
+                high_res.isChecked = false
+                full_res.isChecked = false
+            }
+            AttachmentsManager.ImageSize.HIGH -> {
+                low_res.isChecked = false
+                high_res.isChecked = true
+                full_res.isChecked = false
+            }
+            AttachmentsManager.ImageSize.FULL -> {
+                low_res.isChecked = false
+                high_res.isChecked = false
+                full_res.isChecked = true
+            }
+        }
+
     }
     private fun updatePassword() {
 
@@ -160,8 +185,21 @@ class EditProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             drawer_layout.closeDrawer(GravityCompat.START)
         }
         else {
+            user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
             drawer_layout.openDrawer(GravityCompat.START)
+
         }
+    }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        user!!.saveCurrentImageSize()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

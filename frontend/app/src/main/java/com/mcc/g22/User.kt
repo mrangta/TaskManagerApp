@@ -19,6 +19,31 @@ class User(val username: String = "", var profileImage: String = "" , var email:
     var uid: String = ""
         internal set
 
+    private var imageSizeEnum: AttachmentsManager.ImageSize = AttachmentsManager.ImageSize.FULL
+
+    var imageSize: String = imageSizeEnum.size
+        get() { return imageSizeEnum.size }
+        set(value) {
+            when (value) {
+                AttachmentsManager.ImageSize.FULL.size -> {
+                    field = value
+                    imageSizeEnum = AttachmentsManager.ImageSize.FULL
+                }
+                AttachmentsManager.ImageSize.LOW.size -> {
+                    field = value
+                    imageSizeEnum = AttachmentsManager.ImageSize.LOW
+                }
+                AttachmentsManager.ImageSize.HIGH.size -> {
+                    field = value
+                    imageSizeEnum = AttachmentsManager.ImageSize.HIGH
+                }
+                else -> {
+                    field = AttachmentsManager.ImageSize.FULL.size
+                    imageSizeEnum = AttachmentsManager.ImageSize.FULL
+                }
+            }
+        }
+
     companion object {
         private val storage: FirebaseStorage = FirebaseStorage.getInstance()
         private val database = FirebaseDatabase.getInstance()
@@ -261,5 +286,25 @@ class User(val username: String = "", var profileImage: String = "" , var email:
                     }
                 }
             })
+    }
+
+    fun saveCurrentImageSize() {
+        database.child(uid).child("imageSize").setValue(imageSizeEnum.size)
+    }
+
+    fun setImageResolutionToFull() {
+        imageSizeEnum = AttachmentsManager.ImageSize.FULL
+    }
+
+    fun setImageResolutionToLow() {
+        imageSizeEnum = AttachmentsManager.ImageSize.LOW
+    }
+
+    fun setImageResolutionToHigh() {
+        imageSizeEnum = AttachmentsManager.ImageSize.HIGH
+    }
+
+    fun getImageSizeAsEnum(): AttachmentsManager.ImageSize {
+        return imageSizeEnum
     }
 }

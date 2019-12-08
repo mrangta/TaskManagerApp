@@ -20,6 +20,10 @@ import kotlinx.android.synthetic.main.activity_create_project.*
 import java.text.SimpleDateFormat
 import java.time.Instant
 import com.mcc.g22.utils.logOut
+import kotlinx.android.synthetic.main.activity_create_project.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_create_project.drawer_layout
+import kotlinx.android.synthetic.main.activity_create_project.nav_view
+import kotlinx.android.synthetic.main.activity_my_tasks.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -53,6 +57,7 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        showUserInfoInMenu()
         imageView = findViewById(R.id.profile_picture)
 
         project_type.setOnClickListener {
@@ -129,6 +134,7 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         addMembers.setOnItemClickListener { parent, view, position, id ->
             membersArrayList.add( members[position] )
             membersAdapter.notifyDataSetChanged()
+            addMembers.setText("")
         }
 
         findViewById<Button>(R.id.create_project).setOnClickListener {
@@ -149,7 +155,11 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             val progress = ProgressDialog(this)
             progress.setMessage(getString(R.string.creating_a_project))
             progress.setCancelable(false)
-            progress.show()
+
+            runOnUiThread{
+
+                progress.show()
+            }
 
             Project.createProject(title, isPrivate, description,
                     keywords.toTypedArray(),
@@ -210,6 +220,21 @@ class CreateProjectActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             drawer_layout.openDrawer(GravityCompat.START)
         }
     }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
+    }
+
+    private fun showUserInfoInMenu(){
+
+        val user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
+    }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {

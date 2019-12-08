@@ -20,6 +20,10 @@ import kotlinx.android.synthetic.main.activity_create_task.*
 import java.text.SimpleDateFormat
 import java.time.Instant
 import com.mcc.g22.utils.logOut
+import kotlinx.android.synthetic.main.activity_create_task.bottom_nav_view
+import kotlinx.android.synthetic.main.activity_create_task.drawer_layout
+import kotlinx.android.synthetic.main.activity_create_task.nav_view
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.util.*
 
 class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -45,6 +49,7 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        showUserInfoInMenu()
         addMembers = findViewById(R.id.assigned_to)
         membersAdapter = ArrayAdapter(this, R.layout.keyword, membersArrayList)
         members_list_create_task.adapter = membersAdapter
@@ -135,6 +140,7 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         addMembers.setOnItemClickListener { parent, view, position, id ->
             membersArrayList.add( members[position] )
             membersAdapter.notifyDataSetChanged()
+            addMembers.setText("")
         }
 
         create_task.setOnClickListener {
@@ -223,6 +229,15 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         due_date!!.setText(sdf.format(cal.getTime()))
     }
 
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
+    }
+
+
     fun toggleDrawer(view: View){
         if(drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -231,6 +246,13 @@ class CreateTaskActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             drawer_layout.openDrawer(GravityCompat.START)
         }
     }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
+    }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {

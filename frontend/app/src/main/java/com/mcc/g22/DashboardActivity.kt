@@ -1,9 +1,7 @@
 package com.mcc.g22
 
 import android.content.Intent
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -21,9 +19,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.mcc.g22.utils.logOut
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
-import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
-import kotlinx.android.synthetic.main.activity_dashboard.nav_view
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -48,6 +43,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         nav_view.setNavigationItemSelectedListener(this)
         bottom_nav_view.setOnNavigationItemSelectedListener(this)
 
+        //logOut()
         getUserInfo({ user ->
             currentUser = user
 
@@ -162,6 +158,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             drawer_layout.openDrawer(START)
         }
     }
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(START))
+            drawer_layout.closeDrawer(START)
+        else super.onBackPressed()
+    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.getItemId()) {
@@ -196,24 +197,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
     }
-
-    /*fun logOut() {
-
-        val alert = AlertDialog.Builder(this)
-        alert.setTitle("Confirm")
-        alert.setMessage(resources.getString(R.string.alertExit))
-
-        alert.setPositiveButton("YES") { dialog, yes ->
-            FirebaseAuth.getInstance().signOut()
-            logout()
-        }
-        alert.setNegativeButton("No") { dialog, no ->
-        }
-
-        val dialog: AlertDialog = alert.create()
-        dialog.show()
-    }*/
-
 
     fun returnHome() {
         intent = Intent(this, DashboardActivity::class.java)

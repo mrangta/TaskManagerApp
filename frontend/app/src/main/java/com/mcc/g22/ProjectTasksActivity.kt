@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.mcc.g22.utils.logOut
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.completedList
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
@@ -38,6 +40,9 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
             finish()
             return
         }
+
+        showUserInfoInMenu()
+
         val p = project as Project
 
         nav_view.setNavigationItemSelectedListener(this)
@@ -96,6 +101,15 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         }
     }
 
+
+    private fun showUserInfoInMenu(){
+
+        var user = User.getRegisteredUser()
+        nav_view.getHeaderView(0).findViewById<TextView>(R.id.username_menu_textView).text = user!!.username
+        user!!.showProfileImage(this , nav_view.getHeaderView(0).findViewById(R.id.profile_picture_menu_imageView))
+
+    }
+
     fun toggleDrawer(view: View){
         if(drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -103,6 +117,12 @@ class ProjectTasksActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         else {
             drawer_layout.openDrawer(GravityCompat.START)
         }
+    }
+
+    override fun onBackPressed(){
+        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+            drawer_layout.closeDrawer(GravityCompat.START)
+        else super.onBackPressed()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
