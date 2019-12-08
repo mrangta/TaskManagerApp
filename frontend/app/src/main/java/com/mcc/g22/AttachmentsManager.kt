@@ -66,7 +66,8 @@ class AttachmentsManager(private var projectId: String) {
      * @return filename of the image in the given size
      */
     private fun getFilenameOfImageInSize(basicFilename: String, size: ImageSize): String {
-        return basicFilename.substringBeforeLast('.') + size.toString() +
+        return if (size == FULL) basicFilename
+        else basicFilename.substringBeforeLast('.') + size.toString() + "." +
                 basicFilename.substringAfterLast('.')
     }
 
@@ -269,9 +270,6 @@ class AttachmentsManager(private var projectId: String) {
         fileName: String, onFileDownloaded: (downloadedFile: File) -> Unit,
         onFailure: () -> Unit, localFile: File? = null, imageSize: ImageSize = FULL
     ) {
-        Log.e("MCCC", fileName)
-        Log.e("MCCC", fileName.substringBeforeLast('.'))
-        Log.e("MCCC", fileName.substringAfterLast('.'))
         var nameOfFileToDownload = fileName
         var dstFile = localFile
         if (dstFile == null) {
@@ -280,10 +278,11 @@ class AttachmentsManager(private var projectId: String) {
                 "." + fileName.substringAfterLast('.')
             )
         }
-        Log.e("MCCC", dstFile!!.absolutePath)
 
         if (isFileImage(dstFile!!.name))
             nameOfFileToDownload = getFilenameOfImageInSize(fileName, imageSize)
+
+        Log.e("MCCC", nameOfFileToDownload)
 
         val f = storage.reference.child("$projectId/$nameOfFileToDownload")
         f.getFile(dstFile).addOnSuccessListener {

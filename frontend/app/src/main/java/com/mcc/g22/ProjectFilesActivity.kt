@@ -199,7 +199,7 @@ class ProjectFilesActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
                 notificationHelper.showNotification(
                     "Downloading completed!",
-                    it.absolutePath + " ready to open",
+                    it.name + " ready to open",
                     onTapAction = contentIntent)
             }, {
                 runOnUiThread { Toast.makeText(this, "Error while downloading the file", Toast.LENGTH_LONG).show() }

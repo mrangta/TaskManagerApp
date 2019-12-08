@@ -1,6 +1,7 @@
 package com.mcc.g22
 
 import android.content.Intent
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -25,6 +26,8 @@ import kotlinx.android.synthetic.main.activity_dashboard.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_dashboard.drawer_layout
 import kotlinx.android.synthetic.main.activity_dashboard.nav_view
 import kotlinx.android.synthetic.main.nav_header.*
+import java.time.Instant
+import java.time.temporal.ChronoField
 
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -70,8 +73,57 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
                 }
             }, {
-                Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
+                runOnUiThread {
+                    Toast.makeText(this, "Error while fetching projects", Toast.LENGTH_LONG).show()
+                }
             })
+
+            currentUser.getUsersTasks({
+                var dueTask = 0
+                var pendingCounter = 0
+                var ongoingCounter = 0
+                var completedCounter = 0
+                val now = Instant.now()
+
+                for (t in it) {
+                    if ((t.deadline.get(ChronoField.DAY_OF_YEAR) == now.get(ChronoField.DAY_OF_YEAR))
+                        && (t.deadline.get(ChronoField.YEAR) == now.get(ChronoField.YEAR))) {
+
+                        ++dueTask
+                    }
+
+                    when (t.status) {
+                        Task.TaskStatus.PENDING -> pendingCounter++
+                        Task.TaskStatus.ON_GOING -> ongoingCounter++
+                        Task.TaskStatus.COMPLETED -> completedCounter++
+                    }
+                }
+
+                runOnUiThread {
+                    when (dueTask) {
+                        0 -> {
+                            due_tasks.text = "you have no task due today"
+                        }
+                        1 -> {
+                            due_tasks.text = "you have <u>1 task</u> due today"
+                        }
+                        else -> due_tasks.text = "you have <u>$dueTask tasks</u> due today"
+                    }
+
+                    completed_counts.text = completedCounter.toString()
+                    pending_counts.text = pendingCounter.toString()
+                    ongoing_counts.text = ongoingCounter.toString()
+                }
+            }, {
+                runOnUiThread {
+                    Toast.makeText(this, "Error while fetching tasks", Toast.LENGTH_LONG).show()
+                    due_tasks.text = "Error while fetching tasks"
+                    completed_counts.text = "0"
+                    pending_counts.text = "0"
+                    ongoing_counts.text = "0"
+                }
+            })
+
         },{ })
     }
 

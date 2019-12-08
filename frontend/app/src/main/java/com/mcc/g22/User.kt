@@ -210,6 +210,10 @@ class User(val username: String = "", var profileImage: String = "" , var email:
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val tasks = mutableSetOf<Task>()
                     val tasksToDownload = dataSnapshot.childrenCount.toInt()
+                    if (tasksToDownload == 0) {
+                        onTasksReady(tasks)
+                        return
+                    }
                     for (t in dataSnapshot.children) {
                         if (t.key == null) continue
                         val taskId = t.key as String
@@ -238,6 +242,10 @@ class User(val username: String = "", var profileImage: String = "" , var email:
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val projects = mutableSetOf<Project>()
                     val projectsToDownload = dataSnapshot.childrenCount.toInt()
+                    if (projectsToDownload == 0) {
+                        onProjectsReady(projects)
+                        return
+                    }
                     for (t in dataSnapshot.children) {
                         if (t.key == null) continue
                         val projectId = t.key as String

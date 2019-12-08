@@ -5,27 +5,23 @@ import android.app.PendingIntent
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_my_tasks.*
 import kotlinx.android.synthetic.main.activity_my_tasks.bottom_nav_view
 import kotlinx.android.synthetic.main.activity_my_tasks.drawer_layout
 import kotlinx.android.synthetic.main.activity_my_tasks.nav_view
-import kotlinx.android.synthetic.main.activity_project_files.*
 import kotlinx.android.synthetic.main.activity_project_picture.*
-import kotlinx.android.synthetic.main.activity_project_picture.project_title_layout
-import kotlinx.android.synthetic.main.activity_project_picture.upload_pic_button
+
 
 class ProjectPictureActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
@@ -65,7 +61,7 @@ class ProjectPictureActivity : AppCompatActivity(),
                     customAdapter = CustomAdapter(this,
                         (imageModelArrayList as ArrayList<ImageModel>)
                     )
-                    files_list!!.adapter = customAdapter
+                    pictures_list!!.adapter = customAdapter
                     addListListener()
                 }
             }
@@ -82,8 +78,7 @@ class ProjectPictureActivity : AppCompatActivity(),
             try {
                 startActivityForResult(
                     Intent.createChooser(intent, "Select a File to Upload"),
-                    FILE_SELECT_CODE
-                )
+                    FILE_SELECT_CODE)
             } catch (ex: ActivityNotFoundException) { // Potentially direct the user to the Market with a Dialog
                 Toast.makeText(
                     this, "Please install a File Manager.",
@@ -106,6 +101,7 @@ class ProjectPictureActivity : AppCompatActivity(),
                     progress.setCancelable(false)
                     progress.show()
 
+                    val f = resolveFilename(uri)
                     ProjectTasksActivity.project!!.attachmentsManager.uploadFile(this, uri, {
                         runOnUiThread {
                             progress.hide()
@@ -113,27 +109,27 @@ class ProjectPictureActivity : AppCompatActivity(),
 
                             val imageModel = ImageModel()
                             imageModel.setNames(uri.lastPathSegment!!.substringAfterLast('/'))
-                            imageModel.storagePath = "/${ProjectTasksActivity.project!!.projectId}/${imageModel.name}"
+                            imageModel.storagePath = "/${ProjectTasksActivity.project!!.projectId}/${f}"
                             imageModelArrayList.add(imageModel)
 
                             customAdapter = CustomAdapter(this,
                                 imageModelArrayList as java.util.ArrayList<ImageModel>
                             )
-                            files_list!!.adapter = customAdapter
+                            pictures_list!!.adapter = customAdapter
                         }
                     }, {
                         runOnUiThread {
                             progress.hide()
                             Toast.makeText(this, "Error occurred", Toast.LENGTH_LONG).show()
                         }
-                    })
+                    }, fileName = f)
                 }
             }
         }
     }
 
     private fun addListListener() {
-        files_list!!.setOnItemClickListener { parent, view, position, id ->
+        pictures_list!!.setOnItemClickListener { parent, view, position, id ->
             ProjectTasksActivity.project!!.attachmentsManager.downloadFile(
                 imageModelArrayList[position].getNames(), {
 
@@ -154,12 +150,29 @@ class ProjectPictureActivity : AppCompatActivity(),
 
                 notificationHelper.showNotification(
                     "Downloading completed!",
-                    it.absolutePath + " ready to open",
+                    it.name + " ready to open",
                     onTapAction = contentIntent)
             }, {
                 runOnUiThread { Toast.makeText(this, "Error while downloading the file", Toast.LENGTH_LONG).show() }
             })
         }
+    }
+
+    private fun resolveFilename(uri: Uri) : String {
+        var cursor: Cursor? = null
+        try {
+            cursor = contentResolver.query(
+                uri, arrayOf(
+                    MediaStore.Images.ImageColumns.DISPLAY_NAME
+                ), null, null, null
+            )
+            if (cursor != null && cursor.moveToFirst()) {
+                return cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME))
+            }
+        } finally {
+            cursor?.close()
+        }
+        return ""
     }
 
     fun toggleDrawer(view: View){
