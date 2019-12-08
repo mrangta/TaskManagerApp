@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:id="@+id/drawer_layout"
+    tools:context=".EditProfileActivity"
+    tools:openDrawer="start">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyTasksActivity">
+
+
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/dashboard_padding"
+        android:layout_marginRight="@dimen/dashboard_padding"
+        android:background="@drawable/toolbar_border"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:contentDescription="@string/todo"
+            android:focusable="true"
+            android:onClick="toggleDrawer"
+            android:paddingHorizontal="10dp"
+            app:srcCompat="@drawable/ic_controls" />
+
+        <TextView
+            android:id="@+id/my_tasks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_alternates"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="120dp"
+            android:text="My Tasks"
+            android:textColor="@color/darkGrey"
+            android:textSize="@dimen/font_size_large"
+            android:textStyle="bold" />
+
+
+
+    </LinearLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/header_layout">
+
+
+                <FrameLayout
+                    android:layout_width="4dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/accentBlue" />
+
+                <LinearLayout
+                    android:id="@+id/heading_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/header_layout">
+
+                    <TextView
+                        android:id="@+id/my_tasks_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/my_tasks"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_large" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/lightGrey" />
+
+                    <TextView
+                        android:id="@+id/on_going_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/ongoing"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_extra_small"
+                        android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/ongoingList"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:textColor="@color/lightGrey" />
+
+                    <TextView
+                        android:id="@+id/pending_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/pending"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_extra_small"
+                        android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/pendingList"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:textColor="@color/lightGrey" />
+
+                    <TextView
+                        android:id="@+id/completed_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/completed"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_extra_small"
+                        android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/completedList"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:textColor="@color/lightGrey" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/bottomNav"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:menu="@menu/bottom_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu"
+        android:background="@drawable/menu_background"
+        app:itemTextColor="@color/white"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -238,3 +238,6 @@ fabric.properties
 # Pyre type checker
 
 # End of https://www.gitignore.io/api/flask,python,pycharm,appengine
+
+# JSON with Google credentials
+frontend/app/google-service*.json

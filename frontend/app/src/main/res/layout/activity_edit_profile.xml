@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:id="@+id/drawer_layout"
+    tools:context=".EditProfileActivity"
+    tools:openDrawer="start">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dashboard_padding"
+        android:paddingRight="@dimen/dashboard_padding">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/header_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/toolbar_border"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingVertical="10dp">
+
+                    <ImageView
+                        android:id="@+id/menu_icon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="-80dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:contentDescription="@string/todo"
+                        android:focusable="true"
+                        android:onClick="toggleDrawer"
+                        app:srcCompat="@drawable/ic_controls" />
+
+                    <TextView
+                        android:id="@+id/profile_settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginEnd="130dp"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="@string/profile_settings"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/font_size_large"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/pic_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="-60dp"
+                    android:layout_marginBottom="10dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/profile_pic"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center_horizontal"
+                        android:elevation="12dp"
+                        android:innerRadius="0dp"
+                        android:shape="ring"
+                        android:thicknessRatio="1.9"
+                        app:cardCornerRadius="80dp">
+
+                        <ImageView
+                            android:id="@+id/profile_picture_profileSetting"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="@string/profile_pic"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/ic_user"></ImageView>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <ImageButton
+                        android:id="@+id/imageButton_profileSetting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="110dp"
+                        android:background="@drawable/transparent_background"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/form_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pic_layout"
+                    android:paddingHorizontal="10dp">
+
+                    <TextView
+                        android:id="@+id/username_profileSetting_textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:background="@drawable/view_text"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:text=""
+                        android:textColor="@color/lightGrey"
+                        android:textSize="@dimen/font_size_medium"
+                        android:paddingVertical="10dp"/>
+
+                    <TextView
+                        android:id="@+id/email_profileSetting_textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:background="@drawable/view_text"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:text=""
+                        android:textColor="@color/lightGrey"
+                        android:textSize="@dimen/font_size_medium"
+                        android:layout_marginTop="@dimen/field_top"
+                        android:paddingVertical="10dp"/>
+
+                    <TextView
+                        android:id="@+id/img_res_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="Image Resolution"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_small" />
+
+                    <RadioGroup
+                        android:id="@+id/img_res_buttons"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/low_res"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Low"
+                            android:onClick="onRadioButtonClicked"/>
+
+                        <RadioButton
+                            android:id="@+id/high_res"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="High"
+                            android:onClick="onRadioButtonClicked"/>
+
+                        <RadioButton
+                            android:id="@+id/full_res"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Full (original)"
+                            android:onClick="onRadioButtonClicked"/>
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/change_pwd_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:text="Change Password"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_small" />
+
+                    <EditText
+                        android:id="@+id/current_password_editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="@dimen/field_top"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:autofillHints=""
+                        android:background="@drawable/edit_text"
+                        android:hint="Current Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textSize="@dimen/font_size_medium"
+                        android:textColor="@color/mediumGrey"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/password_wrong_error"
+                        android:visibility="gone"
+                        android:textColor="@color/redError"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:textSize="@dimen/font_size_small"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"/>
+
+                    <EditText
+                        android:id="@+id/new_password_editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:autofillHints=""
+                        android:background="@drawable/edit_text"
+                        android:hint="New Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textSize="@dimen/font_size_medium"
+                        android:textColor="@color/mediumGrey"
+                        />
+
+                    <EditText
+                        android:id="@+id/confirm_new_password_editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:autofillHints=""
+                        android:background="@drawable/edit_text"
+                        android:hint="Confirm New Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:paddingRight="@dimen/text_padding"
+                        android:textColor="@color/mediumGrey"
+                        android:textSize="@dimen/font_size_medium"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/password_not_matched"
+                        android:visibility="gone"
+                        android:textColor="@color/redError"
+                        android:fontFamily="@font/montserrat_alternates"
+                        android:textSize="@dimen/font_size_small"
+                        android:paddingLeft="@dimen/text_padding"
+                        android:paddingRight="@dimen/text_padding"/>
+
+
+                    <Button
+                        android:id="@+id/update_password_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="@dimen/field_top"
+                        android:background="@drawable/button_background"
+                        android:text="Update Password"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_size_medium"/>
+
+
+                    <ProgressBar
+                        android:id="@+id/progressbar_update_password"
+                        android:visibility="gone"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+        </ScrollView>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/bottomNav"
+            app:labelVisibilityMode="unlabeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:menu="@menu/bottom_menu" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu"
+        android:background="@drawable/menu_background"
+        app:itemTextColor="@color/white"/>
+</androidx.drawerlayout.widget.DrawerLayout>

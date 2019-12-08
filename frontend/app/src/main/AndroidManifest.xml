@@ -2,20 +2,84 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mcc.g22">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".reportgenerator.ReportPreviewActivity"></activity>
+
+        <receiver
+            android:name=".DeadlineAlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".NotificationsService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".AllProjectsActivity"></activity>
+
+        <activity android:name=".ProjectFilesActivity"></activity>
+        <activity android:name=".ProjectPictureActivity" />
+        <activity android:name=".ProjectTasksActivity" />
+        <activity android:name=".FavoritesActivity" />
+        <activity android:name=".CreateProjectActivity"
+                    android:noHistory="true"/>
+        <activity android:name=".CreateTaskActivity" />
+        <activity android:name=".MyTasksActivity" />
+        <activity android:name=".SingleTaskActivity" />
+        <activity android:name=".DashboardActivity" />
+        <activity android:name=".LoginActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <provider
+            android:name=".reportgenerator.GenericFileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="ocr" />
+        <activity android:name=".RegisterActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>
