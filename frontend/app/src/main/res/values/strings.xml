@@ -151,4 +151,5 @@
     <string name="_22_11_2019">22/11/2019</string>
     <string name="due__date">Due date:</string>
     <string name="uploading_file">Uploading file...</string>
+    <string name="pick_picture_source">Choose one option</string>
 </resources>
