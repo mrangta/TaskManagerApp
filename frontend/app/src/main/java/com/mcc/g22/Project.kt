@@ -265,4 +265,8 @@ class Project {
         if (badgeUrl == null) return
         Glide.with(context).load(badgeUrl).into(targetImageView)
     }
+
+    fun isUserAdmin(u: User): Boolean {
+        return u.uid == admin
+    }
 }

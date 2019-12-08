@@ -307,4 +307,8 @@ class User(val username: String = "", var profileImage: String = "" , var email:
     fun getImageSizeAsEnum(): AttachmentsManager.ImageSize {
         return imageSizeEnum
     }
+
+    fun isProjectAdmin(p: Project): Boolean {
+        return uid == p.admin
+    }
 }

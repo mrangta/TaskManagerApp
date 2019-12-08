@@ -87,11 +87,11 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickLis
                     }
                 }
                 if (isProjectFav) {
-                    database.getReference("users").child(user!!.uid).child("favorites").child(p.projectId).removeValue()
+                    database.getReference("users").child(user.uid).child("favorites").child(p.projectId).removeValue()
                     favIcon.setImageResource(R.drawable.ic_fav_clicked)
                 }
                 else {
-                    database.getReference("users").child(user!!.uid).child("favorites").child(p.projectId).setValue(true)
+                    database.getReference("users").child(user.uid).child("favorites").child(p.projectId).setValue(true)
                     favIcon.setImageResource(R.drawable.ic_fav)
 
                 }
@@ -99,31 +99,38 @@ class ProjectListAdapter(private val mDataList: ArrayList<Project>, val clickLis
             }, {Log.d("" , "FAILED")})
         }
 
-        holder.itemView.findViewById<ImageButton>(R.id.trash_projectList).setOnClickListener {
-            val alert = AlertDialog.Builder(holder.itemView.context)
-            alert.setTitle("Confirm")
-            alert.setMessage(R.string.are_you_sure_to_delete)
+        if (user.isProjectAdmin(p)) {
+            holder.itemView.findViewById<ImageButton>(R.id.trash_projectList).setOnClickListener {
+                val alert = AlertDialog.Builder(holder.itemView.context)
+                alert.setTitle("Confirm")
+                alert.setMessage(R.string.are_you_sure_to_delete)
 
-            alert.setPositiveButton("YES") { dialog, yes ->
-                p.delete({
-                    refresher.post {
-                        mDataList.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, itemCount)
-                        notifyDataSetChanged()
-                    }
-                }, {
-                    refresher.post {
-                        Toast.makeText(holder.itemView.context, "Error while deleting project",
-                            Toast.LENGTH_LONG).show()
-                    }
-                })
-            }
-            alert.setNegativeButton("No") { dialog, no ->
-            }
+                alert.setPositiveButton("YES") { dialog, yes ->
+                    p.delete({
+                        refresher.post {
+                            mDataList.removeAt(position)
+                            notifyItemRemoved(position)
+                            notifyItemRangeChanged(position, itemCount)
+                            notifyDataSetChanged()
+                        }
+                    }, {
+                        refresher.post {
+                            Toast.makeText(
+                                holder.itemView.context, "Error while deleting project",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    })
+                }
+                alert.setNegativeButton("No") { dialog, no ->
+                }
 
-            val dialog: AlertDialog = alert.create()
-            dialog.show()
+                val dialog: AlertDialog = alert.create()
+                dialog.show()
+            }
+        } else {
+            holder.itemView.findViewById<ImageButton>(R.id.trash_projectList)
+                .visibility = View.INVISIBLE
         }
 
         holder.itemView.findViewById<View>(R.id.project_tasks).setOnClickListener { clickListener(p, position) }
