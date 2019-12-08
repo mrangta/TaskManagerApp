@@ -34,7 +34,7 @@ def tasks():
     project_tasks_ref.update({new_task_id: True})
     log_ref = db.reference('/log')
     log_event_ref = log_ref.child(project_id).child(new_task_id).push()
-    log_event_ref.set({'type': 'CREATED', 'description': 'Task Created', 'timestamp': datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'})
+    log_event_ref.set({'eventType': 'CREATED', 'description': 'Task Created', 'timestamp': datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'})
     return {'id': new_task_id }, 201
 
 
@@ -46,7 +46,7 @@ def task_with_id(task_id):
     log_ref = db.reference('/log')
     project_id = task_ref.child('projectId').get()
     log_event_ref = log_ref.child(project_id).child(task_id).push()
-    log_event_ref.set({'type': 'STATUS', 'description': 'Task status changed to ' + data['status'],
+    log_event_ref.set({'eventType': 'STATUS', 'description': 'Task status changed to ' + data['status'],
                        'timestamp': datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'})
 
     return jsonify_no_content()
@@ -66,7 +66,7 @@ def task_users(task_id):
         user_tasks_ref = user_ref.child('tasks')
         user_tasks_ref.update({task_id: True})
         log_event_ref = log_ref.child(project_id).child(task_id).push()
-        log_event_ref.set({'type': 'ASSIGNMENT', 'description': 'User ' + user_ref.child('username').get() + ' assigned to task',
+        log_event_ref.set({e'eventType': 'ASSIGNMENT', 'description': 'User ' + user_ref.child('username').get() + ' assigned to task',
                            'timestamp': datetime.datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'})
         return jsonify_no_content()
 
