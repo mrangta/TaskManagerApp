@@ -9,7 +9,7 @@ Google firebase as database and haas been deployed on docker. It was a group pro
 - Implement the wireframe design as UI on Kotlin
 - Integerate designed UI with backend
 
-Yo can see the App UI here: [Taskmanager_UI.pdf](https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf)
+You can see the App UI here: [Taskmanager_UI.pdf](https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf)
 
 
 <embed src="https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf" type="application/pdf"   height="300px" width="100%"/>
