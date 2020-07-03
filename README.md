@@ -8,5 +8,5 @@ Yo can see the App UI here: [Taskmanager_UI.pdf](https://github.com/mrangta/Task
 
 
 <embed src="https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf">Download PDF</a>.</p>
+        <a href="https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf">Download PDF</a>
 </embed>
