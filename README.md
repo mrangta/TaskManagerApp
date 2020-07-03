@@ -7,6 +7,4 @@ My main contribution was designing the App Wireframe on the Sketch first and the
 Yo can see the App UI here: [Taskmanager_UI.pdf](https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf)
 
 
-<embed src="https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf">
-        <a href="https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf">Download PDF</a>
-</embed>
+<embed src="https://github.com/mrangta/TaskManagerApp/blob/master/TaskManager-updatedSketh.pdf"/>
