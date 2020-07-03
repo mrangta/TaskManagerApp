@@ -1,4 +1,6 @@
 # TaskManagerApp
+#### https://mrangta.github.io/TaskManagerApp/
+
 A native android application to manage group and personal projects . This is an academic project which was developed while learning mobile cloud computing. 
 Google firebase as database and haas been deployed on docker. It was a group project with 5 members. 
 
